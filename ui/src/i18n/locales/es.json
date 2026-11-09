@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "profile": "Perfil",
+    "trophies": "Trofeos"
+  },
+  "language": {
+    "label": "Idioma",
+    "auto": "Automático (PS5)"
+  },
+  "common": {
+    "back": "← Volver",
+    "loading": "Cargando…",
+    "loadError": "No se pudieron cargar los datos ({{message}}).",
+    "retry": "Intentar de nuevo",
+    "outOf": "de {{total}}"
+  },
+  "profile": {
+    "fallbackName": "Perfil",
+    "games_one": "{{count}} juego",
+    "games_other": "{{count}} juegos",
+    "playtime": "Tiempo jugado",
+    "trophies": "Trofeos",
+    "recent": "Jugados recientemente",
+    "playedOn": "{{duration}} · jugado el {{date}}",
+    "hiddenTag": "oculto",
+    "hideHidden": "Ocultar juegos ocultos",
+    "showHidden_one": "{{count}} juego oculto · mostrar",
+    "showHidden_other": "{{count}} juegos ocultos · mostrar"
+  },
+  "game": {
+    "summary": "{{duration}} jugados · última partida el {{date}}",
+    "hide": "Ocultar de la lista",
+    "unhide": "Mostrar en la lista",
+    "noTrophies": "Este juego no tiene trofeos registrados en esta consola."
+  },
+  "trophies": {
+    "title": "Trofeos",
+    "earned": "Obtenidos",
+    "noneYet": "ninguno todavía",
+    "empty": "No se encontraron trofeos en este perfil."
+  },
+  "trophyList": {
+    "filter": {
+      "all": "Todos ({{count}})",
+      "earned": "Obtenidos ({{count}})",
+      "locked": "No obtenidos ({{count}})"
+    },
+    "sortBy": "Ordenar:",
+    "sort": {
+      "default": "Predeterminado",
+      "earned": "Fecha de obtención",
+      "grade": "Tipo de trofeo"
+    },
+    "showHidden": "Mostrar ocultos ({{count}})",
+    "hideHidden": "Ocultar ocultos",
+    "emptyFilter": "Ningún trofeo coincide con este filtro.",
+    "reveal": "Revelar",
+    "locked": "Bloqueado"
+  },
+  "trophy": {
+    "hiddenName": "Trofeo oculto",
+    "hiddenDescription": "Sigue jugando para descubrirlo."
+  },
+  "grade": {
+    "platinum": "Platino",
+    "gold": "Oro",
+    "silver": "Plata",
+    "bronze": "Bronce"
+  }
+}

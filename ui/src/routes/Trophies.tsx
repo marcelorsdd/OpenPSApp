@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
 import { paths, useApi, type Profile, type TrophySet } from '../api';
 import { CardRow, Cover, ErrorBox, GradeCounts, Loading, ProgressBar, TrophyTotals } from '../components/ui';
-import { formatDate } from '../format';
+import { useDate } from '../i18n/useLanguage';
 import { href } from '../router';
 
 export default function Trophies() {
+  const { t } = useTranslation();
+  const date = useDate();
   const sets = useApi<TrophySet[]>(paths.trophySets);
   const profile = useApi<Profile>(paths.profile);
 
@@ -12,10 +15,10 @@ export default function Trophies() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Troféus</h1>
+      <h1 className="text-3xl font-bold">{t('trophies.title')}</h1>
       {profile.data && (
         <div className="mt-6">
-          <TrophyTotals label="Conquistados" trophies={profile.data.totals.trophies} />
+          <TrophyTotals label={t('trophies.earned')} trophies={profile.data.totals.trophies} />
         </div>
       )}
 
@@ -26,7 +29,7 @@ export default function Trophies() {
               <div>
                 {s.earned}/{s.total}
               </div>
-              <div className="mt-1">{s.lastEarnedAt ? formatDate(s.lastEarnedAt) : 'nenhum ainda'}</div>
+              <div className="mt-1">{s.lastEarnedAt ? date(s.lastEarnedAt) : t('trophies.noneYet')}</div>
             </div>
           );
           return (
@@ -41,7 +44,7 @@ export default function Trophies() {
           );
         })}
       </ul>
-      {sets.data.length === 0 && <p className="mt-8 text-muted">Nenhum troféu encontrado neste perfil.</p>}
+      {sets.data.length === 0 && <p className="mt-8 text-muted">{t('trophies.empty')}</p>}
     </>
   );
 }

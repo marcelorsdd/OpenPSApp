@@ -6,6 +6,7 @@
 
 #include "platform/platform.hpp"
 #include "services/console_layout.hpp"
+#include "services/messages.hpp"
 #include "util/fs.hpp"
 #include "util/log.hpp"
 #include "util/thread.hpp"
@@ -35,7 +36,7 @@ Status GetStatus() {
     return s;
 }
 
-void InstallIfNeeded(const std::string &data_dir, int port) {
+void InstallIfNeeded(const std::string &data_dir, int port, const std::string &language) {
     if (port != kDeeplinkPort) log::Error("tile: it opens port %d but the payload listens on %d", kDeeplinkPort, port);
     if (kPkgSize == 0) {
         log::Info("tile: no PKG embedded in this build");
@@ -46,7 +47,7 @@ void InstallIfNeeded(const std::string &data_dir, int port) {
         return;
     }
     Set("installing");
-    Spawn([data_dir]() {
+    Spawn([data_dir, port, language]() {
         std::string path = data_dir + "/tile.pkg";
         std::string err;
         if (!fs::WriteFileAtomic(path, std::string_view(reinterpret_cast<const char *>(kPkg), kPkgSize))) {
@@ -55,7 +56,7 @@ void InstallIfNeeded(const std::string &data_dir, int port) {
             unlink(path.c_str());
             Set("installed");
             log::Info("tile: installed %s", kTitleId);
-            platform::Notify("PlayTrack instalado na aba Mídia");
+            platform::Notify(messages::Text(messages::Id::TileInstalled, language, port));
             return;
         }
         Set("failed", err);

@@ -4,7 +4,7 @@
 namespace playtrack::routes {
 void RegisterProfile(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/profile", [&ctx](const http::Request &) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         ProfileTotals totals = lib->Totals();
 
         JsonWriter w;

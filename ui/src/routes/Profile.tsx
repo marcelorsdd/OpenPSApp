@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { combine, paths, useApi, type Game, type Profile as ProfileData, type TrophySet } from '../api';
 import { CardRow, Cover, ErrorBox, Loading, ProgressBar, Section, Stat, TrophyTotals } from '../components/ui';
-import { formatDate, formatDuration } from '../format';
+import { formatDuration } from '../format';
+import { useDate } from '../i18n/useLanguage';
 import { href } from '../router';
 
 export default function Profile() {
+  const { t } = useTranslation();
+  const date = useDate();
   const profile = useApi<ProfileData>(paths.profile);
   const games = useApi<Game[]>(paths.games);
   const sets = useApi<TrophySet[]>(paths.trophySets);
@@ -26,30 +30,30 @@ export default function Profile() {
           {(user?.name ?? '?').slice(0, 1).toUpperCase()}
         </div>
         <div className="ml-5">
-          <h1 className="text-3xl font-bold">{user?.name ?? 'Perfil'}</h1>
-          <p className="text-muted">{totals.games} jogos</p>
+          <h1 className="text-3xl font-bold">{user?.name ?? t('profile.fallbackName')}</h1>
+          <p className="text-muted">{t('profile.games', { count: totals.games })}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mt-8">
-        <Stat label="Tempo jogado">{formatDuration(totals.playtimeSeconds)}</Stat>
-        <TrophyTotals label="Troféus" trophies={totals.trophies} />
+        <Stat label={t('profile.playtime')}>{formatDuration(totals.playtimeSeconds)}</Stat>
+        <TrophyTotals label={t('profile.trophies')} trophies={totals.trophies} />
       </div>
 
-      <Section title="Jogados recentemente">
+      <Section title={t('profile.recent')}>
         <ul>
           {listed.map((g) => {
             const set = g.trophySetId ? setsById.get(g.trophySetId) : undefined;
             const title = (
               <>
                 {g.name}
-                {g.hidden && <span className="ml-3 text-sm font-normal text-muted">oculto</span>}
+                {g.hidden && <span className="ml-3 text-sm font-normal text-muted">{t('profile.hiddenTag')}</span>}
               </>
             );
             return (
               <CardRow key={g.titleId} to={href.game(g.titleId)} icon={<Cover src={g.iconUrl} size="w-24 h-24" />} title={title}>
                 <div className="text-muted mt-1">
-                  {formatDuration(g.playtimeSeconds)} · jogado em {formatDate(g.lastPlayedAt)}
+                  {t('profile.playedOn', { duration: formatDuration(g.playtimeSeconds), date: date(g.lastPlayedAt) })}
                 </div>
                 {set && (
                   <div className="mt-3">
@@ -62,7 +66,7 @@ export default function Profile() {
         </ul>
         {hiddenCount > 0 && (
           <button className="mt-2 px-4 py-2 rounded-lg text-muted hover:text-ink" onClick={() => setShowHidden((v) => !v)}>
-            {showHidden ? 'Esconder ocultos' : `${hiddenCount} ${hiddenCount === 1 ? 'jogo oculto' : 'jogos ocultos'} · mostrar`}
+            {showHidden ? t('profile.hideHidden') : t('profile.showHidden', { count: hiddenCount })}
           </button>
         )}
       </Section>

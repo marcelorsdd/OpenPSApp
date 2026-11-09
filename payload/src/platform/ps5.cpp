@@ -41,6 +41,7 @@ struct PkgPlayGoInfo {
     char content_ids[64][0x30];
     long unknown[810];
 };
+int sceSystemServiceParamGetInt(int param_id, int *value);
 int sceAppInstUtilInitialize(void);
 int sceAppInstUtilAppInstallPkg(const char *path, PkgInfo *info);
 int sceAppInstUtilInstallByPackage(PkgMetaInfo *meta, PkgInfo *info, PkgPlayGoInfo *playgo);
@@ -106,6 +107,12 @@ std::optional<User> ForegroundUser() {
     char name[64] = {};
     if (sceUserServiceGetUserName(id, name, sizeof(name)) == 0) user.name = name;
     return user;
+}
+
+int SystemLanguageId() {
+    constexpr int kParamLanguage = 1;
+    int value = -1;
+    return sceSystemServiceParamGetInt(kParamLanguage, &value) == 0 ? value : -1;
 }
 
 bool InstallPkg(const std::string &path, std::string *err) {

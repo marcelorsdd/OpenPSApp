@@ -16,6 +16,6 @@ struct Status {
 };
 
 Status GetStatus();
-void InstallIfNeeded(const std::string &data_dir, int port);
+void InstallIfNeeded(const std::string &data_dir, int port, const std::string &language);
 
 }

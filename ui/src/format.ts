@@ -1,4 +1,4 @@
-import type { Grade, Trophy } from './api';
+import type { Trophy } from './api';
 
 export function formatDuration(seconds: number): string {
   if (seconds <= 0) return '0 min';
@@ -9,17 +9,10 @@ export function formatDuration(seconds: number): string {
   return `${hours} h ${String(minutes % 60).padStart(2, '0')} min`;
 }
 
-export function formatDate(iso: string | null, timeZone?: string): string {
+export function formatDate(iso: string | null, locale: string, timeZone?: string): string {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('pt-BR', { timeZone, day: '2-digit', month: '2-digit', year: 'numeric' });
+  return new Date(iso).toLocaleDateString(locale, { timeZone, day: '2-digit', month: '2-digit', year: 'numeric' });
 }
-
-export const GRADE_LABEL: Record<Grade, string> = {
-  platinum: 'Platina',
-  gold: 'Ouro',
-  silver: 'Prata',
-  bronze: 'Bronze',
-};
 
 export interface TrophyView {
   masked: boolean;
@@ -29,9 +22,7 @@ export interface TrophyView {
 }
 
 export function trophyView(t: Trophy, revealed: boolean): TrophyView {
-  if (t.hidden && !t.earned && !revealed) {
-    return { masked: true, name: 'Troféu oculto', description: 'Continue jogando para descobrir.', iconUrl: null };
-  }
+  if (t.hidden && !t.earned && !revealed) return { masked: true, name: '', description: '', iconUrl: null };
   return { masked: false, name: t.name, description: t.description, iconUrl: t.iconUrl };
 }
 

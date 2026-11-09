@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { combine, paths, post, useApi, type Game, type TrophySet } from '../api';
 import { BackLink, ErrorBox, Loading } from '../components/ui';
 import GameHeader from './GameHeader';
 import TrophySetSection from './TrophySetSection';
 
 export default function GamePage({ titleId }: { titleId: string }) {
+  const { t } = useTranslation();
   const game = useApi<Game>(paths.game(titleId));
   const setId = game.data?.trophySetId ?? null;
   const set = useApi<TrophySet>(setId ? paths.trophySet(setId) : null);
@@ -28,7 +30,7 @@ export default function GamePage({ titleId }: { titleId: string }) {
       onClick={() => toggleHidden(game.data!)}
       className="mt-3 px-4 py-2 rounded-lg border border-line text-sm text-muted hover:text-ink hover:bg-raised"
     >
-      {game.data.hidden ? 'Mostrar na lista' : 'Ocultar da lista'}
+      {game.data.hidden ? t('game.unhide') : t('game.hide')}
     </button>
   );
 
@@ -39,7 +41,7 @@ export default function GamePage({ titleId }: { titleId: string }) {
       {setId ? (
         <TrophySetSection setId={setId} />
       ) : (
-        <p className="mt-10 text-muted">Este jogo não tem troféus registrados neste console.</p>
+        <p className="mt-10 text-muted">{t('game.noTrophies')}</p>
       )}
     </>
   );

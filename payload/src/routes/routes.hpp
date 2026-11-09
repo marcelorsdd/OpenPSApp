@@ -11,6 +11,7 @@ struct Context {
     std::string version;
     std::string data_dir;
     Config config;
+    std::string language;
 };
 
 void RegisterAll(http::Router &router, const Context &ctx);

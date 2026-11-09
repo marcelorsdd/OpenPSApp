@@ -16,6 +16,7 @@ void RegisterHealth(http::Router &router, const Context &ctx) {
             .Key("version").String(ctx.version)
             .Key("source").String("console")
             .Key("capturedAt").String(timeutil::NowIso())
+            .Key("language").String(ctx.language)
             .EndObject();
         return http::Json(w.take());
     });

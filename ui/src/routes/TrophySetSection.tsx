@@ -1,16 +1,15 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { paths, useApi, type Trophy } from '../api';
 import { CardRow, Cover, ErrorBox, Loading, Pill, TrophyGlyph } from '../components/ui';
-import { filterTrophies, formatDate, GRADE_LABEL, sortTrophies, trophyView, type TrophyFilter, type TrophySort } from '../format';
+import { filterTrophies, sortTrophies, trophyView, type TrophyFilter, type TrophySort } from '../format';
+import { useDate } from '../i18n/useLanguage';
 import { useStoredState } from '../storage';
 
-const SORTS: { value: TrophySort; label: string }[] = [
-  { value: 'default', label: 'Padrão' },
-  { value: 'earned', label: 'Data de conquista' },
-  { value: 'grade', label: 'Tipo de troféu' },
-];
+const SORTS: TrophySort[] = ['default', 'earned', 'grade'];
 
 export default function TrophySetSection({ setId }: { setId: string }) {
+  const { t } = useTranslation();
   const trophies = useApi<Trophy[]>(paths.trophies(setId));
   const [filter, setFilter] = useStoredState<TrophyFilter>('trophies.filter', 'all');
   const [sort, setSort] = useStoredState<TrophySort>('trophies.sort', 'default');
@@ -21,50 +20,53 @@ export default function TrophySetSection({ setId }: { setId: string }) {
   if (!trophies.data) return <Loading />;
 
   const list = trophies.data;
-  const earned = list.filter((t) => t.earned).length;
-  const hiddenLocked = list.filter((t) => t.hidden && !t.earned).length;
+  const earned = list.filter((tr) => tr.earned).length;
+  const hiddenLocked = list.filter((tr) => tr.hidden && !tr.earned).length;
   const shown = sortTrophies(filterTrophies(list, filter), sort);
+  const counts: Record<TrophyFilter, number> = { all: list.length, earned, locked: list.length - earned };
 
   return (
     <>
       <div className="flex flex-wrap mt-10 -mx-1">
-        <Pill active={filter === 'all'} onClick={() => setFilter('all')}>{`Todos (${list.length})`}</Pill>
-        <Pill active={filter === 'earned'} onClick={() => setFilter('earned')}>{`Conquistados (${earned})`}</Pill>
-        <Pill active={filter === 'locked'} onClick={() => setFilter('locked')}>
-          {`Não conquistados (${list.length - earned})`}
-        </Pill>
+        {(['all', 'earned', 'locked'] as TrophyFilter[]).map((f) => (
+          <Pill key={f} active={filter === f} onClick={() => setFilter(f)}>
+            {t(`trophyList.filter.${f}`, { count: counts[f] })}
+          </Pill>
+        ))}
       </div>
 
       <div className="flex flex-wrap items-center mt-4 -mx-1">
-        <span className="mx-1 text-muted">Ordenar:</span>
+        <span className="mx-1 text-muted">{t('trophyList.sortBy')}</span>
         {SORTS.map((s) => (
-          <Pill key={s.value} active={sort === s.value} onClick={() => setSort(s.value)}>
-            {s.label}
+          <Pill key={s} active={sort === s} onClick={() => setSort(s)}>
+            {t(`trophyList.sort.${s}`)}
           </Pill>
         ))}
         {hiddenLocked > 0 && (
           <Pill active={showHidden} onClick={() => setShowHidden(!showHidden)}>
-            {showHidden ? 'Esconder ocultos' : `Mostrar ocultos (${hiddenLocked})`}
+            {showHidden ? t('trophyList.hideHidden') : t('trophyList.showHidden', { count: hiddenLocked })}
           </Pill>
         )}
       </div>
 
       <ul className="mt-6">
-        {shown.map((t) => (
+        {shown.map((tr) => (
           <TrophyRow
-            key={t.id}
-            trophy={t}
-            revealed={showHidden || revealed.has(t.id)}
-            onReveal={() => setRevealed((prev) => new Set(prev).add(t.id))}
+            key={tr.id}
+            trophy={tr}
+            revealed={showHidden || revealed.has(tr.id)}
+            onReveal={() => setRevealed((prev) => new Set(prev).add(tr.id))}
           />
         ))}
       </ul>
-      {shown.length === 0 && <p className="mt-6 text-muted">Nenhum troféu neste filtro.</p>}
+      {shown.length === 0 && <p className="mt-6 text-muted">{t('trophyList.emptyFilter')}</p>}
     </>
   );
 }
 
 function TrophyRow({ trophy, revealed, onReveal }: { trophy: Trophy; revealed: boolean; onReveal: () => void }) {
+  const { t } = useTranslation();
+  const date = useDate();
   const view = trophyView(trophy, revealed);
   const icon = (
     <div className={trophy.earned ? '' : 'opacity-40'}>
@@ -79,17 +81,17 @@ function TrophyRow({ trophy, revealed, onReveal }: { trophy: Trophy; revealed: b
     <>
       <div className="flex items-center justify-end">
         <TrophyGlyph grade={trophy.grade} className="w-6 h-6" />
-        <span className="ml-2 text-sm">{trophy.grade === 'unknown' ? '' : GRADE_LABEL[trophy.grade]}</span>
+        <span className="ml-2 text-sm">{trophy.grade === 'unknown' ? '' : t(`grade.${trophy.grade}`)}</span>
       </div>
-      <div className="mt-1 text-sm text-muted">{trophy.earned ? formatDate(trophy.earnedAt) : 'Bloqueado'}</div>
+      <div className="mt-1 text-sm text-muted">{trophy.earned ? date(trophy.earnedAt) : t('trophyList.locked')}</div>
     </>
   );
   return (
-    <CardRow icon={icon} title={view.name} aside={aside}>
-      <div className="text-muted mt-1 whitespace-normal">{view.description}</div>
+    <CardRow icon={icon} title={view.masked ? t('trophy.hiddenName') : view.name} aside={aside}>
+      <div className="text-muted mt-1 whitespace-normal">{view.masked ? t('trophy.hiddenDescription') : view.description}</div>
       {view.masked && (
         <button onClick={onReveal} className="mt-3 px-4 py-2 rounded-lg border border-line text-sm hover:bg-raised">
-          Revelar
+          {t('trophyList.reveal')}
         </button>
       )}
     </CardRow>

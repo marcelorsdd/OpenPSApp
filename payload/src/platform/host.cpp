@@ -34,6 +34,14 @@ std::optional<User> ForegroundUser() {
 
 void Notify(const std::string &message) { std::printf("[notify] %s\n", message.c_str()); }
 
+int SystemLanguageId() {
+    const char *env = std::getenv("PLAYTRACK_LANG_ID");
+    if (!env || !*env) return -1;
+    char *end = nullptr;
+    long id = std::strtol(env, &end, 10);
+    return *end == '\0' && id >= 0 ? static_cast<int>(id) : -1;
+}
+
 bool InstallPkg(const std::string &path, std::string *err) {
     if (err) *err = "PKG install is console-only (" + path + ")";
     return false;

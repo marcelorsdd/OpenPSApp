@@ -68,13 +68,14 @@ describe('formatDuration', () => {
 });
 
 describe('formatDate', () => {
-  it('formats in pt-BR in the given time zone', () => {
-    expect(formatDate('2026-11-08T04:35:53Z', 'America/Sao_Paulo')).toBe('08/11/2026');
-    expect(formatDate('2026-11-08T01:35:53Z', 'America/Sao_Paulo')).toBe('07/11/2026');
+  it('formats in the given locale and time zone', () => {
+    expect(formatDate('2026-11-08T04:35:53Z', 'pt-BR', 'America/Sao_Paulo')).toBe('08/11/2026');
+    expect(formatDate('2026-11-08T01:35:53Z', 'pt-BR', 'America/Sao_Paulo')).toBe('07/11/2026');
+    expect(formatDate('2026-11-08T04:35:53Z', 'en', 'America/Sao_Paulo')).toBe('11/08/2026');
   });
 
   it('returns a dash for missing dates', () => {
-    expect(formatDate(null)).toBe('—');
+    expect(formatDate(null, 'pt-BR')).toBe('—');
   });
 });
 
@@ -93,8 +94,8 @@ describe('trophyView', () => {
   it('masks hidden trophies that are not earned', () => {
     const v = trophyView(hidden, false);
     expect(v.masked).toBe(true);
-    expect(v.name).toBe('Troféu oculto');
-    expect(v.description).toBe('Continue jogando para descobrir.');
+    expect(v.name).toBe('');
+    expect(v.description).toBe('');
     expect(v.iconUrl).toBeNull();
   });
 

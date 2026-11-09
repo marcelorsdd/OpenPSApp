@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GRADES, type Grade, type GradeCount, type Profile } from '../api';
-import { GRADE_LABEL } from '../format';
+import { LANGUAGES, type LanguageChoice } from '../i18n';
 import { href } from '../router';
 
 const GRADE_TEXT: Record<Grade, string> = {
@@ -20,12 +21,13 @@ export function TrophyGlyph({ grade, className = 'w-5 h-5' }: { grade: Grade | '
 }
 
 export function GradeCounts({ counts }: { counts: Record<Grade, GradeCount | number> }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-wrap -mx-2">
       {GRADES.map((g) => {
         const c = counts[g];
         return (
-          <span key={g} className="flex items-center mx-2" title={GRADE_LABEL[g]}>
+          <span key={g} className="flex items-center mx-2" title={t(`grade.${g}`)}>
             <TrophyGlyph grade={g} />
             <span className="ml-1 tabular-nums">{typeof c === 'number' ? c : `${c.earned}/${c.total}`}</span>
           </span>
@@ -123,11 +125,12 @@ export function Stat({ label, children }: { label: string; children: ReactNode }
 }
 
 export function TrophyTotals({ label, trophies }: { label: string; trophies: Profile['totals']['trophies'] }) {
+  const { t } = useTranslation();
   return (
     <Stat label={label}>
       <div>
         {trophies.earned}
-        <span className="text-muted text-lg font-normal"> de {trophies.total}</span>
+        <span className="text-muted text-lg font-normal"> {t('common.outOf', { total: trophies.total })}</span>
       </div>
       <div className="mt-3 text-base font-normal">
         <GradeCounts counts={trophies} />
@@ -137,6 +140,7 @@ export function TrophyTotals({ label, trophies }: { label: string; trophies: Pro
 }
 
 export function BackLink() {
+  const { t } = useTranslation();
   const back = (e: { preventDefault: () => void }) => {
     if (window.history.length > 1) {
       e.preventDefault();
@@ -145,22 +149,43 @@ export function BackLink() {
   };
   return (
     <a href={href.profile()} onClick={back} className="inline-block text-muted hover:text-ink mb-6">
-      ← Voltar
+      {t('common.back')}
     </a>
   );
 }
 
 export function Loading() {
-  return <div className="py-24 text-center text-muted">Carregando…</div>;
+  const { t } = useTranslation();
+  return <div className="py-24 text-center text-muted">{t('common.loading')}</div>;
 }
 
 export function ErrorBox({ message, onRetry }: { message: string; onRetry: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="py-24 text-center">
-      <p className="text-muted">Não foi possível carregar os dados ({message}).</p>
+      <p className="text-muted">{t('common.loadError', { message })}</p>
       <button className="mt-6 px-6 py-3 rounded-xl bg-accent font-semibold" onClick={onRetry}>
-        Tentar de novo
+        {t('common.retry')}
       </button>
     </div>
+  );
+}
+
+export function LanguagePicker({ value, onChange }: { value: LanguageChoice; onChange: (value: LanguageChoice) => void }) {
+  const { t } = useTranslation();
+  return (
+    <select
+      aria-label={t('language.label')}
+      value={value}
+      onChange={(e) => onChange(e.target.value as LanguageChoice)}
+      className="ml-3 px-4 py-3 rounded-full bg-surface border border-line text-ink font-semibold"
+    >
+      <option value="auto">{t('language.auto')}</option>
+      {LANGUAGES.map((l) => (
+        <option key={l.code} value={l.code}>
+          {l.label}
+        </option>
+      ))}
+    </select>
   );
 }

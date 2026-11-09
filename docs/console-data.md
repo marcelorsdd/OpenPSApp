@@ -82,7 +82,7 @@ How to read the flags:
 
 Grades and the hidden flag come from `tropconf.json`, so the `0x500` definition records are not needed.
 
-The progress percentage weights trophies by points (P 180, G 90, S 30, B 15). These weights have not been checked yet against the percentage the console shows.
+The progress percentage weights trophies by points (gold 90, silver 30, bronze 15) and leaves the platinum out, rounding down. This was confirmed against the console: Marvel's Wolverine shows 34% with 0/1 platinum, 0/4 gold, 3/9 silver and 18/28 bronze, which is 360 of 1050 points. Counting the platinum would have given 29%.
 
 ## Payload runtime notes
 

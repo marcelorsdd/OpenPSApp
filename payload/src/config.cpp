@@ -1,11 +1,18 @@
 #include "config.hpp"
 
 #include "cJSON.h"
+#include "platform/platform.hpp"
 #include "util/fs.hpp"
 #include "util/json.hpp"
 
 namespace playtrack {
 namespace {
+constexpr const char *kSystemLanguages[] = {
+    "ja-JP", "en-US", "fr-FR", "es-ES", "de-DE", "it-IT", "nl-NL", "pt-PT", "ru-RU", "ko-KR", "zh-Hant",
+    "zh-Hans", "fi-FI", "sv-SE", "da-DK", "no-NO", "pl-PL", "pt-BR", "en-GB", "tr-TR", "es-419", "ar-AE",
+    "fr-CA", "cs-CZ", "hu-HU", "el-GR", "ro-RO", "th-TH", "vi-VN", "id-ID", "uk-UA",
+};
+
 std::string Serialize(const Config &cfg) {
     JsonWriter w;
     w.BeginObject()
@@ -44,6 +51,13 @@ Config LoadOrCreateConfig(const std::string &path, std::string *warning) {
     }
     cJSON_Delete(root);
     return cfg;
+}
+
+std::string ResolveLanguage(const std::string &configured) {
+    if (!configured.empty() && configured != "auto") return configured;
+    int id = platform::SystemLanguageId();
+    constexpr int kCount = sizeof(kSystemLanguages) / sizeof(kSystemLanguages[0]);
+    return id >= 0 && id < kCount ? kSystemLanguages[id] : "en-US";
 }
 
 }

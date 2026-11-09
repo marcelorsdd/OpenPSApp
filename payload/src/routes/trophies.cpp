@@ -4,7 +4,7 @@
 namespace playtrack::routes {
 void RegisterTrophies(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/trophy-sets", [&ctx](const http::Request &) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         JsonWriter w;
         w.BeginArray();
         for (const TrophySet &set : lib->trophies.sets) WriteTrophySet(w, *lib, set);
@@ -13,7 +13,7 @@ void RegisterTrophies(http::Router &router, const Context &ctx) {
     });
 
     router.Get("/api/v1/trophy-sets/:id", [&ctx](const http::Request &req) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         const TrophySet *set = lib->FindSet(req.params.at("id"));
         if (!set) return http::Error(404, "trophy set not found");
         JsonWriter w;
@@ -22,7 +22,7 @@ void RegisterTrophies(http::Router &router, const Context &ctx) {
     });
 
     router.Get("/api/v1/trophy-sets/:id/trophies", [&ctx](const http::Request &req) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         const TrophySet *set = lib->FindSet(req.params.at("id"));
         if (!set) return http::Error(404, "trophy set not found");
         JsonWriter w;

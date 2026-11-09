@@ -58,6 +58,8 @@ On first run the payload installs the tile (`PTRK00001`, Media tab, `deeplinkUri
 payload is running, so keep the port at 7777. To change the tile's category or deeplink, delete it on the console
 first: the home screen keeps the category from the first registration.
 
+The UI is translated with i18next (`ui/src/i18n/locales/*.json`: pt-BR, en, es). By default it follows the console's language (reported by `/api/v1/health`); the header has a picker to choose one, saved in the browser. To add a language, add a locale file with the same keys and register it in `ui/src/i18n/index.ts`. A test fails if any locale is missing a key.
+
 UI development against a payload: `make -C payload host-run` then `cd ui && npm run dev`
 (`PLAYTRACK_API=http://<ps5-ip>:7777 npm run dev` to use the console).
 
@@ -83,7 +85,7 @@ UI development against a payload: `make -C payload host-run` then `cd ui && npm 
 | `GET /api/v1/debug/tile` | home-screen tile: embedded, installed, state, error |
 | `GET /` | the UI |
 
-Config lives in `/data/playtrack/config.json` (created on first run: `port`, `language`, `debug`); logs in `/data/playtrack/playtrack.log`; hidden titles in `/data/playtrack/hidden.json`.
+Config lives in `/data/playtrack/config.json` (created on first run: `port`, `language` — `"auto"` follows the console's language, or a tag such as `"pt-BR"` — and `debug`); logs in `/data/playtrack/playtrack.log`; hidden titles in `/data/playtrack/hidden.json`.
 
 Console notifications: "PlayTrack ativo na porta 7777" on start; "PlayTrack instalado na aba Mídia" when the tile is first installed; "PlayTrack já está rodando" when loaded twice (the second copy exits); "a porta 7777 está em uso por outro app" if something else holds the port.
 

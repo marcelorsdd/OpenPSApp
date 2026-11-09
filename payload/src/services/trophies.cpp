@@ -114,6 +114,7 @@ Tally TrophySet::Count() const {
 int TrophySet::Progress() const {
     int total = 0, earned = 0;
     for (const Trophy &t : trophies) {
+        if (t.grade == Grade::Platinum) continue;
         total += GradePoints(t.grade);
         if (t.earned) earned += GradePoints(t.grade);
     }
@@ -124,6 +125,44 @@ int64_t TrophySet::LastEarnedAt() const {
     int64_t last = 0;
     for (const Trophy &t : trophies) last = std::max(last, t.earned_at);
     return last;
+}
+
+std::vector<std::string> TropmetaLanguages(const Ucp &ucp) {
+    static const std::string kPrefix = "tropmeta_";
+    static const std::string kSuffix = ".json";
+    std::vector<std::string> langs;
+    for (const Ucp::Entry &e : ucp.entries()) {
+        const std::string &n = e.name;
+        if (n.size() <= kPrefix.size() + kSuffix.size() || n.rfind(kPrefix, 0) != 0 ||
+            n.compare(n.size() - kSuffix.size(), kSuffix.size(), kSuffix) != 0) {
+            continue;
+        }
+        langs.push_back(n.substr(kPrefix.size(), n.size() - kPrefix.size() - kSuffix.size()));
+    }
+    return langs;
+}
+
+std::vector<std::string> LanguageCandidates(const std::string &language, const std::vector<std::string> &available,
+                                            const std::string &default_language) {
+    auto primary = [](const std::string &tag) { return tag.substr(0, tag.find('-')); };
+    auto has_script = [](const std::string &tag) {
+        size_t dash = tag.find('-');
+        return dash != std::string::npos && tag.size() - dash - 1 == 4;
+    };
+
+    std::vector<std::string> out;
+    auto add = [&out](const std::string &tag) {
+        if (!tag.empty() && std::find(out.begin(), out.end(), tag) == out.end()) out.push_back(tag);
+    };
+    add(language);
+    if (!has_script(language)) {
+        for (const std::string &tag : available) {
+            if (primary(tag) == primary(language) && !has_script(tag)) add(tag);
+        }
+    }
+    add(default_language);
+    add("en-US");
+    return out;
 }
 
 const TrophySet *TrophyReport::Find(const std::string &set_id) const {
@@ -148,7 +187,7 @@ bool BuildTrophySet(const std::string &id, const std::string &ucp_path, const st
     }
     const char *default_lang = JsonString(conf, "defaultLanguage");
 
-    const std::vector<std::string> langs = {language, default_lang ? default_lang : "en-US", "en-US"};
+    std::vector<std::string> langs = LanguageCandidates(language, TropmetaLanguages(ucp), default_lang ? default_lang : "");
 
     TrophySet set;
     set.id = id;

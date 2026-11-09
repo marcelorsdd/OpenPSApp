@@ -3,6 +3,14 @@ import { useCallback, useEffect, useState } from 'react';
 export type Grade = 'platinum' | 'gold' | 'silver' | 'bronze';
 export const GRADES: Grade[] = ['platinum', 'gold', 'silver', 'bronze'];
 
+export interface Health {
+  ok: boolean;
+  version: string;
+  source: string;
+  capturedAt: string;
+  language: string;
+}
+
 export interface Profile {
   user: { id: string; name: string } | null;
   totals: {
@@ -53,6 +61,7 @@ export interface Trophy {
 const id = encodeURIComponent;
 
 export const paths = {
+  health: '/api/v1/health',
   profile: '/api/v1/profile',
   games: '/api/v1/games',
   game: (titleId: string) => `/api/v1/games/${id(titleId)}`,

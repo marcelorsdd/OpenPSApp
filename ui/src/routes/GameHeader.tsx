@@ -1,9 +1,13 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Game, TrophySet } from '../api';
 import { Cover, GradeCounts, ProgressBar } from '../components/ui';
-import { formatDate, formatDuration } from '../format';
+import { formatDuration } from '../format';
+import { useDate } from '../i18n/useLanguage';
 
 export default function GameHeader({ game, set, actions }: { game?: Game | null; set?: TrophySet | null; actions?: ReactNode }) {
+  const { t } = useTranslation();
+  const date = useDate();
   return (
     <div className="flex items-start">
       <Cover src={game?.iconUrl ?? set?.iconUrl ?? null} size="w-40 h-40" />
@@ -11,7 +15,7 @@ export default function GameHeader({ game, set, actions }: { game?: Game | null;
         <h1 className="text-3xl font-bold">{game?.name ?? set?.name}</h1>
         {game && (
           <p className="text-muted mt-2">
-            {formatDuration(game.playtimeSeconds)} jogados · último jogo em {formatDate(game.lastPlayedAt)}
+            {t('game.summary', { duration: formatDuration(game.playtimeSeconds), date: date(game.lastPlayedAt) })}
           </p>
         )}
         {actions}

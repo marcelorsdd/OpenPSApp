@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "profile": "Profile",
+    "trophies": "Trophies"
+  },
+  "language": {
+    "label": "Language",
+    "auto": "Automatic (PS5)"
+  },
+  "common": {
+    "back": "← Back",
+    "loading": "Loading…",
+    "loadError": "Could not load the data ({{message}}).",
+    "retry": "Try again",
+    "outOf": "of {{total}}"
+  },
+  "profile": {
+    "fallbackName": "Profile",
+    "games_one": "{{count}} game",
+    "games_other": "{{count}} games",
+    "playtime": "Time played",
+    "trophies": "Trophies",
+    "recent": "Recently played",
+    "playedOn": "{{duration}} · played on {{date}}",
+    "hiddenTag": "hidden",
+    "hideHidden": "Hide hidden games",
+    "showHidden_one": "{{count}} hidden game · show",
+    "showHidden_other": "{{count}} hidden games · show"
+  },
+  "game": {
+    "summary": "{{duration}} played · last played on {{date}}",
+    "hide": "Hide from list",
+    "unhide": "Show in list",
+    "noTrophies": "This game has no trophies recorded on this console."
+  },
+  "trophies": {
+    "title": "Trophies",
+    "earned": "Earned",
+    "noneYet": "none yet",
+    "empty": "No trophies found for this profile."
+  },
+  "trophyList": {
+    "filter": {
+      "all": "All ({{count}})",
+      "earned": "Earned ({{count}})",
+      "locked": "Not earned ({{count}})"
+    },
+    "sortBy": "Sort:",
+    "sort": {
+      "default": "Default",
+      "earned": "Date earned",
+      "grade": "Trophy type"
+    },
+    "showHidden": "Show hidden ({{count}})",
+    "hideHidden": "Hide hidden",
+    "emptyFilter": "No trophies match this filter.",
+    "reveal": "Reveal",
+    "locked": "Locked"
+  },
+  "trophy": {
+    "hiddenName": "Hidden trophy",
+    "hiddenDescription": "Keep playing to find out."
+  },
+  "grade": {
+    "platinum": "Platinum",
+    "gold": "Gold",
+    "silver": "Silver",
+    "bronze": "Bronze"
+  }
+}

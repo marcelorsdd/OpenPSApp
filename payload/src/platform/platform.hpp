@@ -26,6 +26,8 @@ std::optional<User> ForegroundUser();
 
 void Notify(const std::string &message);
 
+int SystemLanguageId();
+
 bool InstallPkg(const std::string &path, std::string *err);
 
 }

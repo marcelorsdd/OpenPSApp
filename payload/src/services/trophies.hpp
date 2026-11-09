@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "formats/ucp.hpp"
 #include "platform/platform.hpp"
 #include "services/icons.hpp"
 
@@ -61,6 +62,10 @@ struct TrophyReport {
 };
 
 TrophyReport CollectTrophies(const std::optional<platform::User> &user, const std::string &language);
+
+std::vector<std::string> TropmetaLanguages(const Ucp &ucp);
+std::vector<std::string> LanguageCandidates(const std::string &language, const std::vector<std::string> &available,
+                                            const std::string &default_language);
 
 bool BuildTrophySet(const std::string &id, const std::string &ucp_path, const std::string &dat_path,
                     const std::string &language, TrophySet *out, std::string *err);

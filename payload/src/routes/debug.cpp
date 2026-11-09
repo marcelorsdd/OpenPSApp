@@ -116,7 +116,7 @@ http::Response Sources(const Context &ctx) {
     for (const std::string &t : playtime.tables) w.String(t);
     w.EndArray().Key("error").StringOrNull(playtime.error).EndObject();
 
-    WriteTrophyDirs(w, CollectTrophies(user, ctx.config.language));
+    WriteTrophyDirs(w, CollectTrophies(user, ctx.language));
 
     std::vector<fs::Entry> metas = fs::ListDir(platform::ConsolePath("/user/appmeta"));
     w.Key("appmeta").BeginObject().Key("count").Int(static_cast<int64_t>(metas.size())).Key("sample").BeginArray();

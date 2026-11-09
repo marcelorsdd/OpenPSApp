@@ -30,6 +30,12 @@ TEST(web_serves_the_embedded_page_gzipped) {
     CHECK_EQ(test::Get(app.router, "/api/v1/nope").status, 404);
 }
 
+TEST(health_reports_the_console_language) {
+    test::App app;
+    app.ctx.language = "es-419";
+    CHECK(test::Get(app.router, "/api/v1/health").body.find("\"language\":\"es-419\"") != std::string::npos);
+}
+
 TEST(debug_routes_are_off_unless_enabled) {
     test::App off;
     CHECK_EQ(test::Get(off.router, "/api/v1/debug/stats").status, 404);
@@ -69,7 +75,7 @@ TEST(routes_link_games_and_sets_and_serve_trophy_icons) {
 
     std::string set = test::Get(app.router, "/api/v1/trophy-sets/NPWR00001_00").body;
     CHECK(set.find("\"titleId\":\"PPSA01234\"") != std::string::npos);
-    CHECK(set.find("\"progress\":33") != std::string::npos);
+    CHECK(set.find("\"progress\":77") != std::string::npos);
     CHECK(set.find("\"gold\":{\"earned\":1,\"total\":1}") != std::string::npos);
 
     std::string trophies = test::Get(app.router, "/api/v1/trophy-sets/NPWR00001_00/trophies").body;

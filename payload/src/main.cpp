@@ -8,6 +8,7 @@
 #include "platform/platform.hpp"
 #include "routes/routes.hpp"
 #include "services/hidden.hpp"
+#include "services/messages.hpp"
 #include "services/tile.hpp"
 #include "util/crash.hpp"
 #include "util/fs.hpp"
@@ -43,6 +44,7 @@ int main() {
     std::string warning;
     ctx.config = LoadOrCreateConfig(data_dir + "/config.json", &warning);
     if (!warning.empty()) log::Error("config: %s", warning.c_str());
+    ctx.language = ResolveLanguage(ctx.config.language);
     hidden::Load(data_dir);
 
     http::Router router;
@@ -53,16 +55,16 @@ int main() {
     if (!server.Listen(port, &err)) {
         if (routes::ServedByPlayTrack(port)) {
             log::Info("another PlayTrack already serves :%d; exiting", ctx.config.port);
-            platform::Notify("PlayTrack já está rodando");
+            platform::Notify(messages::Text(messages::Id::AlreadyRunning, ctx.language, ctx.config.port));
             return 0;
         }
         log::Error("listen failed: %s", err.c_str());
-        platform::Notify("PlayTrack: a porta " + std::to_string(ctx.config.port) + " está em uso por outro app");
+        platform::Notify(messages::Text(messages::Id::PortBusy, ctx.language, ctx.config.port));
         return 1;
     }
-    log::Info("listening on :%d", ctx.config.port);
-    platform::Notify("PlayTrack ativo na porta " + std::to_string(ctx.config.port));
-    tile::InstallIfNeeded(data_dir, ctx.config.port);
+    log::Info("listening on :%d, language %s", ctx.config.port, ctx.language.c_str());
+    platform::Notify(messages::Text(messages::Id::Started, ctx.language, ctx.config.port));
+    tile::InstallIfNeeded(data_dir, ctx.config.port, ctx.language);
 
     server.Serve();
     return 0;

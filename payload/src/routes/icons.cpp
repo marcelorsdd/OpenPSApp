@@ -8,7 +8,7 @@ void RegisterIcons(http::Router &router, const Context &ctx) {
         const std::string &id = req.params.at("id");
         auto where = icons::Find(id);
         if (!where) {
-            CurrentLibrary(ctx.config.language);
+            CurrentLibrary(ctx.language);
             where = icons::Find(id);
         }
         if (!where) return http::Error(404, "icon not found");

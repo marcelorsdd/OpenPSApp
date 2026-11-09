@@ -27,6 +27,7 @@ struct App {
         ctx.version = "test";
         ctx.data_dir = playtrack::platform::Root() + "/data/playtrack";
         ctx.config.debug = debug;
+        ctx.language = "pt-BR";
         playtrack::routes::RegisterAll(router, ctx);
     }
 };

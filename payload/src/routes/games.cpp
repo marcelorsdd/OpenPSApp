@@ -13,7 +13,7 @@ http::Response GameJson(const Library &lib, const GamePlaytime &game) {
 
 void RegisterGames(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/games", [&ctx](const http::Request &) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         if (!lib->playtime.error.empty() && lib->playtime.games.empty()) return http::Error(500, lib->playtime.error);
         JsonWriter w;
         w.BeginArray();
@@ -23,7 +23,7 @@ void RegisterGames(http::Router &router, const Context &ctx) {
     });
 
     router.Get("/api/v1/games/:titleId", [&ctx](const http::Request &req) {
-        auto lib = CurrentLibrary(ctx.config.language);
+        auto lib = CurrentLibrary(ctx.language);
         const GamePlaytime *game = lib->FindGame(req.params.at("titleId"));
         return game ? GameJson(*lib, *game) : http::Error(404, "game not found");
     });
@@ -31,7 +31,7 @@ void RegisterGames(http::Router &router, const Context &ctx) {
     for (bool hide : {true, false}) {
         router.Post(hide ? "/api/v1/games/:titleId/hide" : "/api/v1/games/:titleId/unhide",
                     [&ctx, hide](const http::Request &req) {
-                        auto lib = CurrentLibrary(ctx.config.language);
+                        auto lib = CurrentLibrary(ctx.language);
                         const GamePlaytime *game = lib->FindGame(req.params.at("titleId"));
                         if (!game) return http::Error(404, "game not found");
                         if (!hidden::Set(game->title_id, hide)) return http::Error(500, "could not save hidden.json");
