@@ -20,6 +20,7 @@
     "games_other": "{{count}} games",
     "playtime": "Time played",
     "trophies": "Trophies",
+    "platinums": "Platinums",
     "recentTrophies": "Recent trophies",
     "recent": "Recently played",
     "playedOn": "{{duration}} · played on {{date}}",
@@ -27,6 +28,43 @@
     "hideHidden": "Hide hidden games",
     "showHidden_one": "{{count}} hidden game · show",
     "showHidden_other": "{{count}} hidden games · show"
+  },
+  "gameCard": {
+    "trophies": "Trophies",
+    "played": "Played",
+    "complete": "Completed"
+  },
+  "month": {
+    "title": "Monthly recap",
+    "previous": "Previous month",
+    "next": "Next month",
+    "empty": "No trophies this month.",
+    "topGame": "Game of the month",
+    "trophiesInSet": "{{n}} trophies",
+    "pace": "Pace",
+    "perWeek": "{{value}} per week"
+  },
+  "milestones": {
+    "title": "Milestones",
+    "firstTrophy": "First trophy",
+    "firstGrade": {
+      "silver": "First silver trophy",
+      "gold": "First gold trophy",
+      "platinum": "First platinum"
+    },
+    "trophyCount": "Trophy #{{n}}",
+    "platinumCount": "Platinum #{{n}}",
+    "complete": "100% in {{game}}",
+    "next": "Next: trophy #{{n}} ({{remaining}} to go)"
+  },
+  "stats": {
+    "title": "Stats",
+    "perTrophy": "Time per trophy",
+    "perTrophyValue": "1 every {{duration}}",
+    "completion": "Average completion",
+    "platinums": "Platinum games",
+    "platinumsValue_one": "{{done}} of {{count}} game",
+    "platinumsValue_other": "{{done}} of {{count}} games"
   },
   "game": {
     "summary": "{{duration}} played · last played on {{date}}",
@@ -38,7 +76,11 @@
     "title": "Trophies",
     "earned": "Earned",
     "noneYet": "none yet",
-    "empty": "No trophies found for this profile."
+    "empty": "No trophies found for this profile.",
+    "byGame": "By game",
+    "timeline": "Timeline",
+    "loadMore": "Load more",
+    "timelineEmpty": "No trophies earned yet."
   },
   "trophyList": {
     "filter": {

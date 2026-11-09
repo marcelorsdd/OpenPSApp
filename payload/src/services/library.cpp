@@ -57,14 +57,14 @@ ProfileTotals Library::Totals() const {
     return totals;
 }
 
-std::vector<RecentTrophy> Library::RecentTrophies(size_t limit) const {
-    std::vector<RecentTrophy> out;
+std::vector<EarnedTrophy> Library::EarnedTrophies(size_t limit) const {
+    std::vector<EarnedTrophy> out;
     for (const TrophySet &set : trophies.sets) {
         for (const Trophy &t : set.trophies) {
             if (t.earned) out.push_back({&set, &t});
         }
     }
-    std::sort(out.begin(), out.end(), [](const RecentTrophy &a, const RecentTrophy &b) {
+    std::sort(out.begin(), out.end(), [](const EarnedTrophy &a, const EarnedTrophy &b) {
         if (a.trophy->earned_at != b.trophy->earned_at) return a.trophy->earned_at > b.trophy->earned_at;
         if (a.set->id != b.set->id) return a.set->id < b.set->id;
         return a.trophy->id < b.trophy->id;

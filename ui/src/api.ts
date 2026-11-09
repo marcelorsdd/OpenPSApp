@@ -59,7 +59,7 @@ export interface Trophy {
   iconUrl: string | null;
 }
 
-export interface RecentTrophy {
+export interface EarnedTrophy {
   setId: string;
   setName: string;
   titleId: string | null;
@@ -77,7 +77,7 @@ export const paths = {
   trophySets: '/api/v1/trophy-sets',
   trophySet: (setId: string) => `/api/v1/trophy-sets/${id(setId)}`,
   trophies: (setId: string) => `/api/v1/trophy-sets/${id(setId)}/trophies`,
-  recentTrophies: (limit: number) => `/api/v1/trophies/recent?limit=${limit}`,
+  earnedTrophies: (limit?: number) => (limit ? `/api/v1/trophies/earned?limit=${limit}` : '/api/v1/trophies/earned'),
 };
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {

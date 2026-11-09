@@ -20,6 +20,7 @@
     "games_other": "{{count}} juegos",
     "playtime": "Tiempo jugado",
     "trophies": "Trofeos",
+    "platinums": "Platinos",
     "recentTrophies": "Trofeos recientes",
     "recent": "Jugados recientemente",
     "playedOn": "{{duration}} · jugado el {{date}}",
@@ -27,6 +28,43 @@
     "hideHidden": "Ocultar juegos ocultos",
     "showHidden_one": "{{count}} juego oculto · mostrar",
     "showHidden_other": "{{count}} juegos ocultos · mostrar"
+  },
+  "gameCard": {
+    "trophies": "Trofeos",
+    "played": "Jugado",
+    "complete": "Completado"
+  },
+  "month": {
+    "title": "Resumen del mes",
+    "previous": "Mes anterior",
+    "next": "Mes siguiente",
+    "empty": "Ningún trofeo este mes.",
+    "topGame": "Juego del mes",
+    "trophiesInSet": "{{n}} trofeos",
+    "pace": "Ritmo",
+    "perWeek": "{{value}} por semana"
+  },
+  "milestones": {
+    "title": "Hitos",
+    "firstTrophy": "Primer trofeo",
+    "firstGrade": {
+      "silver": "Primer trofeo de plata",
+      "gold": "Primer trofeo de oro",
+      "platinum": "Primer platino"
+    },
+    "trophyCount": "Trofeo n.º {{n}}",
+    "platinumCount": "Platino n.º {{n}}",
+    "complete": "100 % en {{game}}",
+    "next": "Siguiente: trofeo n.º {{n}} (faltan {{remaining}})"
+  },
+  "stats": {
+    "title": "Estadísticas",
+    "perTrophy": "Tiempo por trofeo",
+    "perTrophyValue": "1 cada {{duration}}",
+    "completion": "Finalización media",
+    "platinums": "Platinados",
+    "platinumsValue_one": "{{done}} de {{count}} juego",
+    "platinumsValue_other": "{{done}} de {{count}} juegos"
   },
   "game": {
     "summary": "{{duration}} jugados · última partida el {{date}}",
@@ -38,7 +76,11 @@
     "title": "Trofeos",
     "earned": "Obtenidos",
     "noneYet": "ninguno todavía",
-    "empty": "No se encontraron trofeos en este perfil."
+    "empty": "No se encontraron trofeos en este perfil.",
+    "byGame": "Por juego",
+    "timeline": "Cronología",
+    "loadMore": "Cargar más",
+    "timelineEmpty": "Aún no hay trofeos conseguidos."
   },
   "trophyList": {
     "filter": {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { filterTrophies, formatDate, formatDuration, sortTrophies, trophyView } from './format';
+import { filterTrophies, formatDate, formatDuration, formatLongDate, formatMonth, sortTrophies, trophyView } from './format';
 import type { Trophy } from './api';
 
 const trophy = (id: number, grade: Trophy['grade'], earnedAt: string | null): Trophy => ({
@@ -106,5 +106,17 @@ describe('trophyView', () => {
 
   it('never masks regular trophies', () => {
     expect(trophyView({ ...hidden, hidden: false }, false).name).toBe('Secret');
+  });
+});
+
+describe('month and day labels', () => {
+  it('spell out the month and capitalize it', () => {
+    expect(formatMonth('2026-11', 'pt-BR')).toBe('Novembro de 2026');
+    expect(formatMonth('2026-11', 'en')).toBe('November 2026');
+  });
+
+  it('spell out a day', () => {
+    expect(formatLongDate('2026-11-08', 'pt-BR')).toBe('8 de novembro de 2026');
+    expect(formatLongDate('2026-11-08', 'en')).toBe('November 8, 2026');
   });
 });

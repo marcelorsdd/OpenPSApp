@@ -127,17 +127,23 @@ TEST(debug_identity_compares_console_ids_with_trophy_files) {
     unsetenv("PLAYTRACK_DEVICE_ID");
 }
 
-TEST(games_carry_hero_art_and_recent_trophies_route_lists_them) {
+TEST(games_carry_hero_art_and_earned_trophies_route_lists_them) {
     setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
     test::App app;
     std::string game = test::Get(app.router, "/api/v1/games/PPSA01234").body;
     CHECK(game.find("\"heroUrl\":\"/api/v1/icons/") != std::string::npos);
     CHECK(test::Get(app.router, "/api/v1/games/PPSA05555").body.find("\"heroUrl\":null") != std::string::npos);
 
-    std::string recent = test::Get(app.router, "/api/v1/trophies/recent?limit=1").body;
-    CHECK(recent.find("\"setId\":\"NPWR00001_00\",\"setName\":\"Astro Teste\",\"titleId\":\"PPSA01234\"") !=
+    std::string all = test::Get(app.router, "/api/v1/trophies/earned").body;
+    CHECK(all.find("\"setId\":\"NPWR00001_00\",\"setName\":\"Astro Teste\",\"titleId\":\"PPSA01234\"") !=
           std::string::npos);
-    CHECK(recent.find("\"id\":1,") != std::string::npos);
-    CHECK(recent.find("\"id\":3,") == std::string::npos);
+    CHECK(all.find("\"id\":1,") != std::string::npos);
+    CHECK(all.find("\"id\":3,") != std::string::npos);
+    CHECK(all.find("\"id\":1,") < all.find("\"id\":3,"));
+
+    std::string one = test::Get(app.router, "/api/v1/trophies/earned?limit=1").body;
+    CHECK(one.find("\"id\":1,") != std::string::npos);
+    CHECK(one.find("\"id\":3,") == std::string::npos);
+    CHECK_EQ(test::Get(app.router, "/api/v1/trophies/recent").status, 404);
     unsetenv("PLAYTRACK_USER");
 }

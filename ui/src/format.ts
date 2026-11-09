@@ -47,3 +47,16 @@ export function filterTrophies(list: Trophy[], filter: TrophyFilter): Trophy[] {
   if (filter === 'all') return list;
   return list.filter((t) => t.earned === (filter === 'earned'));
 }
+
+function utcNoon(day: string): Date {
+  return new Date(`${day}T12:00:00Z`);
+}
+
+export function formatMonth(month: string, locale: string): string {
+  const text = utcNoon(`${month}-15`).toLocaleDateString(locale, { timeZone: 'UTC', month: 'long', year: 'numeric' });
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export function formatLongDate(day: string, locale: string): string {
+  return utcNoon(day).toLocaleDateString(locale, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
+}

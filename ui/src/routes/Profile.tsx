@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { combine, paths, useApi, type Game, type Profile as ProfileData, type TrophySet } from '../api';
-import { CardRow, Cover, ErrorBox, Loading, ProgressBar, Section, Stat, TrophyTotals } from '../components/ui';
+import { combine, paths, useApi, type EarnedTrophy, type Game, type Profile as ProfileData, type TrophySet } from '../api';
+import { ErrorBox, Loading, Section, Stat, TrophyGlyph, TrophyTotals } from '../components/ui';
 import { formatDuration } from '../format';
-import { useDate } from '../i18n/useLanguage';
-import { href } from '../router';
+import GameCard from './GameCard';
+import Milestones from './Milestones';
+import MonthCard from './MonthCard';
 import RecentTrophies from './RecentTrophies';
+import StatsCard from './StatsCard';
+
+const RECENT = 6;
 
 export default function Profile() {
   const { t } = useTranslation();
-  const date = useDate();
   const profile = useApi<ProfileData>(paths.profile);
   const games = useApi<Game[]>(paths.games);
   const sets = useApi<TrophySet[]>(paths.trophySets);
+  const earned = useApi<EarnedTrophy[]>(paths.earnedTrophies());
   const [showHidden, setShowHidden] = useState(false);
   const status = combine(profile, games);
 
@@ -23,6 +27,7 @@ export default function Profile() {
   const setsById = new Map((sets.data ?? []).map((s) => [s.id, s]));
   const hiddenCount = games.data.filter((g) => g.hidden).length;
   const listed = games.data.filter((g) => showHidden || !g.hidden);
+  const progress = earned.data && earned.data.length > 0 && sets.data ? { earned: earned.data, sets: sets.data } : null;
 
   return (
     <>
@@ -36,36 +41,27 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
         <Stat label={t('profile.playtime')}>{formatDuration(totals.playtimeSeconds)}</Stat>
         <TrophyTotals label={t('profile.trophies')} trophies={totals.trophies} />
+        <Stat label={t('profile.platinums')}>
+          <span className="flex items-center">
+            <TrophyGlyph grade="platinum" className="w-7 h-7" />
+            <span className="ml-2">{totals.trophies.platinum}</span>
+          </span>
+        </Stat>
       </div>
 
-      <RecentTrophies />
+      {progress && <MonthCard earned={progress.earned} sets={progress.sets} />}
+      {progress && <Milestones earned={progress.earned} sets={progress.sets} />}
+      {sets.data && <StatsCard games={games.data} sets={sets.data} />}
+      {earned.data && <RecentTrophies items={earned.data.slice(0, RECENT)} />}
 
       <Section title={t('profile.recent')}>
         <ul>
-          {listed.map((g) => {
-            const set = g.trophySetId ? setsById.get(g.trophySetId) : undefined;
-            const title = (
-              <>
-                {g.name}
-                {g.hidden && <span className="ml-3 text-sm font-normal text-muted">{t('profile.hiddenTag')}</span>}
-              </>
-            );
-            return (
-              <CardRow key={g.titleId} to={href.game(g.titleId)} icon={<Cover src={g.iconUrl} size="w-24 h-24" />} title={title}>
-                <div className="text-muted mt-1">
-                  {t('profile.playedOn', { duration: formatDuration(g.playtimeSeconds), date: date(g.lastPlayedAt) })}
-                </div>
-                {set && (
-                  <div className="mt-3">
-                    <ProgressBar value={set.progress} />
-                  </div>
-                )}
-              </CardRow>
-            );
-          })}
+          {listed.map((g) => (
+            <GameCard key={g.titleId} game={g} set={g.trophySetId ? setsById.get(g.trophySetId) : undefined} />
+          ))}
         </ul>
         {hiddenCount > 0 && (
           <button className="mt-2 px-4 py-2 rounded-lg text-muted hover:text-ink" onClick={() => setShowHidden((v) => !v)}>

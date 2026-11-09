@@ -64,16 +64,16 @@ TEST(tile_counts_as_installed_once_its_appmeta_exists) {
     rmdir(appmeta.c_str());
 }
 
-TEST(recent_trophies_list_earned_ones_newest_first_across_sets) {
+TEST(earned_trophies_list_newest_first_across_sets) {
     setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
     auto lib = CurrentLibrary("pt-BR");
-    std::vector<RecentTrophy> recent = lib->RecentTrophies(10);
-    CHECK_EQ(recent.size(), size_t(2));
-    if (recent.size() == 2) {
-        CHECK_EQ(recent[0].trophy->id, 1);
-        CHECK_EQ(recent[0].set->id, std::string(fixture::kSetId));
-        CHECK_EQ(recent[1].trophy->id, 3);
+    std::vector<EarnedTrophy> earned = lib->EarnedTrophies(SIZE_MAX);
+    CHECK_EQ(earned.size(), size_t(2));
+    if (earned.size() == 2) {
+        CHECK_EQ(earned[0].trophy->id, 1);
+        CHECK_EQ(earned[0].set->id, std::string(fixture::kSetId));
+        CHECK_EQ(earned[1].trophy->id, 3);
     }
-    CHECK_EQ(lib->RecentTrophies(1).size(), size_t(1));
+    CHECK_EQ(lib->EarnedTrophies(1).size(), size_t(1));
     unsetenv("PLAYTRACK_USER");
 }

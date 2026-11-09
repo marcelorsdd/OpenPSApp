@@ -20,6 +20,7 @@
     "games_other": "{{count}} jogos",
     "playtime": "Tempo jogado",
     "trophies": "Troféus",
+    "platinums": "Platinas",
     "recentTrophies": "Troféus recentes",
     "recent": "Jogados recentemente",
     "playedOn": "{{duration}} · jogado em {{date}}",
@@ -27,6 +28,43 @@
     "hideHidden": "Esconder ocultos",
     "showHidden_one": "{{count}} jogo oculto · mostrar",
     "showHidden_other": "{{count}} jogos ocultos · mostrar"
+  },
+  "gameCard": {
+    "trophies": "Troféus",
+    "played": "Jogado",
+    "complete": "Completo"
+  },
+  "month": {
+    "title": "Resumo do mês",
+    "previous": "Mês anterior",
+    "next": "Próximo mês",
+    "empty": "Nenhum troféu neste mês.",
+    "topGame": "Jogo do mês",
+    "trophiesInSet": "{{n}} troféus",
+    "pace": "Ritmo",
+    "perWeek": "{{value}} por semana"
+  },
+  "milestones": {
+    "title": "Marcos",
+    "firstTrophy": "Primeiro troféu",
+    "firstGrade": {
+      "silver": "Primeiro troféu de prata",
+      "gold": "Primeiro troféu de ouro",
+      "platinum": "Primeira platina"
+    },
+    "trophyCount": "{{n}}º troféu",
+    "platinumCount": "{{n}}ª platina",
+    "complete": "100% em {{game}}",
+    "next": "Próximo: {{n}}º troféu (faltam {{remaining}})"
+  },
+  "stats": {
+    "title": "Estatísticas",
+    "perTrophy": "Tempo por troféu",
+    "perTrophyValue": "1 a cada {{duration}}",
+    "completion": "Média de conclusão",
+    "platinums": "Platinados",
+    "platinumsValue_one": "{{done}} de {{count}} jogo",
+    "platinumsValue_other": "{{done}} de {{count}} jogos"
   },
   "game": {
     "summary": "{{duration}} jogados · último jogo em {{date}}",
@@ -38,7 +76,11 @@
     "title": "Troféus",
     "earned": "Conquistados",
     "noneYet": "nenhum ainda",
-    "empty": "Nenhum troféu encontrado neste perfil."
+    "empty": "Nenhum troféu encontrado neste perfil.",
+    "byGame": "Por jogo",
+    "timeline": "Linha do tempo",
+    "loadMore": "Carregar mais",
+    "timelineEmpty": "Nenhum troféu conquistado ainda."
   },
   "trophyList": {
     "filter": {

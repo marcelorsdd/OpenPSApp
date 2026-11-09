@@ -17,7 +17,7 @@ struct ProfileTotals {
     Tally trophies;
 };
 
-struct RecentTrophy {
+struct EarnedTrophy {
     const TrophySet *set = nullptr;
     const Trophy *trophy = nullptr;
 };
@@ -32,7 +32,7 @@ struct Library {
     const GamePlaytime *FindGame(const std::string &title_id) const { return playtime.Find(title_id); }
     const TrophySet *FindSet(const std::string &set_id) const { return trophies.Find(set_id); }
     ProfileTotals Totals() const;
-    std::vector<RecentTrophy> RecentTrophies(size_t limit) const;
+    std::vector<EarnedTrophy> EarnedTrophies(size_t limit) const;
 };
 
 std::shared_ptr<const Library> CurrentLibrary(const std::string &language);
