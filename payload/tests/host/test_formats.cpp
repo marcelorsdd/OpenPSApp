@@ -86,3 +86,18 @@ TEST(npbind_yields_the_trophy_set_id) {
     CHECK(!IsNpCommId("NPWR0001_00"));
     CHECK(!IsNpCommId("XPWR00001_00"));
 }
+
+TEST(t2pd_reads_the_owner_record) {
+    std::string bytes = fixture::MakeT2pd({{1, 0x11, 1762545600, 1762545600}});
+    TrophyOwner owner;
+    std::string err;
+    CHECK(ParseTrophyOwner(bytes, &owner, &err));
+    CHECK_EQ(err, std::string(""));
+    CHECK_EQ(owner.account_id_hex, std::string(fixture::kAccountIdHex));
+    CHECK_EQ(owner.user_id, static_cast<uint32_t>(fixture::kUserId));
+    CHECK_EQ(owner.device_id_hex, std::string(fixture::kDeviceIdHex));
+
+    std::vector<TrophyState> states;
+    CHECK(ParseTrophyStates(bytes, &states, &err));
+    CHECK_EQ(states.size(), size_t(1));
+}

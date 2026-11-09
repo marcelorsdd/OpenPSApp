@@ -12,6 +12,8 @@ constexpr const char *kUserHex = "1eb71bbd";
 constexpr int32_t kUserId = 0x1eb71bbd;
 constexpr const char *kSetId = "NPWR00001_00";
 constexpr const char *kCorruptSetId = "NPWR00002_00";
+constexpr const char *kAccountIdHex = "1122334455667788";
+constexpr const char *kDeviceIdHex = "00112233445566778899aabbccddeeff";
 
 struct StateSpec {
     int id;

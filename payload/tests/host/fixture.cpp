@@ -101,17 +101,38 @@ std::string MakeUcp(const std::vector<std::pair<std::string, std::string>> &entr
     return out;
 }
 
+std::string HexBytes(const std::string &hex) {
+    std::string out;
+    for (size_t i = 0; i + 1 < hex.size(); i += 2) out += static_cast<char>(std::stoi(hex.substr(i, 2), nullptr, 16));
+    return out;
+}
+
 std::string MakeT2pd(const std::vector<StateSpec> &states) {
+    constexpr uint32_t kOwnerPayload = 0x60;
     constexpr uint32_t kPayload = 0x50;
-    std::string stream(48 + 32, '\0');
+    std::string stream(48 + 2 * 32, '\0');
     stream.replace(0, 4, "T2TD");
     PutBe32(stream, 4, 0x10000);
-    PutBe32(stream, 8, 1);
-    PutBe32(stream, 48, 0x800);
-    PutBe32(stream, 52, kPayload);
+    PutBe32(stream, 8, 2);
+
+    PutBe32(stream, 48, 0x2);
+    PutBe32(stream, 52, kOwnerPayload);
     PutBe32(stream, 56, 1);
-    PutBe32(stream, 60, static_cast<uint32_t>(states.size()));
+    PutBe32(stream, 60, 1);
     PutBe64(stream, 64, stream.size());
+    std::string owner(16 + kOwnerPayload, '\0');
+    PutBe32(owner, 0, 0x2);
+    PutBe32(owner, 4, kOwnerPayload);
+    owner.replace(16 + 0x20, 8, HexBytes(kAccountIdHex));
+    PutBe32(owner, 16 + 0x28, static_cast<uint32_t>(kUserId));
+    owner.replace(16 + 0x30, 16, HexBytes(kDeviceIdHex));
+    stream += owner;
+
+    PutBe32(stream, 80, 0x800);
+    PutBe32(stream, 84, kPayload);
+    PutBe32(stream, 88, 1);
+    PutBe32(stream, 92, static_cast<uint32_t>(states.size()));
+    PutBe64(stream, 96, stream.size());
     for (const StateSpec &s : states) {
         std::string rec(16 + kPayload, '\0');
         PutBe32(rec, 0, 0x800);

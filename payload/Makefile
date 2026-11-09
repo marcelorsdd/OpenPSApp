@@ -34,7 +34,7 @@ THIRD_PARTY_SRCS := third_party/sqlite/sqlite3.c third_party/cjson/cJSON.c
 PS5_ELF := $(BUILD)/playtrack.elf
 PS5_OBJS := $(patsubst %.cpp,$(BUILD)/ps5/%.o,$(CORE_SRCS) $(GEN_SRCS) src/main.cpp src/platform/ps5.cpp) \
             $(patsubst %.c,$(BUILD)/ps5/%.o,$(THIRD_PARTY_SRCS))
-PS5_LIBS := -lSceUserService -lSceSystemService -lSceAppInstUtil -lkernel_sys
+PS5_LIBS := -lSceUserService -lSceSystemService -lSceAppInstUtil -lSceRegMgr -lkernel_sys
 
 HOST_BIN := $(BUILD)/host/playtrack
 HOST_TEST_BIN := $(BUILD)/host/playtrack-tests

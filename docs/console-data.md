@@ -84,6 +84,22 @@ Grades and the hidden flag come from `tropconf.json`, so the `0x500` definition 
 
 The progress percentage weights trophies by points (gold 90, silver 30, bronze 15) and leaves the platinum out, rounding down. This was confirmed against the console: Marvel's Wolverine shows 34% with 0/1 platinum, 0/4 gold, 3/9 silver and 18/28 bronze, which is 360 of 1050 points. Counting the platinum would have given 29%.
 
+### Who a TRPTITLE.DAT belongs to (verified)
+
+Record tag `0x2` (payload `0x60`) names the file's owner. These offsets are payload-relative:
+
+| Offset  | Field                                                     | Example on the test console        |
+| ------- | --------------------------------------------------------- | ---------------------------------- |
+| `+0x20` | NP account id, big-endian                                 | `1122334455667788`                 |
+| `+0x28` | local user id (be32)                                      | `1eb71bbd`                         |
+| `+0x30` | the console's OpenPsId (`sceKernelGetOpenPsId`, 16 bytes) | `00112233445566778899aabbccddeeff` |
+
+On 2026-11-09 all three values matched the live console (`GET /api/v1/debug/identity`). Moving trophy progress to another profile or console therefore means rewriting these fields and recomputing every page hash. Whether that is enough is not known yet. Tag `0x100` holds a 20-byte value of unknown meaning, which might cover these fields.
+
+The registry stores the account id in memory (little-endian) order. Prospero Manager and garlic-savemgr display that order (`8877665544332211`); TRPTITLE.DAT stores the reverse. Each user slot `n` (1..16) has its name at `125829632 + (n-1)·65536` and its account id at `125830400 + (n-1)·65536`.
+
+Prospero Manager can back up a slot and activate a profile with a chosen account id (`ApplyOfflineActivation`). Recreating a profile with the old account id should therefore restore the account side of the identity.
+
 ## Payload runtime notes
 
 - **Worker threads have small stacks.** A 64 KiB stack buffer overflowed one and froze the whole process. Once the fault handler had wedged the process, even SIGKILL did not end it. The build now fails on any stack frame larger than 8 KiB, and threads are started through `Spawn()`, which sets a 256 KiB stack and an alternate signal stack.

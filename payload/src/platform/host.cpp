@@ -42,6 +42,16 @@ int SystemLanguageId() {
     return *end == '\0' && id >= 0 ? static_cast<int>(id) : -1;
 }
 
+std::string AccountIdHex(const User &) {
+    const char *env = std::getenv("PLAYTRACK_ACCOUNT_ID");
+    return env ? env : "";
+}
+
+std::string DeviceIdHex() {
+    const char *env = std::getenv("PLAYTRACK_DEVICE_ID");
+    return env ? env : "";
+}
+
 bool InstallPkg(const std::string &path, std::string *err) {
     if (err) *err = "PKG install is console-only (" + path + ")";
     return false;

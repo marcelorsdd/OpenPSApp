@@ -42,6 +42,9 @@ struct PkgPlayGoInfo {
     long unknown[810];
 };
 int sceSystemServiceParamGetInt(int param_id, int *value);
+int sceRegMgrGetStr(int entity, char *value, size_t size);
+int sceRegMgrGetBin(int entity, void *value, size_t size);
+int sceKernelGetOpenPsId(void *out);
 int sceAppInstUtilInitialize(void);
 int sceAppInstUtilAppInstallPkg(const char *path, PkgInfo *info);
 int sceAppInstUtilInstallByPackage(PkgMetaInfo *meta, PkgInfo *info, PkgPlayGoInfo *playgo);
@@ -113,6 +116,41 @@ int SystemLanguageId() {
     constexpr int kParamLanguage = 1;
     int value = -1;
     return sceSystemServiceParamGetInt(kParamLanguage, &value) == 0 ? value : -1;
+}
+
+namespace {
+constexpr int kMaxUserSlots = 16;
+constexpr int kRegUserName = 125829632;
+constexpr int kRegAccountId = 125830400;
+constexpr int kRegSlotStride = 65536;
+
+std::string Hex(const unsigned char *data, size_t size) {
+    static const char kDigits[] = "0123456789abcdef";
+    std::string out;
+    for (size_t i = 0; i < size; ++i) {
+        out += kDigits[data[i] >> 4];
+        out += kDigits[data[i] & 0xf];
+    }
+    return out;
+}
+}
+
+std::string AccountIdHex(const User &user) {
+    for (int slot = 0; slot < kMaxUserSlots; ++slot) {
+        char name[32] = {};
+        if (sceRegMgrGetStr(kRegUserName + slot * kRegSlotStride, name, sizeof(name)) != 0 || user.name != name) continue;
+        unsigned char id[8] = {};
+        if (sceRegMgrGetBin(kRegAccountId + slot * kRegSlotStride, id, sizeof(id)) != 0) return "";
+        unsigned char number[8];
+        for (int i = 0; i < 8; ++i) number[i] = id[7 - i];
+        return Hex(number, sizeof(number));
+    }
+    return "";
+}
+
+std::string DeviceIdHex() {
+    unsigned char id[16] = {};
+    return sceKernelGetOpenPsId(id) == 0 ? Hex(id, sizeof(id)) : "";
 }
 
 bool InstallPkg(const std::string &path, std::string *err) {

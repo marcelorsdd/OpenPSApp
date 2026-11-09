@@ -28,6 +28,9 @@ void Notify(const std::string &message);
 
 int SystemLanguageId();
 
+std::string AccountIdHex(const User &user);
+std::string DeviceIdHex();
+
 bool InstallPkg(const std::string &path, std::string *err);
 
 }

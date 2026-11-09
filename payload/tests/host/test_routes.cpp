@@ -113,3 +113,16 @@ TEST(hide_and_unhide_routes_update_the_game_and_profile) {
     CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA00000/hide").status, 404);
     unsetenv("PLAYTRACK_USER");
 }
+
+TEST(debug_identity_compares_console_ids_with_trophy_files) {
+    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    setenv("PLAYTRACK_ACCOUNT_ID", fixture::kAccountIdHex, 1);
+    setenv("PLAYTRACK_DEVICE_ID", "ffffffffffffffffffffffffffffffff", 1);
+    test::App app(true);
+    std::string body = test::Get(app.router, "/api/v1/debug/identity").body;
+    CHECK(body.find("\"set\":\"NPWR00001_00\",\"ok\":true") != std::string::npos);
+    CHECK(body.find("\"userIdMatches\":true,\"accountIdMatches\":true,\"deviceIdMatches\":false") != std::string::npos);
+    unsetenv("PLAYTRACK_USER");
+    unsetenv("PLAYTRACK_ACCOUNT_ID");
+    unsetenv("PLAYTRACK_DEVICE_ID");
+}

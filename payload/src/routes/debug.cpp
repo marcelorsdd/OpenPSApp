@@ -1,10 +1,12 @@
 #include "routes/debug.hpp"
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 #include <optional>
 
 #include "formats/appdb.hpp"
+#include "formats/t2pd.hpp"
 #include "platform/platform.hpp"
 #include "routes/routes.hpp"
 #include "services/console_layout.hpp"
@@ -192,6 +194,42 @@ http::Response Tile() {
     return http::Json(w.take());
 }
 
+http::Response Identity(const Context &ctx) {
+    std::optional<platform::User> user = platform::ForegroundUser();
+    std::string account = user ? platform::AccountIdHex(*user) : "";
+    std::string device = platform::DeviceIdHex();
+    TrophyReport trophies = CollectTrophies(user, ctx.language);
+
+    JsonWriter w;
+    w.BeginObject().Key("user");
+    if (user) {
+        w.BeginObject().Key("idHex").String(user->id_hex).Key("name").String(user->name).EndObject();
+    } else {
+        w.Null();
+    }
+    w.Key("accountId").StringOrNull(account).Key("deviceId").StringOrNull(device).Key("trophyFiles").BeginArray();
+    for (const TrophySet &set : trophies.sets) {
+        std::string path = platform::ConsolePath(trophies.data_dir + "/" + set.id + "/TRPTITLE.DAT");
+        std::string file, err;
+        TrophyOwner owner;
+        bool ok = fs::ReadFile(path, &file, 16 << 20) && ParseTrophyOwner(file, &owner, &err);
+        char uid[16];
+        std::snprintf(uid, sizeof(uid), "%08x", owner.user_id);
+        w.BeginObject().Key("set").String(set.id).Key("ok").Bool(ok).Key("error").StringOrNull(err);
+        if (ok) {
+            w.Key("fileUserId").String(uid)
+                .Key("fileAccountId").String(owner.account_id_hex)
+                .Key("fileDeviceId").String(owner.device_id_hex)
+                .Key("userIdMatches").Bool(user && uid == user->id_hex)
+                .Key("accountIdMatches").Bool(!account.empty() && owner.account_id_hex == account)
+                .Key("deviceIdMatches").Bool(!device.empty() && owner.device_id_hex == device);
+        }
+        w.EndObject();
+    }
+    w.EndArray().EndObject();
+    return http::Json(w.take());
+}
+
 http::Response Log(const http::Request &req) {
     size_t lines = 200;
     if (auto it = req.query.find("lines"); it != req.query.end()) lines = std::strtoul(it->second.c_str(), nullptr, 10);
@@ -235,6 +273,7 @@ void RegisterDebug(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/debug/appdb", [&ctx](const http::Request &) { return AppDbCopy(ctx.data_dir); });
     router.Get("/api/v1/debug/log", Log);
     router.Get("/api/v1/debug/tile", [](const http::Request &) { return Tile(); });
+    router.Get("/api/v1/debug/identity", [&ctx](const http::Request &) { return Identity(ctx); });
 }
 
 }
