@@ -6,3 +6,6 @@ dist/
 # Payload build output and fixtures (real fixtures hold personal console data)
 payload/build/
 payload/tests/fixtures/
+
+# Planning docs (specs and implementation plans) stay local
+docs/superpowers/
