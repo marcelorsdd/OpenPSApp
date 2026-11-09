@@ -1,0 +1,12 @@
+{
+  "name": "playtrack-tile",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "art": "node art.mjs",
+    "build": "./build.sh"
+  },
+  "devDependencies": {
+    "sharp": "0.34.4"
+  }
+}

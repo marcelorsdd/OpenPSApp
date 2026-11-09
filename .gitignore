@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+dist/
+.env
+
+# Payload build output and fixtures (real fixtures hold personal console data)
+payload/build/
+payload/tests/fixtures/
