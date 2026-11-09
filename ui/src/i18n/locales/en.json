@@ -20,6 +20,7 @@
     "games_other": "{{count}} games",
     "playtime": "Time played",
     "trophies": "Trophies",
+    "recentTrophies": "Recent trophies",
     "recent": "Recently played",
     "playedOn": "{{duration}} · played on {{date}}",
     "hiddenTag": "hidden",

@@ -1,5 +1,6 @@
 #include "services/library.hpp"
 
+#include <algorithm>
 #include <mutex>
 
 #include "formats/npbind.hpp"
@@ -13,7 +14,10 @@
 namespace playtrack {
 namespace {
 void RegisterIcons(const Library &lib) {
-    for (const GamePlaytime &g : lib.playtime.games) icons::Register(g.icon);
+    for (const GamePlaytime &g : lib.playtime.games) {
+        icons::Register(g.icon);
+        icons::Register(g.hero);
+    }
     for (const TrophySet &set : lib.trophies.sets) {
         icons::Register(set.icon);
         for (const Trophy &t : set.trophies) icons::Register(t.icon);
@@ -51,6 +55,22 @@ ProfileTotals Library::Totals() const {
     }
     for (const TrophySet &set : trophies.sets) totals.trophies.Add(set.Count());
     return totals;
+}
+
+std::vector<RecentTrophy> Library::RecentTrophies(size_t limit) const {
+    std::vector<RecentTrophy> out;
+    for (const TrophySet &set : trophies.sets) {
+        for (const Trophy &t : set.trophies) {
+            if (t.earned) out.push_back({&set, &t});
+        }
+    }
+    std::sort(out.begin(), out.end(), [](const RecentTrophy &a, const RecentTrophy &b) {
+        if (a.trophy->earned_at != b.trophy->earned_at) return a.trophy->earned_at > b.trophy->earned_at;
+        if (a.set->id != b.set->id) return a.set->id < b.set->id;
+        return a.trophy->id < b.trophy->id;
+    });
+    if (out.size() > limit) out.resize(limit);
+    return out;
 }
 
 std::string TrophySetForTitle(const std::string &title_id, const std::string &metadata_dir) {

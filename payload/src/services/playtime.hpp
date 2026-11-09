@@ -16,6 +16,7 @@ struct GamePlaytime {
     int64_t playtime_seconds = 0;
     std::string last_played_at;
     icons::Location icon;
+    icons::Location hero;
     std::string metadata_dir;
 };
 

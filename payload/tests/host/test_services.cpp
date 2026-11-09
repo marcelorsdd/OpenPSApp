@@ -63,3 +63,17 @@ TEST(tile_counts_as_installed_once_its_appmeta_exists) {
     CHECK(tile::GetStatus().installed);
     rmdir(appmeta.c_str());
 }
+
+TEST(recent_trophies_list_earned_ones_newest_first_across_sets) {
+    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    auto lib = CurrentLibrary("pt-BR");
+    std::vector<RecentTrophy> recent = lib->RecentTrophies(10);
+    CHECK_EQ(recent.size(), size_t(2));
+    if (recent.size() == 2) {
+        CHECK_EQ(recent[0].trophy->id, 1);
+        CHECK_EQ(recent[0].set->id, std::string(fixture::kSetId));
+        CHECK_EQ(recent[1].trophy->id, 3);
+    }
+    CHECK_EQ(lib->RecentTrophies(1).size(), size_t(1));
+    unsetenv("PLAYTRACK_USER");
+}

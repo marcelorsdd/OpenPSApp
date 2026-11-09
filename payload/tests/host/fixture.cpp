@@ -224,6 +224,7 @@ bool Build(const std::string &root, std::string *err) {
     std::string home = root + "/user/home/" + std::string(kUserHex) + "/trophy2/nobackup/data/";
     std::string conf = root + "/user/trophy2/nobackup/conf/";
     ok = WriteFile(root + "/user/appmeta/PPSA01234/icon0.png", Png("astro")) &&
+         WriteFile(root + "/user/appmeta/PPSA01234/pic0.png", Png("astro-hero")) &&
          WriteFile(root + "/user/appmeta/external/CUSA00001/icon0.png", Png("old")) &&
          WriteFile(conf + kSetId + "/TROPHY.UCP", ucp) && WriteFile(home + kSetId + "/TRPTITLE.DAT", dat) &&
          WriteFile(conf + kCorruptSetId + "/TROPHY.UCP", ucp) && WriteFile(home + kCorruptSetId + "/TRPTITLE.DAT", corrupt) &&

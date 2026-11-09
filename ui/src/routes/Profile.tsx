@@ -5,6 +5,7 @@ import { CardRow, Cover, ErrorBox, Loading, ProgressBar, Section, Stat, TrophyTo
 import { formatDuration } from '../format';
 import { useDate } from '../i18n/useLanguage';
 import { href } from '../router';
+import RecentTrophies from './RecentTrophies';
 
 export default function Profile() {
   const { t } = useTranslation();
@@ -39,6 +40,8 @@ export default function Profile() {
         <Stat label={t('profile.playtime')}>{formatDuration(totals.playtimeSeconds)}</Stat>
         <TrophyTotals label={t('profile.trophies')} trophies={totals.trophies} />
       </div>
+
+      <RecentTrophies />
 
       <Section title={t('profile.recent')}>
         <ul>

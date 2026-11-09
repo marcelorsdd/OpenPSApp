@@ -1,8 +1,41 @@
+#include <algorithm>
+#include <cstdlib>
+
 #include "routes/routes.hpp"
 #include "routes/views.hpp"
 
 namespace playtrack::routes {
+namespace {
+constexpr size_t kRecentDefault = 20;
+constexpr size_t kRecentMax = 100;
+
+size_t RecentLimit(const http::Request &req) {
+    auto it = req.query.find("limit");
+    if (it == req.query.end()) return kRecentDefault;
+    unsigned long n = std::strtoul(it->second.c_str(), nullptr, 10);
+    return n == 0 ? kRecentDefault : std::min<size_t>(n, kRecentMax);
+}
+}
+
 void RegisterTrophies(http::Router &router, const Context &ctx) {
+    router.Get("/api/v1/trophies/recent", [&ctx](const http::Request &req) {
+        auto lib = CurrentLibrary(ctx.language);
+        JsonWriter w;
+        w.BeginArray();
+        for (const RecentTrophy &r : lib->RecentTrophies(RecentLimit(req))) {
+            auto title = lib->title_for_set.find(r.set->id);
+            w.BeginObject()
+                .Key("setId").String(r.set->id)
+                .Key("setName").String(r.set->name)
+                .Key("titleId").StringOrNull(title != lib->title_for_set.end() ? title->second : "")
+                .Key("trophy");
+            WriteTrophy(w, *r.trophy);
+            w.EndObject();
+        }
+        w.EndArray();
+        return http::Json(w.take());
+    });
+
     router.Get("/api/v1/trophy-sets", [&ctx](const http::Request &) {
         auto lib = CurrentLibrary(ctx.language);
         JsonWriter w;

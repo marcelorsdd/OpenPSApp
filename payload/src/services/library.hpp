@@ -4,6 +4,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "platform/platform.hpp"
 #include "services/playtime.hpp"
@@ -16,6 +17,11 @@ struct ProfileTotals {
     Tally trophies;
 };
 
+struct RecentTrophy {
+    const TrophySet *set = nullptr;
+    const Trophy *trophy = nullptr;
+};
+
 struct Library {
     std::optional<platform::User> user;
     PlaytimeReport playtime;
@@ -26,6 +32,7 @@ struct Library {
     const GamePlaytime *FindGame(const std::string &title_id) const { return playtime.Find(title_id); }
     const TrophySet *FindSet(const std::string &set_id) const { return trophies.Find(set_id); }
     ProfileTotals Totals() const;
+    std::vector<RecentTrophy> RecentTrophies(size_t limit) const;
 };
 
 std::shared_ptr<const Library> CurrentLibrary(const std::string &language);

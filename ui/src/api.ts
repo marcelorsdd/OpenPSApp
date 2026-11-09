@@ -26,6 +26,7 @@ export interface Game {
   playtimeSeconds: number;
   lastPlayedAt: string | null;
   iconUrl: string | null;
+  heroUrl: string | null;
   trophySetId: string | null;
   hidden: boolean;
 }
@@ -58,6 +59,13 @@ export interface Trophy {
   iconUrl: string | null;
 }
 
+export interface RecentTrophy {
+  setId: string;
+  setName: string;
+  titleId: string | null;
+  trophy: Trophy;
+}
+
 const id = encodeURIComponent;
 
 export const paths = {
@@ -69,6 +77,7 @@ export const paths = {
   trophySets: '/api/v1/trophy-sets',
   trophySet: (setId: string) => `/api/v1/trophy-sets/${id(setId)}`,
   trophies: (setId: string) => `/api/v1/trophy-sets/${id(setId)}/trophies`,
+  recentTrophies: (limit: number) => `/api/v1/trophies/recent?limit=${limit}`,
 };
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {

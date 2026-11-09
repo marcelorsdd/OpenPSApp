@@ -21,6 +21,7 @@ void WriteGame(JsonWriter &w, const Library &lib, const GamePlaytime &game) {
         .Key("playtimeSeconds").Int(game.playtime_seconds)
         .Key("lastPlayedAt").StringOrNull(game.last_played_at)
         .Key("iconUrl").StringOrNull(icons::Url(game.icon))
+        .Key("heroUrl").StringOrNull(icons::Url(game.hero))
         .Key("trophySetId").StringOrNull(set != lib.set_for_title.end() ? set->second : "")
         .Key("hidden").Bool(hidden::Contains(game.title_id))
         .EndObject();

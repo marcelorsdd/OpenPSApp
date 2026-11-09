@@ -20,6 +20,7 @@ TEST(playtime_reads_only_the_foreground_profile) {
         CHECK_EQ(astro->last_played_at, std::string("2026-11-07T20:15:00Z"));
         CHECK(astro->icon.path.find("/user/appmeta/PPSA01234/icon0.png") != std::string::npos);
         CHECK(!astro->icon.version.empty());
+        CHECK(astro->hero.path.find("/user/appmeta/PPSA01234/pic0.png") != std::string::npos);
         CHECK_EQ(astro->metadata_dir, std::string("/mnt/ext0/user/app/PPSA01234/sce_sys"));
     }
 }
@@ -45,6 +46,7 @@ TEST(playtime_falls_back_to_appbrowse_name_and_external_icon) {
         CHECK_EQ(browse->name, std::string("Browse Name"));
         CHECK_EQ(browse->last_played_at, std::string(""));
         CHECK(browse->icon.path.empty());
+        CHECK(browse->hero.path.empty());
     }
     const GamePlaytime *old = r.Find("CUSA00001");
     CHECK(old != nullptr);

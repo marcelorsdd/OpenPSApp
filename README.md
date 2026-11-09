@@ -69,13 +69,14 @@ UI development against a payload: `make -C payload host-run` then `cd ui && npm 
 |---|---|
 | `GET /api/v1/health` | version, capture time |
 | `GET /api/v1/profile` | user + totals |
-| `GET /api/v1/games` | games with playtime, last played, icon URL |
+| `GET /api/v1/games` | games with playtime, last played, icon and key-art URLs |
 | `GET /api/v1/games/:titleId` | one game, with its `trophySetId` and `hidden` flag |
 | `POST /api/v1/games/:titleId/hide` · `/unhide` | hide a title (e.g. homebrew) from the lists and totals; saved in `hidden.json` |
 | `GET /api/v1/trophy-sets` | trophy sets with progress and counts per grade |
 | `GET /api/v1/trophy-sets/:id` | one set |
 | `GET /api/v1/trophy-sets/:id/trophies` | trophies: name, description, grade, hidden, earned, earnedAt, icon |
-| `GET /api/v1/icons/:id` | PNG (game icons and trophy images) |
+| `GET /api/v1/trophies/recent?limit=20` | earned trophies across all sets, newest first (limit 1–100), with set and game |
+| `GET /api/v1/icons/:id` | PNG (game icons, key art and trophy images) |
 | `GET /api/v1/debug/*` | **only with `"debug": true` in config.json** (they expose console files on the LAN): |
 | `GET /api/v1/debug/sources` | what the console has: app.db tables/columns/samples, trophy dirs, appmeta |
 | `GET /api/v1/debug/stats` | uptime, counters, last error |

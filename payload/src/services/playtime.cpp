@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <initializer_list>
 #include <set>
 #include <unordered_map>
 
@@ -74,19 +75,21 @@ std::vector<std::string> PickTables(const AppDb &db, const std::optional<platfor
     return tables;
 }
 
-icons::Location FindTitleIcon(const std::string &title_id) {
-    static const char *const kCandidates[] = {
-        "/user/appmeta/%s/icon0.png",
-        "/user/appmeta/external/%s/icon0.png",
-        "/system_data/priv/appmeta/%s/icon0.png",
-        "/system_data/priv/appmeta/external/%s/icon0.png",
-        "/user/app/%s/sce_sys/icon0.png",
+icons::Location FindTitleImage(const std::string &title_id, std::initializer_list<const char *> files) {
+    static const char *const kDirs[] = {
+        "/user/appmeta/%s/",
+        "/user/appmeta/external/%s/",
+        "/system_data/priv/appmeta/%s/",
+        "/system_data/priv/appmeta/external/%s/",
+        "/user/app/%s/sce_sys/",
     };
     char buf[256];
-    for (const char *pattern : kCandidates) {
-        std::snprintf(buf, sizeof(buf), pattern, title_id.c_str());
-        std::string path = platform::ConsolePath(buf);
-        if (fs::IsNonEmptyFile(path)) return {path, 0, -1, icons::FileVersion(path)};
+    for (const char *file : files) {
+        for (const char *pattern : kDirs) {
+            std::snprintf(buf, sizeof(buf), pattern, title_id.c_str());
+            std::string path = platform::ConsolePath(buf + std::string(file));
+            if (fs::IsNonEmptyFile(path)) return {path, 0, -1, icons::FileVersion(path)};
+        }
     }
     return {};
 }
@@ -147,7 +150,8 @@ PlaytimeReport CollectPlaytime(const std::optional<platform::User> &user) {
         auto m = meta.find(title_id);
         game.name = m != meta.end() && !m->second.name.empty() ? m->second.name : title_id;
         if (m != meta.end()) game.metadata_dir = m->second.metadata_dir;
-        game.icon = FindTitleIcon(title_id);
+        game.icon = FindTitleImage(title_id, {"icon0.png"});
+        game.hero = FindTitleImage(title_id, {"pic0.png", "pic1.png"});
         report.games.push_back(std::move(game));
     }
     std::sort(report.games.begin(), report.games.end(), [](const GamePlaytime &a, const GamePlaytime &b) {

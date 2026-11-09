@@ -13,7 +13,7 @@ These sources were confirmed on a real console on 2026-11-08 by running `GET /ap
     - `conceptId`, `installedDate` and `titleName` are populated.
 - `tbl_contentinfo` (33 rows) supplies `titleName`, `categoryType` and `is3rdPartyVideoApp`. Media apps such as YouTube are filtered out through these flags. It also supplies `metaDataPath` (`/user/app/<titleId>/sce_sys`) and `icon0Info`.
 - There is no `tbl_appbrowse` on this firmware. The code treats that table as optional.
-- Game icons are at `/user/appmeta/<titleId>/icon0.png`.
+- Game icons are at `/user/appmeta/<titleId>/icon0.png`. The key art is `pic0.png` in the same folder: a 3840×2160 PNG of 8–11 MB on the test console. Homebrew titles such as Orbit Store (`PPSA99177`) ship only `icon0.png`. PlayTrack falls back to `pic1.png` and otherwise shows no banner.
 
 ## Trophies
 
