@@ -3,7 +3,7 @@
 #include "services/trophies.hpp"
 #include "test.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 TEST(trophies_join_catalog_progress_and_language) {
     TrophyReport r = CollectTrophies(fixture::User(), "pt-BR");

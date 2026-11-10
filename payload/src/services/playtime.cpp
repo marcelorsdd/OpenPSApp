@@ -13,7 +13,7 @@
 #include "util/fs.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 struct TitleMeta {
     std::string name;

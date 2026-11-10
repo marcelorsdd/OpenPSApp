@@ -19,7 +19,7 @@
 #include "util/stats.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 namespace {
 constexpr size_t kMaxListed = 200;
 

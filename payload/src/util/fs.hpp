@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-namespace playtrack::fs {
+namespace openpsapp::fs {
 struct Entry {
     std::string name;
     bool is_dir = false;

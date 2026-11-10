@@ -19,13 +19,13 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    char tmpl[] = "/tmp/playtrack-test-XXXXXX";
+    char tmpl[] = "/tmp/openpsapp-test-XXXXXX";
     const char *root = mkdtemp(tmpl);
     if (!root || !fixture::Build(root, &err)) {
         std::fprintf(stderr, "fixture: %s\n", err.c_str());
         return 1;
     }
-    setenv("PLAYTRACK_ROOT", root, 1);
+    setenv("OPENPSAPP_ROOT", root, 1);
 
     int failed_cases = 0;
     for (const test::Case &c : test::Registry()) {

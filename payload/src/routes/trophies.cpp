@@ -4,7 +4,7 @@
 #include "routes/routes.hpp"
 #include "routes/views.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 namespace {
 size_t EarnedLimit(const http::Request &req) {
     auto it = req.query.find("limit");

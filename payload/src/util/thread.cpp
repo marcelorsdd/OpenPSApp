@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <memory>
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 constexpr size_t kThreadStackBytes = 256 * 1024;
 constexpr size_t kSignalStackBytes = 64 * 1024;

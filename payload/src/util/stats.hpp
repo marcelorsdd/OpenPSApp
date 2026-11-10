@@ -3,7 +3,7 @@
 #include <atomic>
 #include <cstdint>
 
-namespace playtrack::stats {
+namespace openpsapp::stats {
 struct Stats {
     int64_t started_at = 0;
     std::atomic<int64_t> requests{0};

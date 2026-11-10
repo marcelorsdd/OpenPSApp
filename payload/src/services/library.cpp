@@ -11,7 +11,7 @@
 #include "util/stats.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 void RegisterIcons(const Library &lib) {
     for (const GamePlaytime &g : lib.playtime.games) {

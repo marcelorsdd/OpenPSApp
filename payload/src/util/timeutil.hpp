@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 
-namespace playtrack::timeutil {
+namespace openpsapp::timeutil {
 int64_t NowUnix();
 int64_t NowMillis();
 

@@ -5,7 +5,7 @@
 #include "platform/platform.hpp"
 #include "test.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 TEST(ucp_indexes_entries_and_reads_them_by_offset) {
     std::string path = platform::Root() + "/user/trophy2/nobackup/conf/NPWR00001_00/TROPHY.UCP";

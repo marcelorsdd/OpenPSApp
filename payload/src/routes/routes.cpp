@@ -1,6 +1,6 @@
 #include "routes/routes.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 void RegisterAll(http::Router &router, const Context &ctx) {
     RegisterHealth(router, ctx);
     RegisterProfile(router, ctx);

@@ -9,7 +9,7 @@
 #include "test.hpp"
 #include "util/thread.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 namespace {
 std::string StatusLine(uint16_t port, const std::string &request) {
@@ -60,8 +60,8 @@ TEST(live_server_detects_itself_and_reads_post_bodies) {
     CHECK(server.Listen(kPort, &err));
     Spawn([] { server.Serve(); });
 
-    CHECK(routes::ServedByPlayTrack(kPort));
-    CHECK(!routes::ServedByPlayTrack(kPort + 1));
+    CHECK(routes::ServedByOpenPSApp(kPort));
+    CHECK(!routes::ServedByOpenPSApp(kPort + 1));
 
     std::string status = StatusLine(
         kPort, "POST /api/v1/games/PPSA05555/unhide HTTP/1.1\r\nHost: x\r\nContent-Length: 2\r\n\r\n{}");

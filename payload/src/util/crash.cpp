@@ -6,7 +6,7 @@
 #include "util/log.hpp"
 #include "util/thread.hpp"
 
-namespace playtrack::crash {
+namespace openpsapp::crash {
 namespace {
 void OnFatalSignal(int sig) {
     char line[] = "fatal signal 00\n";

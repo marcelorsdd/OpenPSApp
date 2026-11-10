@@ -4,7 +4,7 @@
 #include "services/icons.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 void WriteUser(JsonWriter &w, const std::optional<platform::User> &user) {
     if (!user) {
         w.Null();

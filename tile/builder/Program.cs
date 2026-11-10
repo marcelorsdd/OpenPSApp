@@ -3,7 +3,7 @@ using LibProsperoPkg;
 
 if (args.Length != 2)
 {
-    Console.Error.WriteLine("usage: PlayTrackTile <source-dir> <output-dir>");
+    Console.Error.WriteLine("usage: OpenPSAppTile <source-dir> <output-dir>");
     return 2;
 }
 

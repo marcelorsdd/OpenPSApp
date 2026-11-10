@@ -7,7 +7,7 @@
 #include "test.hpp"
 #include "util/fs.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 namespace {
 std::string FirstIconUrl(const std::string &body) {
@@ -58,7 +58,7 @@ TEST(debug_paths_are_allowlisted) {
 
     CHECK(!routes::IsAllowedDebugPath("/user/home/1eb71bbd/savedata/x"));
     CHECK(!routes::IsAllowedDebugPath("/user/trophy2/../home/x"));
-    CHECK(!routes::IsAllowedDebugPath("/data/playtrack/config.json"));
+    CHECK(!routes::IsAllowedDebugPath("/data/openpsapp/config.json"));
     CHECK(!routes::IsAllowedDebugPath("/system_data/priv/mmsx"));
     CHECK(!routes::IsAllowedDebugPath("/user/app/PPSA03671/eboot.bin"));
     CHECK(!routes::IsAllowedDebugPath("/user/app/PPSA03671/data/sce_sys/x"));
@@ -67,7 +67,7 @@ TEST(debug_paths_are_allowlisted) {
 }
 
 TEST(routes_link_games_and_sets_and_serve_trophy_icons) {
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     test::App app;
 
     CHECK(test::Get(app.router, "/api/v1/games/PPSA01234").body.find("\"trophySetId\":\"NPWR00001_00\"") !=
@@ -92,12 +92,12 @@ TEST(routes_link_games_and_sets_and_serve_trophy_icons) {
     CHECK_EQ(test::Get(app.router, "/api/v1/trophy-sets/NPWR99999_00").status, 404);
     CHECK_EQ(test::Get(app.router, "/api/v1/icons/00000000000000000000000000000000").status, 404);
     CHECK(test::Get(app.router, "/api/v1/profile").body.find("\"earned\":2,\"total\":4") != std::string::npos);
-    unsetenv("PLAYTRACK_USER");
+    unsetenv("OPENPSAPP_USER");
 }
 
 TEST(hide_and_unhide_routes_update_the_game_and_profile) {
-    hidden::Load(platform::Root() + "/data/playtrack");
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    hidden::Load(platform::Root() + "/data/openpsapp");
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     test::App app;
 
     CHECK(test::Get(app.router, "/api/v1/profile").body.find("\"games\":3,\"playtimeSeconds\":10860") !=
@@ -111,24 +111,24 @@ TEST(hide_and_unhide_routes_update_the_game_and_profile) {
     CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA01234/unhide").status, 200);
     CHECK(test::Get(app.router, "/api/v1/games/PPSA01234").body.find("\"hidden\":false") != std::string::npos);
     CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA00000/hide").status, 404);
-    unsetenv("PLAYTRACK_USER");
+    unsetenv("OPENPSAPP_USER");
 }
 
 TEST(debug_identity_compares_console_ids_with_trophy_files) {
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
-    setenv("PLAYTRACK_ACCOUNT_ID", fixture::kAccountIdHex, 1);
-    setenv("PLAYTRACK_DEVICE_ID", "ffffffffffffffffffffffffffffffff", 1);
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
+    setenv("OPENPSAPP_ACCOUNT_ID", fixture::kAccountIdHex, 1);
+    setenv("OPENPSAPP_DEVICE_ID", "ffffffffffffffffffffffffffffffff", 1);
     test::App app(true);
     std::string body = test::Get(app.router, "/api/v1/debug/identity").body;
     CHECK(body.find("\"set\":\"NPWR00001_00\",\"ok\":true") != std::string::npos);
     CHECK(body.find("\"userIdMatches\":true,\"accountIdMatches\":true,\"deviceIdMatches\":false") != std::string::npos);
-    unsetenv("PLAYTRACK_USER");
-    unsetenv("PLAYTRACK_ACCOUNT_ID");
-    unsetenv("PLAYTRACK_DEVICE_ID");
+    unsetenv("OPENPSAPP_USER");
+    unsetenv("OPENPSAPP_ACCOUNT_ID");
+    unsetenv("OPENPSAPP_DEVICE_ID");
 }
 
 TEST(games_carry_hero_art_and_earned_trophies_route_lists_them) {
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     test::App app;
     std::string game = test::Get(app.router, "/api/v1/games/PPSA01234").body;
     CHECK(game.find("\"heroUrl\":\"/api/v1/icons/") != std::string::npos);
@@ -145,5 +145,5 @@ TEST(games_carry_hero_art_and_earned_trophies_route_lists_them) {
     CHECK(one.find("\"id\":1,") != std::string::npos);
     CHECK(one.find("\"id\":3,") == std::string::npos);
     CHECK_EQ(test::Get(app.router, "/api/v1/trophies/recent").status, 404);
-    unsetenv("PLAYTRACK_USER");
+    unsetenv("OPENPSAPP_USER");
 }

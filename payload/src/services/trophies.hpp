@@ -10,7 +10,7 @@
 #include "platform/platform.hpp"
 #include "services/icons.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 enum class Grade { Platinum, Gold, Silver, Bronze, Unknown };
 constexpr std::array<Grade, 4> kGrades = {Grade::Platinum, Grade::Gold, Grade::Silver, Grade::Bronze};
 

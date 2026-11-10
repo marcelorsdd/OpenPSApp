@@ -1,6 +1,6 @@
 #pragma once
 
-namespace playtrack::crash {
+namespace openpsapp::crash {
 void InstallHandlers();
 
 }

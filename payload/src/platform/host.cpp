@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-namespace playtrack::platform {
+namespace openpsapp::platform {
 const char *Name() { return "host"; }
 
 bool Escalate(std::string *) { return true; }
@@ -12,14 +12,14 @@ void SetProcessName(const char *) {}
 
 const std::string &Root() {
     static const std::string root = [] {
-        const char *env = std::getenv("PLAYTRACK_ROOT");
+        const char *env = std::getenv("OPENPSAPP_ROOT");
         return std::string(env ? env : "");
     }();
     return root;
 }
 
 std::optional<User> ForegroundUser() {
-    const char *env = std::getenv("PLAYTRACK_USER");
+    const char *env = std::getenv("OPENPSAPP_USER");
     if (!env || !*env) return std::nullopt;
 
     User user;
@@ -27,7 +27,7 @@ std::optional<User> ForegroundUser() {
     char hex[16];
     std::snprintf(hex, sizeof(hex), "%08x", static_cast<uint32_t>(user.id));
     user.id_hex = hex;
-    const char *name = std::getenv("PLAYTRACK_USER_NAME");
+    const char *name = std::getenv("OPENPSAPP_USER_NAME");
     user.name = name ? name : "host-user";
     return user;
 }
@@ -35,7 +35,7 @@ std::optional<User> ForegroundUser() {
 void Notify(const std::string &message) { std::printf("[notify] %s\n", message.c_str()); }
 
 int SystemLanguageId() {
-    const char *env = std::getenv("PLAYTRACK_LANG_ID");
+    const char *env = std::getenv("OPENPSAPP_LANG_ID");
     if (!env || !*env) return -1;
     char *end = nullptr;
     long id = std::strtol(env, &end, 10);
@@ -43,12 +43,12 @@ int SystemLanguageId() {
 }
 
 std::string AccountIdHex(const User &) {
-    const char *env = std::getenv("PLAYTRACK_ACCOUNT_ID");
+    const char *env = std::getenv("OPENPSAPP_ACCOUNT_ID");
     return env ? env : "";
 }
 
 std::string DeviceIdHex() {
-    const char *env = std::getenv("PLAYTRACK_DEVICE_ID");
+    const char *env = std::getenv("OPENPSAPP_DEVICE_ID");
     return env ? env : "";
 }
 

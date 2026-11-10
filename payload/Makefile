@@ -6,7 +6,7 @@ PS5_PAYLOAD_SDK ?= $(HOME)/opt/ps5-payload-sdk
 LLVM_CONFIG ?= $(shell brew --prefix llvm 2>/dev/null)/bin/llvm-config
 export LLVM_CONFIG
 
-VERSION := $(shell git describe --always --dirty 2>/dev/null || echo dev)
+VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 
 PS5_CXX := $(PS5_PAYLOAD_SDK)/bin/prospero-clang++
 PS5_CC := $(PS5_PAYLOAD_SDK)/bin/prospero-clang
@@ -20,31 +20,30 @@ TEST_SRCS := $(wildcard tests/host/*.cpp)
 
 GEN := $(BUILD)/gen
 UI_DIST := ../ui/dist
-TILE_PKG := ../tile/dist/playtrack-tile.pkg
+TILE_PKG := ../tile/dist/openpsapp-tile.pkg
 TILE_PARAM := ../tile/sce_sys/param.json
 GEN_SRCS := $(GEN)/web_assets.cpp $(GEN)/tile_pkg.cpp
 
-INCLUDES := -Isrc -Ithird_party/sqlite -Ithird_party/cjson
+INCLUDES := -Isrc -I$(GEN) -Ithird_party/sqlite -Ithird_party/cjson
 
-CXXFLAGS := -std=c++20 -O2 -Wall -Wextra -Wframe-larger-than=8192 -Werror=frame-larger-than -MMD -MP $(INCLUDES) \
-            -DPLAYTRACK_VERSION=\"$(VERSION)\"
+CXXFLAGS := -std=c++20 -O2 -Wall -Wextra -Wframe-larger-than=8192 -Werror=frame-larger-than -MMD -MP $(INCLUDES)
 CFLAGS_C := -O2 -w -DSQLITE_THREADSAFE=1 -DSQLITE_OMIT_LOAD_EXTENSION=1 -DSQLITE_DQS=0
 THIRD_PARTY_SRCS := third_party/sqlite/sqlite3.c third_party/cjson/cJSON.c
 
-PS5_ELF := $(BUILD)/playtrack.elf
+PS5_ELF := $(BUILD)/openpsapp.elf
 PS5_OBJS := $(patsubst %.cpp,$(BUILD)/ps5/%.o,$(CORE_SRCS) $(GEN_SRCS) src/main.cpp src/platform/ps5.cpp) \
             $(patsubst %.c,$(BUILD)/ps5/%.o,$(THIRD_PARTY_SRCS))
 PS5_LIBS := -lSceUserService -lSceSystemService -lSceAppInstUtil -lSceRegMgr -lkernel_sys
 
-HOST_BIN := $(BUILD)/host/playtrack
-HOST_TEST_BIN := $(BUILD)/host/playtrack-tests
+HOST_BIN := $(BUILD)/host/openpsapp
+HOST_TEST_BIN := $(BUILD)/host/openpsapp-tests
 HOST_LIB_OBJS := $(patsubst %.cpp,$(BUILD)/host/%.o,$(CORE_SRCS) $(GEN_SRCS) src/platform/host.cpp) \
                  $(patsubst %.c,$(BUILD)/host/%.o,$(THIRD_PARTY_SRCS))
 HOST_TEST_OBJS := $(patsubst %.cpp,$(BUILD)/host/%.o,$(TEST_SRCS))
 
 FIXTURE_ROOT ?= $(if $(wildcard tests/fixtures/real/root),tests/fixtures/real/root,tests/fixtures/synthetic/root)
 
-.PHONY: all deploy prospero host-test host-run ui tile clean
+.PHONY: all deploy prospero host-test host-run ui tile clean FORCE
 
 all: $(PS5_ELF)
 
@@ -53,6 +52,13 @@ $(GEN)/web_assets.cpp: tools/embed.py $(wildcard $(UI_DIST)/index.html $(UI_DIST
 
 $(GEN)/tile_pkg.cpp: tools/embed.py $(TILE_PARAM) $(wildcard $(TILE_PKG))
 	python3 tools/embed.py tile $(TILE_PKG) $(TILE_PARAM) $@
+
+$(GEN)/version.hpp: FORCE
+	@mkdir -p $(GEN)
+	@printf '#pragma once\n#define OPENPSAPP_VERSION "%s"\n' '$(VERSION)' > $@.tmp
+	@cmp -s $@.tmp $@ && rm -f $@.tmp || mv $@.tmp $@
+
+$(BUILD)/ps5/src/main.o $(BUILD)/host/src/main.o: $(GEN)/version.hpp
 
 ui:
 	npm --prefix ../ui run build
@@ -76,9 +82,9 @@ deploy: $(PS5_ELF)
 
 prospero: $(PS5_ELF)
 	curl -fsS -X POST -H 'Content-Type: application/octet-stream' --data-binary @$< \
-		"http://$(PS5_HOST):$(PROSPERO_PORT)/api/payloads/upload?name=playtrack.elf"
+		"http://$(PS5_HOST):$(PROSPERO_PORT)/api/payloads/upload?name=openpsapp.elf"
 	@echo
-	curl -fsS -X POST -H 'Content-Type: application/json' -d '{"name":"playtrack.elf"}' \
+	curl -fsS -X POST -H 'Content-Type: application/json' -d '{"name":"openpsapp.elf"}' \
 		"http://$(PS5_HOST):$(PROSPERO_PORT)/api/payloads/launch"
 	@echo
 
@@ -103,7 +109,7 @@ tests/fixtures/synthetic/root: $(HOST_TEST_BIN)
 	$(HOST_TEST_BIN) --make-fixture $@
 
 host-run: $(HOST_BIN) $(if $(filter tests/fixtures/synthetic/root,$(FIXTURE_ROOT)),tests/fixtures/synthetic/root)
-	PLAYTRACK_ROOT=$(abspath $(FIXTURE_ROOT)) PLAYTRACK_USER=$${PLAYTRACK_USER:-1eb71bbd} $(HOST_BIN)
+	OPENPSAPP_ROOT=$(abspath $(FIXTURE_ROOT)) OPENPSAPP_USER=$${OPENPSAPP_USER:-1eb71bbd} $(HOST_BIN)
 
 clean:
 	rm -rf $(BUILD) tests/fixtures/synthetic

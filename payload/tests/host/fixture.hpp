@@ -28,8 +28,8 @@ std::string MakeNpbind(const std::string &np_comm_id);
 
 bool Build(const std::string &root, std::string *err);
 
-inline playtrack::platform::User User() {
-    playtrack::platform::User user;
+inline openpsapp::platform::User User() {
+    openpsapp::platform::User user;
     user.id = kUserId;
     user.id_hex = kUserHex;
     user.name = "tester";

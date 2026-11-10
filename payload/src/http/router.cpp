@@ -2,7 +2,7 @@
 
 #include "util/json.hpp"
 
-namespace playtrack::http {
+namespace openpsapp::http {
 namespace {
 std::vector<std::string> Split(std::string_view path) {
     std::vector<std::string> parts;

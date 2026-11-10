@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-namespace playtrack {
+namespace openpsapp {
 class Ucp {
 public:
     struct Entry {

@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const api = process.env.PLAYTRACK_API ?? 'http://localhost:7777';
+const api = process.env.OPENPSAPP_API ?? 'http://localhost:7777';
 
 export default defineConfig({
   plugins: [react()],

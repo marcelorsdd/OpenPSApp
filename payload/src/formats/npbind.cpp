@@ -4,7 +4,7 @@
 
 #include "util/bytes.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 constexpr uint32_t kMagic = 0xd294a018;
 constexpr size_t kRecordsOffset = 0x80;

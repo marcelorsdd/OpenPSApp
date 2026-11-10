@@ -2,7 +2,7 @@
 #include "routes/views.hpp"
 #include "services/hidden.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 namespace {
 http::Response GameJson(const Library &lib, const GamePlaytime &game) {
     JsonWriter w;

@@ -50,7 +50,7 @@ int sceAppInstUtilAppInstallPkg(const char *path, PkgInfo *info);
 int sceAppInstUtilInstallByPackage(PkgMetaInfo *meta, PkgInfo *info, PkgPlayGoInfo *playgo);
 }
 
-namespace playtrack::platform {
+namespace openpsapp::platform {
 namespace {
 constexpr uint64_t kSystemAuthId = 0x4801000000000013ULL;
 }
@@ -173,7 +173,7 @@ bool InstallPkg(const std::string &path, std::string *err) {
     meta.ex_uri = "";
     meta.playgo_scenario_id = "";
     meta.content_id = "";
-    meta.content_name = "PlayTrack";
+    meta.content_name = "OpenPSApp";
     meta.icon_url = "";
     PkgInfo info2 {};
 

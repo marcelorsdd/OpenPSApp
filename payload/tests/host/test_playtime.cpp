@@ -2,7 +2,7 @@
 #include "services/playtime.hpp"
 #include "test.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 TEST(playtime_reads_only_the_foreground_profile) {
     PlaytimeReport r = CollectPlaytime(fixture::User());

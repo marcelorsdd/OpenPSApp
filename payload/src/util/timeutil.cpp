@@ -5,7 +5,7 @@
 #include <cctype>
 #include <ctime>
 
-namespace playtrack::timeutil {
+namespace openpsapp::timeutil {
 int64_t NowUnix() { return static_cast<int64_t>(time(nullptr)); }
 
 int64_t NowMillis() {

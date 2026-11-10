@@ -11,7 +11,7 @@
 #include "util/log.hpp"
 #include "util/thread.hpp"
 
-namespace playtrack::tile {
+namespace openpsapp::tile {
 namespace {
 std::mutex g_mu;
 std::string g_state = "idle";

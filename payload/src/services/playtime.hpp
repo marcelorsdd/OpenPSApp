@@ -9,7 +9,7 @@
 #include "platform/platform.hpp"
 #include "services/icons.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 struct GamePlaytime {
     std::string title_id;
     std::string name;

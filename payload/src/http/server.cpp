@@ -17,7 +17,7 @@
 #include "util/stats.hpp"
 #include "util/thread.hpp"
 
-namespace playtrack::http {
+namespace openpsapp::http {
 namespace {
 constexpr int kMaxActive = 32;
 constexpr size_t kMaxHeaderBytes = 16 * 1024;

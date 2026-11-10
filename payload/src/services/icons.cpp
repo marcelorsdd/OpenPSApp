@@ -6,7 +6,7 @@
 #include "util/fs.hpp"
 #include "util/sha256.hpp"
 
-namespace playtrack::icons {
+namespace openpsapp::icons {
 namespace {
 std::mutex g_mu;
 std::unordered_map<std::string, Location> g_by_id;

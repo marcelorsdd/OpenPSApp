@@ -1,6 +1,6 @@
 #pragma once
 
-namespace playtrack::web {
+namespace openpsapp::web {
 struct Asset {
     const char *path;
     const char *content_type;

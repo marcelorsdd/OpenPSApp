@@ -6,7 +6,7 @@
 #include <string>
 #include <string_view>
 
-namespace playtrack {
+namespace openpsapp {
 class Sha256 {
 public:
     Sha256();

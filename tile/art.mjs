@@ -31,7 +31,7 @@ const icon = `
   <rect width="512" height="512" fill="url(#bg)"/>
   <g transform="translate(256 220)">${trophy}</g>
   <text x="256" y="440" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="64"
-        font-weight="700" fill="#ffffff">PlayTrack</text>
+        font-weight="700" fill="#ffffff">OpenPSApp</text>
 </svg>`;
 
 const banner = `

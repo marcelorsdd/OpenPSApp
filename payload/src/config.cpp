@@ -5,7 +5,7 @@
 #include "util/fs.hpp"
 #include "util/json.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 constexpr const char *kSystemLanguages[] = {
     "ja-JP", "en-US", "fr-FR", "es-ES", "de-DE", "it-IT", "nl-NL", "pt-PT", "ru-RU", "ko-KR", "zh-Hant",

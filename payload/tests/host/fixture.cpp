@@ -38,7 +38,7 @@ INSERT INTO tbl_iconinfo_0000043690 VALUES
 
 bool WriteFile(const std::string &path, const std::string &data) {
     size_t slash = path.rfind('/');
-    return playtrack::fs::EnsureDir(path.substr(0, slash)) && playtrack::fs::WriteFileAtomic(path, data);
+    return openpsapp::fs::EnsureDir(path.substr(0, slash)) && openpsapp::fs::WriteFileAtomic(path, data);
 }
 
 void PutBe16(std::string &b, size_t off, uint16_t v) {
@@ -153,7 +153,7 @@ std::string MakeT2pd(const std::vector<StateSpec> &states) {
     PutBe64(out, 32, pages);
     for (size_t p = 0; p < pages; ++p) {
         std::string page = stream.substr(p * 1024, 1024);
-        playtrack::Sha256 sha;
+        openpsapp::Sha256 sha;
         sha.Update(page.data(), page.size());
         auto digest = sha.Digest();
         out += page;
@@ -180,7 +180,7 @@ std::string MakeNpbind(const std::string &np_comm_id) {
 
 bool Build(const std::string &root, std::string *err) {
     std::string mms = root + "/system_data/priv/mms";
-    if (!playtrack::fs::EnsureDir(mms)) {
+    if (!openpsapp::fs::EnsureDir(mms)) {
         *err = "mkdir " + mms;
         return false;
     }

@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cerrno>
 
-namespace playtrack::fs {
+namespace openpsapp::fs {
 std::optional<Stat> StatPath(const std::string &path) {
     struct stat st {};
     if (stat(path.c_str(), &st) != 0) return std::nullopt;

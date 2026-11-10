@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace playtrack::messages {
+namespace openpsapp::messages {
 
 enum class Id { Started, AlreadyRunning, PortBusy, TileInstalled };
 

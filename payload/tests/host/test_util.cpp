@@ -8,7 +8,7 @@
 #include "util/sha256.hpp"
 #include "util/timeutil.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 TEST(json_writer_nests_and_escapes) {
     JsonWriter w;
@@ -59,16 +59,16 @@ TEST(read_range_reads_slices_and_rejects_overruns) {
 }
 
 TEST(config_language_follows_the_console_when_auto) {
-    setenv("PLAYTRACK_LANG_ID", "17", 1);
+    setenv("OPENPSAPP_LANG_ID", "17", 1);
     CHECK_EQ(ResolveLanguage("auto"), std::string("pt-BR"));
     CHECK_EQ(ResolveLanguage(""), std::string("pt-BR"));
     CHECK_EQ(ResolveLanguage("ja-JP"), std::string("ja-JP"));
-    setenv("PLAYTRACK_LANG_ID", "20", 1);
+    setenv("OPENPSAPP_LANG_ID", "20", 1);
     CHECK_EQ(ResolveLanguage("auto"), std::string("es-419"));
-    setenv("PLAYTRACK_LANG_ID", "999", 1);
+    setenv("OPENPSAPP_LANG_ID", "999", 1);
     CHECK_EQ(ResolveLanguage("auto"), std::string("en-US"));
-    setenv("PLAYTRACK_LANG_ID", "en", 1);
+    setenv("OPENPSAPP_LANG_ID", "en", 1);
     CHECK_EQ(ResolveLanguage("auto"), std::string("en-US"));
-    unsetenv("PLAYTRACK_LANG_ID");
+    unsetenv("OPENPSAPP_LANG_ID");
     CHECK_EQ(ResolveLanguage("auto"), std::string("en-US"));
 }

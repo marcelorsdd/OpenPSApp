@@ -3,7 +3,7 @@
 #include "util/json.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 namespace {
 constexpr const char *kMarker = "\"source\":\"console\"";
 }
@@ -22,7 +22,7 @@ void RegisterHealth(http::Router &router, const Context &ctx) {
     });
 }
 
-bool ServedByPlayTrack(uint16_t port) {
+bool ServedByOpenPSApp(uint16_t port) {
     std::string body;
     return http::LocalGet(port, "/api/v1/health", &body) && body.find(kMarker) != std::string::npos;
 }

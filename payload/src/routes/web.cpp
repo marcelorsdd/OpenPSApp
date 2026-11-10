@@ -2,7 +2,7 @@
 
 #include "routes/routes.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 namespace {
 const web::Asset *Find(const std::string &path) {
     for (unsigned i = 0; i < web::kAssetCount; ++i) {

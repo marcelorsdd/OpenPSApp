@@ -9,7 +9,7 @@
 struct sqlite3;
 struct sqlite3_stmt;
 
-namespace playtrack {
+namespace openpsapp {
 class AppDb {
 public:
     class Row {

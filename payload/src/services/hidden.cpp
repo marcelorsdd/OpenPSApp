@@ -8,7 +8,7 @@
 #include "util/json.hpp"
 #include "util/log.hpp"
 
-namespace playtrack::hidden {
+namespace openpsapp::hidden {
 namespace {
 std::mutex g_mu;
 std::string g_path;

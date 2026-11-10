@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace playtrack::layout {
+namespace openpsapp::layout {
 constexpr const char *kAppDb = "/system_data/priv/mms/app.db";
 
 constexpr const char *kIconInfoPrefix = "tbl_iconinfo_";

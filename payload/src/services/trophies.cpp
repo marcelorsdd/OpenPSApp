@@ -14,7 +14,7 @@
 #include "services/console_layout.hpp"
 #include "util/fs.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 Grade ParseGrade(const char *g) {
     if (!g) return Grade::Unknown;

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace playtrack::bytes {
+namespace openpsapp::bytes {
 inline uint16_t Be16(std::string_view b, size_t off) {
     return static_cast<uint16_t>((uint8_t(b[off]) << 8) | uint8_t(b[off + 1]));
 }

@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace playtrack::hidden {
+namespace openpsapp::hidden {
 void Load(const std::string &data_dir);
 bool Contains(const std::string &title_id);
 

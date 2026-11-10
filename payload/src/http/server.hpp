@@ -6,7 +6,7 @@
 
 #include "http/http.hpp"
 
-namespace playtrack::http {
+namespace openpsapp::http {
 class Server {
 public:
     explicit Server(const Router &router) : router_(router) {}

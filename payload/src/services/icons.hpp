@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 
-namespace playtrack::icons {
+namespace openpsapp::icons {
 struct Location {
     std::string path;
     uint64_t offset = 0;

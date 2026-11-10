@@ -7,7 +7,7 @@
 
 #include <cerrno>
 
-namespace playtrack::http {
+namespace openpsapp::http {
 bool LocalGet(uint16_t port, const std::string &path, std::string *body, int timeout_ms) {
     int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) return false;

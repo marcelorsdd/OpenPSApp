@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-namespace playtrack::http {
+namespace openpsapp::http {
 struct Request {
     std::string method;
     std::string path;

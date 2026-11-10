@@ -6,7 +6,7 @@
 #include "util/fs.hpp"
 #include "util/sha256.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 namespace {
 constexpr size_t kHeaderSize = 64;
 constexpr size_t kPageData = 1024;

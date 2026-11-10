@@ -1,7 +1,7 @@
 #include "routes/routes.hpp"
 #include "routes/views.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 void RegisterProfile(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/profile", [&ctx](const http::Request &) {
         auto lib = CurrentLibrary(ctx.language);

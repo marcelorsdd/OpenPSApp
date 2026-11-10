@@ -11,7 +11,7 @@
 #include "util/fs.hpp"
 #include "util/timeutil.hpp"
 
-namespace playtrack::log {
+namespace openpsapp::log {
 namespace {
 constexpr size_t kRingSize = 500;
 constexpr int64_t kMaxFileBytes = 1 << 20;
@@ -26,7 +26,7 @@ void Write(const char *level, bool durable, const char *fmt, va_list args) {
     std::string line = timeutil::NowIso() + " " + level + " " + msg;
 
     std::lock_guard<std::mutex> lock(g_mu);
-    std::printf("[playtrack] %s\n", line.c_str());
+    std::printf("[openpsapp] %s\n", line.c_str());
     std::fflush(stdout);
     g_ring.push_back(line);
     if (g_ring.size() > kRingSize) g_ring.pop_front();

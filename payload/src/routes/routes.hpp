@@ -6,7 +6,7 @@
 #include "config.hpp"
 #include "http/http.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 struct Context {
     std::string version;
     std::string data_dir;
@@ -24,6 +24,6 @@ void RegisterIcons(http::Router &router, const Context &ctx);
 void RegisterDebug(http::Router &router, const Context &ctx);
 void RegisterWeb(http::Router &router, const Context &ctx);
 
-bool ServedByPlayTrack(uint16_t port);
+bool ServedByOpenPSApp(uint16_t port);
 
 }

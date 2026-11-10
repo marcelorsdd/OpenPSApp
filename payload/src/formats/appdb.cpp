@@ -2,7 +2,7 @@
 
 #include "sqlite3.h"
 
-namespace playtrack {
+namespace openpsapp {
 std::string AppDb::Row::Text(int col) const {
     const unsigned char *text = sqlite3_column_text(stmt_, col);
     return text ? reinterpret_cast<const char *>(text) : "";

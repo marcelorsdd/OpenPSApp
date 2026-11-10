@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-namespace playtrack {
+namespace openpsapp {
 class JsonWriter {
 public:
     JsonWriter &BeginObject();

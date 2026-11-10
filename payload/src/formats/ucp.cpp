@@ -3,7 +3,7 @@
 #include "util/bytes.hpp"
 #include "util/fs.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 bool Ucp::ParseTable(std::string_view head, uint64_t file_size, std::string *err) {
     entries_.clear();
     if (head.size() < kTableOffset || bytes::Be32(head, 0) != kMagic) {

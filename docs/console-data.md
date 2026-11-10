@@ -1,19 +1,19 @@
 # Console data sources
 
-These sources were confirmed on a real console on 2026-11-08 by running `GET /api/v1/debug/sources` on the payload and inspecting the pulled files. The firmware was not recorded. Every source listed here is read-only for PlayTrack.
+These sources were confirmed on a real console on 2026-11-08 by running `GET /api/v1/debug/sources` on the payload and inspecting the pulled files. The firmware was not recorded. Every source listed here is read-only for OpenPSApp.
 
 ## Playtime: `/system_data/priv/mms/app.db` (SQLite)
 
 - Each user has a table `tbl_iconinfo_<user id, zero-padded decimal>`, for example `tbl_iconinfo_0515316669` for user `0x1eb71bbd`. Other tables that carry the same suffix: `tbl_addon_`, `tbl_concepticoninfo_`, `tbl_group_`, `tbl_info_`, `tbl_playlist_`.
 - `playedTimeOnConsole` holds total seconds. It is `NULL` for titles that were installed but never played. Validated: Marvel's Wolverine read 51494 s, which matched what the console itself shows (14h18).
-- `lastPlayedDateOnConsole` (`YYYY-MM-DD HH:MM:SS.fff`) moves only when the title is played. PlayTrack uses it as `lastPlayedAt`.
+- `lastPlayedDateOnConsole` (`YYYY-MM-DD HH:MM:SS.fff`) moves only when the title is played. OpenPSApp uses it as `lastPlayedAt`.
 - Do not use `lastAccessTime` for this. It also moves when a tile is merely selected on the home screen. On the test console, two titles that were never played had a `lastAccessTime` but no `lastPlayedDateOnConsole`.
 - Columns that are present but not used yet:
     - `gltTotalPlayedTime`, `gltPlayCount` and `gltlastPlayedDate` are empty on an offline console.
     - `conceptId`, `installedDate` and `titleName` are populated.
 - `tbl_contentinfo` (33 rows) supplies `titleName`, `categoryType` and `is3rdPartyVideoApp`. Media apps such as YouTube are filtered out through these flags. It also supplies `metaDataPath` (`/user/app/<titleId>/sce_sys`) and `icon0Info`.
 - There is no `tbl_appbrowse` on this firmware. The code treats that table as optional.
-- Game icons are at `/user/appmeta/<titleId>/icon0.png`. The key art is `pic0.png` in the same folder: a 3840×2160 PNG of 8–11 MB on the test console. Homebrew titles such as Orbit Store (`PPSA99177`) ship only `icon0.png`. PlayTrack falls back to `pic1.png` and otherwise shows no banner.
+- Game icons are at `/user/appmeta/<titleId>/icon0.png`. The key art is `pic0.png` in the same folder: a 3840×2160 PNG of 8–11 MB on the test console. Homebrew titles such as Orbit Store (`PPSA99177`) ship only `icon0.png`. OpenPSApp falls back to `pic1.png` and otherwise shows no banner.
 
 ## Trophies
 
@@ -103,9 +103,9 @@ Prospero Manager can back up a slot and activate a profile with a chosen account
 ## Payload runtime notes
 
 - **Worker threads have small stacks.** A 64 KiB stack buffer overflowed one and froze the whole process. Once the fault handler had wedged the process, even SIGKILL did not end it. The build now fails on any stack frame larger than 8 KiB, and threads are started through `Spawn()`, which sets a 256 KiB stack and an alternate signal stack.
-- **elfldr names every payload `payload.elf`.** PlayTrack renames itself to `playtrack.elf` with `thr_set_name`.
+- **elfldr names every payload `payload.elf`.** OpenPSApp renames itself to `openpsapp.elf` with `thr_set_name`.
 - **Prospero Manager has a usable HTTP API.** `make prospero` uploads the payload with `POST /api/payloads/upload?name=` (raw body) and starts it with `POST /api/payloads/launch`. Prospero also exposes `/api/processes`, `/api/processes/kill` and `/api/ftp/{list,text,download}` for diagnosis.
-- **The PKG installer runs in another mount namespace.** A file the payload writes to `/data/x` is visible to `sceAppInstUtilAppInstallPkg` as `/user/data/x`. If `AppInstallPkg` fails, PlayTrack falls back to `InstallByPackage` with a `file://` URI. `PkgPlayGoInfo` is about 10 KiB, so it is allocated on the heap.
+- **The PKG installer runs in another mount namespace.** A file the payload writes to `/data/x` is visible to `sceAppInstUtilAppInstallPkg` as `/user/data/x`. If `AppInstallPkg` fails, OpenPSApp falls back to `InstallByPackage` with a `file://` URI. `PkgPlayGoInfo` is about 10 KiB, so it is allocated on the heap.
 - **The notification syscall can stall**, so toasts are sent from their own thread.
 - **`categoryType & 0x10000` in `tbl_contentinfo` marks Media-tab apps** (YouTube, homebrew tiles). These titles are left out of the games list.
 - **`SIGPIPE` and `SIGHUP` are ignored.** A client that closes its socket, or the loader closing the connection it started the payload from, must not kill the process.

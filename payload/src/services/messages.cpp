@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-namespace playtrack::messages {
+namespace openpsapp::messages {
 
 namespace {
 struct Texts {
@@ -13,22 +13,22 @@ struct Texts {
 };
 
 constexpr Texts kPortuguese = {
-    "PlayTrack ativo na porta %d",
-    "PlayTrack já está rodando",
-    "PlayTrack: a porta %d está em uso por outro app",
-    "PlayTrack instalado na aba Mídia",
+    "OpenPSApp ativo na porta %d",
+    "OpenPSApp já está rodando",
+    "OpenPSApp: a porta %d está em uso por outro app",
+    "OpenPSApp instalado na aba Mídia",
 };
 constexpr Texts kSpanish = {
-    "PlayTrack activo en el puerto %d",
-    "PlayTrack ya se está ejecutando",
-    "PlayTrack: el puerto %d está en uso por otra app",
-    "PlayTrack añadido a la pestaña Multimedia",
+    "OpenPSApp activo en el puerto %d",
+    "OpenPSApp ya se está ejecutando",
+    "OpenPSApp: el puerto %d está en uso por otra app",
+    "OpenPSApp añadido a la pestaña Multimedia",
 };
 constexpr Texts kEnglish = {
-    "PlayTrack running on port %d",
-    "PlayTrack is already running",
-    "PlayTrack: port %d is used by another app",
-    "PlayTrack added to the Media tab",
+    "OpenPSApp running on port %d",
+    "OpenPSApp is already running",
+    "OpenPSApp: port %d is used by another app",
+    "OpenPSApp added to the Media tab",
 };
 
 const Texts &For(const std::string &language) {

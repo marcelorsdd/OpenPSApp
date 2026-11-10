@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-namespace playtrack::platform {
+namespace openpsapp::platform {
 struct User {
     int32_t id = 0;
     std::string id_hex;

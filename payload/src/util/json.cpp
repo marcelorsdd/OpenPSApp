@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-namespace playtrack {
+namespace openpsapp {
 void JsonWriter::BeforeValue() {
     if (after_key_) {
         after_key_ = false;

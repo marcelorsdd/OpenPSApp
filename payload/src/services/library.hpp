@@ -10,7 +10,7 @@
 #include "services/playtime.hpp"
 #include "services/trophies.hpp"
 
-namespace playtrack {
+namespace openpsapp {
 struct ProfileTotals {
     int64_t games = 0;
     int64_t playtime_seconds = 0;

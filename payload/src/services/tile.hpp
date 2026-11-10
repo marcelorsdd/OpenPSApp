@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace playtrack::tile {
+namespace openpsapp::tile {
 extern const unsigned char kPkg[];
 extern const unsigned kPkgSize;
 extern const char kTitleId[];

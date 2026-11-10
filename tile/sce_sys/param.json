@@ -16,7 +16,7 @@
   "attribute2": 0,
   "attribute3": 4,
   "contentBadgeType": 2,
-  "contentId": "IV9999-PTRK00001_00-PLAYTRACK0000001",
+  "contentId": "IV9999-OPSA00001_00-OPENPSAPP0000001",
   "contentVersion": "01.000.000",
   "deeplinkUri": "http://127.0.0.1:7777/",
   "displayLocation": 188,
@@ -24,17 +24,17 @@
   "localizedParameters": {
     "defaultLanguage": "en-US",
     "en-US": {
-      "titleName": "PlayTrack"
+      "titleName": "OpenPSApp"
     },
     "pt-BR": {
-      "titleName": "PlayTrack"
+      "titleName": "OpenPSApp"
     }
   },
   "masterVersion": "01.00",
   "originContentVersion": "01.000.000",
   "requiredSystemSoftwareVersion": "0x0000000000000000",
   "sdkVersion": "0x0000000000000000",
-  "titleId": "PTRK00001",
+  "titleId": "OPSA00001",
   "userDefinedParam1": 1,
   "userDefinedParam2": 0,
   "userDefinedParam3": 0,

@@ -6,7 +6,7 @@
 #include "util/fs.hpp"
 #include "util/sha256.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 namespace {
 struct FileState {

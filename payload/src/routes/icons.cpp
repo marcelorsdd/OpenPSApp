@@ -2,7 +2,7 @@
 #include "services/icons.hpp"
 #include "services/library.hpp"
 
-namespace playtrack::routes {
+namespace openpsapp::routes {
 void RegisterIcons(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/icons/:id", [&ctx](const http::Request &req) {
         const std::string &id = req.params.at("id");

@@ -29,5 +29,5 @@ if [ -z "$pkg" ]; then
   echo "build.sh: builder produced no .pkg" >&2
   exit 1
 fi
-mv "$pkg" dist/playtrack-tile.pkg
-echo "built dist/playtrack-tile.pkg ($(wc -c < dist/playtrack-tile.pkg | tr -d ' ') bytes)"
+mv "$pkg" dist/openpsapp-tile.pkg
+echo "built dist/openpsapp-tile.pkg ($(wc -c < dist/openpsapp-tile.pkg | tr -d ' ') bytes)"

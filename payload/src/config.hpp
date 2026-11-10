@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace playtrack {
+namespace openpsapp {
 struct Config {
     int port = 7777;
     std::string language = "auto";

@@ -9,7 +9,7 @@
 #include "test.hpp"
 #include "util/fs.hpp"
 
-using namespace playtrack;
+using namespace openpsapp;
 
 TEST(trophy_set_lookup_prefers_app_db_path_and_falls_back_to_internal) {
     CHECK_EQ(TrophySetForTitle("PPSA01234", "/mnt/ext0/user/app/PPSA01234/sce_sys"), std::string(fixture::kSetId));
@@ -33,10 +33,10 @@ TEST(icon_ids_follow_location_and_file_version) {
 }
 
 TEST(hidden_games_persist_and_leave_the_totals) {
-    std::string data_dir = platform::Root() + "/data/playtrack";
+    std::string data_dir = platform::Root() + "/data/openpsapp";
     fs::EnsureDir(data_dir);
     hidden::Load(data_dir);
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     auto lib = CurrentLibrary("pt-BR");
 
     ProfileTotals before = lib->Totals();
@@ -53,7 +53,7 @@ TEST(hidden_games_persist_and_leave_the_totals) {
     CHECK(hidden::Contains("PPSA01234"));
     CHECK(hidden::Set("PPSA01234", false));
     CHECK(!hidden::Contains("PPSA01234"));
-    unsetenv("PLAYTRACK_USER");
+    unsetenv("OPENPSAPP_USER");
 }
 
 TEST(tile_counts_as_installed_once_its_appmeta_exists) {
@@ -65,7 +65,7 @@ TEST(tile_counts_as_installed_once_its_appmeta_exists) {
 }
 
 TEST(earned_trophies_list_newest_first_across_sets) {
-    setenv("PLAYTRACK_USER", fixture::kUserHex, 1);
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     auto lib = CurrentLibrary("pt-BR");
     std::vector<EarnedTrophy> earned = lib->EarnedTrophies(SIZE_MAX);
     CHECK_EQ(earned.size(), size_t(2));
@@ -75,5 +75,5 @@ TEST(earned_trophies_list_newest_first_across_sets) {
         CHECK_EQ(earned[1].trophy->id, 3);
     }
     CHECK_EQ(lib->EarnedTrophies(1).size(), size_t(1));
-    unsetenv("PLAYTRACK_USER");
+    unsetenv("OPENPSAPP_USER");
 }

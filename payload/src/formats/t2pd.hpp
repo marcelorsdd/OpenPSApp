@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-namespace playtrack {
+namespace openpsapp {
 struct TrophyState {
     int id = 0;
     bool earned = false;

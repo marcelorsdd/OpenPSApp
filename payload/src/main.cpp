@@ -15,12 +15,10 @@
 #include "util/log.hpp"
 #include "util/stats.hpp"
 #include "util/timeutil.hpp"
+#include "version.hpp"
 
-#ifndef PLAYTRACK_VERSION
-#define PLAYTRACK_VERSION "dev"
-#endif
 
-using namespace playtrack;
+using namespace openpsapp;
 
 int main() {
     signal(SIGPIPE, SIG_IGN);
@@ -29,17 +27,17 @@ int main() {
 
     std::string err;
     bool escalated = platform::Escalate(&err);
-    platform::SetProcessName("playtrack.elf");
+    platform::SetProcessName("openpsapp.elf");
 
-    std::string data_dir = platform::ConsolePath("/data/playtrack");
+    std::string data_dir = platform::ConsolePath("/data/openpsapp");
     fs::EnsureDir(data_dir);
-    log::Init(data_dir + "/playtrack.log");
+    log::Init(data_dir + "/openpsapp.log");
     crash::InstallHandlers();
-    log::Info("PlayTrack %s starting on %s (pid %d)", PLAYTRACK_VERSION, platform::Name(), getpid());
+    log::Info("OpenPSApp %s starting on %s (pid %d)", OPENPSAPP_VERSION, platform::Name(), getpid());
     if (!escalated) log::Error("privilege escalation failed: %s", err.c_str());
 
     routes::Context ctx;
-    ctx.version = PLAYTRACK_VERSION;
+    ctx.version = OPENPSAPP_VERSION;
     ctx.data_dir = data_dir;
     std::string warning;
     ctx.config = LoadOrCreateConfig(data_dir + "/config.json", &warning);
@@ -53,8 +51,8 @@ int main() {
     http::Server server(router);
     uint16_t port = static_cast<uint16_t>(ctx.config.port);
     if (!server.Listen(port, &err)) {
-        if (routes::ServedByPlayTrack(port)) {
-            log::Info("another PlayTrack already serves :%d; exiting", ctx.config.port);
+        if (routes::ServedByOpenPSApp(port)) {
+            log::Info("another OpenPSApp already serves :%d; exiting", ctx.config.port);
             platform::Notify(messages::Text(messages::Id::AlreadyRunning, ctx.language, ctx.config.port));
             return 0;
         }
