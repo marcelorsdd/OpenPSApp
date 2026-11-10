@@ -137,11 +137,13 @@ Imports use the `@/` alias for `ui/src`. Each endpoint in `services/api.ts` carr
 make -C payload ui tile        # rebuild the embedded UI and tile
 git tag vX.Y.Z
 make -C payload clean all      # build/openpsapp.elf, version taken from the tag
-gh release create vX.Y.Z payload/build/openpsapp.elf --generate-notes
+gh release create vX.Y.Z payload/build/openpsapp.elf ui/dist/licenses.txt --generate-notes
 ```
 
 `GET /api/v1/health` reports the version the ELF was built from (`git describe --tags`).
 
 ## License
 
-GPL-3.0-or-later. Bundles SQLite (public domain) and cJSON (MIT, `payload/third_party/cjson/LICENSE`).
+GPL-3.0-or-later (`LICENSE`). The payload links ps5-payload-sdk (GPL-3.0) and bundles SQLite (public domain), cJSON (MIT, `payload/third_party/cjson/LICENSE`) and a UI built with React, React DOM, i18next and Tailwind CSS (all MIT).
+
+`make -C payload ui` writes `ui/dist/licenses.txt` with the license of every package that ends up in the bundle (`ui/plugins/licenses.ts`). The ELF serves it at `http://<ps5-ip>:7777/licenses.txt`, and each release attaches it.

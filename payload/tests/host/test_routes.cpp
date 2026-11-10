@@ -30,6 +30,14 @@ TEST(web_serves_the_embedded_page_gzipped) {
     CHECK_EQ(test::Get(app.router, "/api/v1/nope").status, 404);
 }
 
+TEST(web_serves_root_files_without_caching) {
+    test::App app;
+    http::Response page = test::Get(app.router, "/index.html");
+    CHECK_EQ(page.status, 200);
+    CHECK_EQ(page.cache_control, std::string("no-cache"));
+    CHECK_EQ(test::Get(app.router, "/missing.txt").status, 404);
+}
+
 TEST(health_reports_the_console_language) {
     test::App app;
     app.ctx.language = "es-419";

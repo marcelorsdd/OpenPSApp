@@ -22,12 +22,14 @@ http::Response Serve(const web::Asset &asset, const char *cache_control) {
 }
 
 void RegisterWeb(http::Router &router, const Context &) {
-    auto index = [](const http::Request &) {
+    router.Get("/", [](const http::Request &) {
         const web::Asset *page = Find("/index.html");
         return page ? Serve(*page, "no-cache") : http::Error(404, "UI not embedded");
-    };
-    router.Get("/", index);
-    router.Get("/index.html", index);
+    });
+    router.Get("/:file", [](const http::Request &req) {
+        const web::Asset *asset = Find("/" + req.params.at("file"));
+        return asset ? Serve(*asset, "no-cache") : http::Error(404, "not found");
+    });
     router.Get("/assets/:file", [](const http::Request &req) {
         const web::Asset *asset = Find("/assets/" + req.params.at("file"));
         return asset ? Serve(*asset, http::kCacheForever) : http::Error(404, "not found");

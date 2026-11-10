@@ -22,8 +22,9 @@ CONTENT_TYPES = {
     ".png": "image/png",
     ".ico": "image/x-icon",
     ".woff2": "font/woff2",
+    ".txt": "text/plain; charset=utf-8",
 }
-COMPRESSIBLE = {".html", ".js", ".css", ".json", ".svg"}
+COMPRESSIBLE = {".html", ".js", ".css", ".json", ".svg", ".txt"}
 
 PLACEHOLDER = b"""<!doctype html><meta charset="utf-8"><title>OpenPSApp</title>
 <body style="background:#0b0f1a;color:#e8ecf5;font:20px sans-serif;padding:48px">
