@@ -7,5 +7,5 @@ dist/
 payload/build/
 payload/tests/fixtures/
 
-# Planning docs (specs and implementation plans) stay local
-docs/superpowers/
+# Docs and planning notes stay local
+docs/

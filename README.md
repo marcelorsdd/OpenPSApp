@@ -15,7 +15,6 @@ Settings: `/data/openpsapp/config.json`.
 - `payload/`: the ELF (C++20, ps5-payload-sdk). Reads `app.db` and the trophy files and serves `/api/v1` plus the UI.
 - `ui/`: the web UI (React, Vite, Tailwind), embedded into the ELF.
 - `tile/`: the Media-tab tile PKG, embedded into the ELF.
-- `docs/console-data.md`: what the console stores and how it was decoded.
 
 ## Payload
 
