@@ -106,6 +106,19 @@ payload/src/
 
 Tests in `payload/tests/host/` follow the same layers: `test_util`, `test_http`, `test_formats`, `test_playtime`, `test_trophies`, `test_services`, `test_routes`, plus `test_readonly`, which checks that no route writes console data.
 
+```
+ui/src/
+├── types/        API contract (JSON shapes) and UI types
+├── services/     the only code that talks to the payload: typed endpoints, fetch, actions
+├── hooks/        useApi, useStoredState, useRoute, useLanguageChoice, useDate
+├── utils/        pure functions: format, dates, trophies, progress, router (tests sit next to them)
+├── components/   ui/ (generic), trophies/, profile/, game/
+├── pages/        one component per route
+└── i18n/         i18next setup and locales
+```
+
+Imports use the `@/` alias for `ui/src`. Each endpoint in `services/api.ts` carries its response type, so `useApi(endpoints.profile)` is typed without a generic.
+
 ## License
 
 GPL-3.0-or-later. Bundles SQLite (public domain) and cJSON (MIT, `payload/third_party/cjson/LICENSE`).

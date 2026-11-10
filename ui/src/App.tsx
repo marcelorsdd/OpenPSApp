@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { LanguagePicker, Pill } from './components/ui';
-import { useLanguageChoice } from './i18n/useLanguage';
-import { href, useRoute } from './router';
-import GamePage from './routes/GamePage';
-import Profile from './routes/Profile';
-import SetPage from './routes/SetPage';
-import Trophies from './routes/Trophies';
+import LanguagePicker from '@/components/ui/LanguagePicker';
+import Pill from '@/components/ui/Pill';
+import { useLanguageChoice } from '@/hooks/useLanguageChoice';
+import { useRoute } from '@/hooks/useRoute';
+import GamePage from '@/pages/GamePage';
+import ProfilePage from '@/pages/ProfilePage';
+import SetPage from '@/pages/SetPage';
+import TrophiesPage from '@/pages/TrophiesPage';
+import { href } from '@/utils/router';
 
 export default function App() {
   const route = useRoute();
@@ -30,8 +32,8 @@ export default function App() {
         </nav>
       </header>
 
-      {route.name === 'profile' && <Profile />}
-      {route.name === 'trophies' && <Trophies />}
+      {route.name === 'profile' && <ProfilePage />}
+      {route.name === 'trophies' && <TrophiesPage />}
       {route.name === 'game' && <GamePage titleId={route.titleId} />}
       {route.name === 'set' && <SetPage setId={route.setId} />}
     </div>

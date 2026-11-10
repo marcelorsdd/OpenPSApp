@@ -21,7 +21,6 @@
     "playtime": "Tempo jogado",
     "trophies": "Troféus",
     "platinums": "Platinas",
-    "recentTrophies": "Troféus recentes",
     "recent": "Jogados recentemente",
     "playedOn": "{{duration}} · jogado em {{date}}",
     "hiddenTag": "oculto",
@@ -44,33 +43,12 @@
     "pace": "Ritmo",
     "perWeek": "{{value}} por semana"
   },
-  "milestones": {
-    "title": "Marcos",
-    "firstTrophy": "Primeiro troféu",
-    "firstGrade": {
-      "silver": "Primeiro troféu de prata",
-      "gold": "Primeiro troféu de ouro",
-      "platinum": "Primeira platina"
-    },
-    "trophyCount": "{{n}}º troféu",
-    "platinumCount": "{{n}}ª platina",
-    "complete": "100% em {{game}}",
-    "next": "Próximo: {{n}}º troféu (faltam {{remaining}})"
-  },
-  "stats": {
-    "title": "Estatísticas",
-    "perTrophy": "Tempo por troféu",
-    "perTrophyValue": "1 a cada {{duration}}",
-    "completion": "Média de conclusão",
-    "platinums": "Platinados",
-    "platinumsValue_one": "{{done}} de {{count}} jogo",
-    "platinumsValue_other": "{{done}} de {{count}} jogos"
-  },
   "game": {
     "summary": "{{duration}} jogados · último jogo em {{date}}",
     "hide": "Ocultar da lista",
     "unhide": "Mostrar na lista",
-    "noTrophies": "Este jogo não tem troféus registrados neste console."
+    "noTrophies": "Este jogo não tem troféus registrados neste console.",
+    "recentTrophies": "Troféus recentes"
   },
   "trophies": {
     "title": "Troféus",
