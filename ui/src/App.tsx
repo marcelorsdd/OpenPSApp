@@ -18,8 +18,9 @@ export default function App() {
   return (
     <div className="max-w-5xl mx-auto px-8 pb-16">
       <header className="flex items-center justify-between py-8">
-        <a href={href.profile()} className="text-2xl font-bold tracking-tight">
-          OpenPSApp
+        <a href={href.profile()} className="flex items-center text-2xl font-bold tracking-tight">
+          <img src="/favicon.svg" alt="" className="w-10 h-10" />
+          <span className="ml-3">OpenPSApp</span>
         </a>
         <nav className="flex items-center -mx-1">
           <Pill href={href.profile()} active={tab === 'profile'}>

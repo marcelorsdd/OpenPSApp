@@ -1,3 +1,5 @@
+<p align="center"><img src="tile/sce_sys/icon0.png" width="128" alt="OpenPSApp icon"></p>
+
 # OpenPSApp
 
 Homebrew for a jailbroken PS5 that brings PlayStation App features to the console, offline: playtime per game, trophies (hidden ones included), recent trophies per game, a monthly recap and a trophy timeline. It runs as an ELF payload that serves a web UI on port 7777, opened from a tile in the Media tab. It only reads the console's playtime and trophy files; its own settings live in `/data/openpsapp`.
