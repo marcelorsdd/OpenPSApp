@@ -1,0 +1,258 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-soft-foreground: var(--soft-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-destructive-soft-foreground: var(--destructive-soft-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-input: var(--input);
+  --color-control: var(--control);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-brand-tile: var(--brand-tile);
+  --color-nav: var(--nav);
+  --color-overlay: var(--overlay);
+  --color-disabled-foreground: var(--disabled-foreground);
+  --color-platinum: var(--platinum);
+  --color-platinum-foreground: var(--platinum-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-silver: var(--silver);
+  --color-silver-foreground: var(--silver-foreground);
+  --color-bronze: var(--bronze);
+  --color-bronze-foreground: var(--bronze-foreground);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.25rem;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.4rem;
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6rem;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.75rem;
+  --text-heading: 1.75rem;
+  --text-heading--line-height: 2.25rem;
+  --text-heading--letter-spacing: -0.02em;
+  --text-display: 2.75rem;
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.02em;
+  --text-hero: clamp(2.25rem, 5vw, 3.5rem);
+  --text-hero--line-height: 1.05;
+  --text-hero--letter-spacing: -0.03em;
+  --tracking-label: 0.06em;
+
+  --spacing-control-sm: var(--control-sm);
+  --spacing-control-md: var(--control-md);
+  --spacing-control-lg: var(--control-lg);
+  --spacing-control-xl: var(--control-xl);
+  --spacing-otp-slot: var(--otp-slot);
+  --spacing-otp-height: var(--otp-height);
+  --spacing-cover-xs: 2rem;
+  --spacing-cover-sm: 2.25rem;
+  --spacing-cover-md: 3rem;
+  --spacing-cover-lg: 3.5rem;
+  --spacing-cover-xl: 4rem;
+  --spacing-cover-2xl: 5.25rem;
+  --spacing-cover-3xl: 9.25rem;
+  --spacing-avatar-lg: 4rem;
+  --spacing-avatar-xl: 6.5rem;
+  --spacing-hero-gap: 11.25rem;
+  --spacing-tab-bar: var(--tab-bar-height);
+  --spacing-viewfinder: 42%;
+  --spacing-viewfinder-hint: calc(42% + 9.5rem);
+
+  --container-page: 75rem;
+  --container-main: 35rem;
+  --container-narrow: 47.5rem;
+  --container-link: 68.75rem;
+  --container-form: 28.75rem;
+  --container-form-wide: 31.25rem;
+  --container-aside: 23.75rem;
+  --container-dialog: 28.75rem;
+  --container-search: 38.75rem;
+  --container-search-trigger: 17.5rem;
+  --container-select: 13.75rem;
+  --container-scroller: 13.75rem;
+
+  --shadow-popover: 0 12px 32px rgb(0 0 0 / 0.45);
+  --shadow-dialog: 0 24px 60px rgb(0 0 0 / 0.55);
+  --shadow-cover: 0 12px 40px rgb(0 0 0 / 0.5);
+  --shadow-ring-card: 0 0 0 3px var(--card);
+  --shadow-ring-page: 0 0 0 3px var(--background);
+  --shadow-avatar: 0 0 0 4px var(--background), 0 0 0 6px rgb(232 236 245 / 0.25);
+  --shadow-viewfinder: 0 0 0 999px rgb(5 7 12 / 0.55);
+
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+  --animate-scan: scan 2.4s ease-in-out infinite;
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes scan {
+    0%,
+    100% {
+      top: 8%;
+    }
+    50% {
+      top: 92%;
+    }
+  }
+}
+
+:root {
+  --background: #0b0f1a;
+  --foreground: #e8ecf5;
+  --soft-foreground: #c3cad9;
+  --card: #111726;
+  --card-foreground: #e8ecf5;
+  --popover: #151c2c;
+  --popover-foreground: #e8ecf5;
+  --primary: #2f7cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #1a2234;
+  --secondary-foreground: #e8ecf5;
+  --muted: #1a2234;
+  --muted-foreground: #8a94ad;
+  --accent: #1f2840;
+  --accent-foreground: #e8ecf5;
+  --destructive: #e5484d;
+  --destructive-foreground: #ff9aa0;
+  --destructive-soft: #3a1820;
+  --destructive-soft-foreground: #ffb3bc;
+  --success: #3ecf8e;
+  --success-foreground: #6fe0ad;
+  --warning: #f5a524;
+  --warning-foreground: #f5c26b;
+  --info: #8fb6ff;
+  --border: #232c42;
+  --border-subtle: #1c2438;
+  --input: #2a3550;
+  --control: #4a5677;
+  --ring: #2f7cf6;
+  --link: #7fb0ff;
+  --link-hover: #a9c9ff;
+  --brand-tile: #101a33;
+  --nav: #101627;
+  --overlay: rgb(3 6 12 / 0.72);
+  --disabled-foreground: #4a5571;
+  --platinum: #b4c8e0;
+  --platinum-foreground: #c5d4e8;
+  --gold: #e3b341;
+  --gold-foreground: #e9c46a;
+  --silver: #b9c0c9;
+  --silver-foreground: #d5dae1;
+  --bronze: #c98a5a;
+  --bronze-foreground: #e2a77a;
+
+  --control-sm: 2rem;
+  --control-md: 2.25rem;
+  --control-lg: 2.5rem;
+  --control-xl: 3rem;
+  --otp-slot: 2.375rem;
+  --otp-height: 3rem;
+  --tab-bar-height: 4.5rem;
+
+  color-scheme: dark;
+}
+
+@media (width >= 48rem) {
+  :root {
+    --otp-slot: 2.75rem;
+    --otp-height: 3.25rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply bg-background;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply min-h-dvh bg-background font-sans text-base text-foreground antialiased;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility pb-safe {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+@utility pb-tab-bar {
+  padding-bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom));
+}
+
+@utility grid-cols-fill-* {
+  grid-template-columns: repeat(auto-fill, minmax(--spacing(--value(integer)), 1fr));
+}
+
+@utility object-y-* {
+  object-position: center calc(--value(integer) * 1%);
+}
+
+@utility bg-brand-glow {
+  background-image: radial-gradient(circle at 70% 30%, var(--primary) 0%, var(--brand-tile) 45%, var(--background) 100%);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

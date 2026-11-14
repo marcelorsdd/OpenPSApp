@@ -1,0 +1,343 @@
+{
+  "startup": {
+    "title": "OpenPSApp",
+    "missingKey": "Sign-in is unavailable: the server did not send its Clerk key.",
+    "offline": "Could not reach the OpenPSApp server."
+  },
+  "common": {
+    "loadError": "Could not load this page.",
+    "retry": "Try again",
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "nav": {
+    "label": "Main",
+    "profile": "Profile",
+    "trophies": "Trophies",
+    "account": "Account",
+    "accountAndConsole": "Account and PS5",
+    "keys": {
+      "profile": "p",
+      "trophies": "t",
+      "account": "a"
+    }
+  },
+  "header": {
+    "home": "OpenPSApp home",
+    "search": "Search games & trophies…",
+    "searchLabel": "Search games and trophies",
+    "accountMenu": "Account menu",
+    "whatIsSent": "What is sent",
+    "signOut": "Sign out"
+  },
+  "sync": {
+    "header": "PS5 synced {{ago}}",
+    "short": "Synced {{ago}}",
+    "waiting": "Waiting for the first sync",
+    "none": "No PS5 connected"
+  },
+  "footer": {
+    "data": "Data from {{name}}'s PS5 · last sync {{date}}",
+    "dataNever": "Data from {{name}}'s PS5 · not synced yet",
+    "whatIsSent": "What is sent",
+    "openSource": "OpenPSApp is open source. The console app is GPL.",
+    "privacy": "Privacy",
+    "github": "GitHub"
+  },
+  "landing": {
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "title": "Your PS5 trophies and hours, anywhere.",
+    "lead": "See on your phone or computer what you played and earned on your jailbroken PS5, even with the console off.",
+    "whatIsSent": "What is sent",
+    "steps": {
+      "label": "How to connect",
+      "one": "On the PS5, open OpenPSApp → Account",
+      "two": "Tap Link account",
+      "three": "Here, sign in and confirm the code"
+    },
+    "linkNotice": {
+      "title": "Sign in to connect your PS5",
+      "description": "After you sign in, confirm the code shown on the TV."
+    },
+    "preview": {
+      "game": "Your latest game",
+      "gameMeta": "14 h 18 min · 21 of 42",
+      "trophy": "New trophy",
+      "trophyMeta": "Silver earned"
+    }
+  },
+  "profile": {
+    "fallbackName": "Profile",
+    "games_one": "{{count}} game",
+    "games_other": "{{count}} games",
+    "summary": "{{games}} · {{playtime}} played",
+    "summaryShort": "{{games}} · {{playtime}}",
+    "trophies": "Trophies",
+    "trophiesOf": "of {{total}}",
+    "trophiesOfLong": "of {{total}} trophies",
+    "recent": "Recently played",
+    "seeAll": "See all",
+    "showLess": "Show less",
+    "playedOn": "{{duration}} · played on {{date}}",
+    "notPlayed": "{{duration}} · not played yet",
+    "cardShort": "{{duration}} · {{progress}}%",
+    "setProgress": "{{earned}} of {{total}} trophies",
+    "noTrophies": "No trophies",
+    "latestTrophies": "Latest trophies",
+    "trophyMeta": "{{game}} · {{date}}",
+    "trophyMetaShort": "{{game}} · {{grade}} · {{date}}",
+    "noTrophiesYet": "No trophies earned yet.",
+    "month": {
+      "previous": "Previous month",
+      "next": "Next month",
+      "empty": "No trophies this month.",
+      "trophies": "Trophies",
+      "pace": "Pace",
+      "perWeek": "/week",
+      "topGame": "Game of the month",
+      "topGameCount_one": "{{count}} trophy in {{month}}",
+      "topGameCount_other": "{{count}} trophies in {{month}}"
+    },
+    "platinums": {
+      "title": "Platinums",
+      "none": "None yet.",
+      "closest": "{{game}} is the closest: {{progress}}%.",
+      "count_one": "{{count}} platinum.",
+      "count_other": "{{count}} platinums.",
+      "latest": "Latest: {{game}}."
+    },
+    "empty": {
+      "title": "No PS5 connected yet",
+      "description": "Connect your PS5 to see games, playtime and trophies here, even with the console off.",
+      "cta": "Connect a PS5"
+    },
+    "waiting": {
+      "title": "Waiting for the first sync",
+      "description": "{{name}}'s PS5 is connected. Your games and trophies show up here after its first sync."
+    }
+  },
+  "trophies": {
+    "title": "Trophies",
+    "summary": "{{earned}} of {{total}} earned · {{games}}",
+    "incompleteOnly": "Incomplete only",
+    "sortLabel": "Sort:",
+    "sort": {
+      "label": "Sort games",
+      "recent": "Latest trophy",
+      "progress": "Progress",
+      "name": "Name"
+    },
+    "gradeOf": "of {{total}}",
+    "gradeCount": "{{grade}} {{earned}}/{{total}}",
+    "setMeta": "{{earned}} of {{total}} · last on {{date}}",
+    "setMetaNone": "{{earned}} of {{total}} · none yet",
+    "timeline": "Timeline",
+    "timelineDay": "{{day}} · {{count}}",
+    "timelineItem": "{{game}} · {{grade}}",
+    "timelineAll": "See full timeline",
+    "timelineLess": "Show less",
+    "timelineEmpty": "No trophies earned yet.",
+    "empty": "No trophies synced yet.",
+    "emptyFilter": "Every game here is complete."
+  },
+  "game": {
+    "summary": "{{duration}} played · last played on {{date}}",
+    "summaryNever": "{{duration}} played · not played yet",
+    "summaryShort": "{{duration}} · last played {{date}}",
+    "recentlyEarned": "Recently earned",
+    "recentMeta": "{{grade}} · {{date}}",
+    "filter": {
+      "label": "Filter trophies",
+      "all": "All",
+      "earned": "Earned",
+      "locked": "Missing"
+    },
+    "showHidden": "Show hidden ({{count}})",
+    "sortLabel": "Sort:",
+    "sort": {
+      "label": "Sort trophies",
+      "default": "Default",
+      "earned": "Date earned",
+      "grade": "Trophy type"
+    },
+    "locked": "Locked",
+    "lockedShort": "{{grade}} · locked",
+    "hiddenName": "Hidden trophy",
+    "hiddenDescription": "Keep playing to find out.",
+    "reveal": "Reveal",
+    "noTrophies": "This game has no trophies.",
+    "emptyFilter": "No trophies match this filter.",
+    "notFound": "This game is not on your account."
+  },
+  "grade": {
+    "platinum": "Platinum",
+    "gold": "Gold",
+    "silver": "Silver",
+    "bronze": "Bronze",
+    "unknown": "Trophy"
+  },
+  "account": {
+    "title": "Account",
+    "console": {
+      "title": "Your PS5",
+      "hint": "An account has one PS5 at a time.",
+      "hintLong": "An account has one PS5 at a time. Connecting another replaces this one.",
+      "profile": "Profile {{name}}",
+      "lastSync": "Last sync {{date}}",
+      "neverSynced": "Not synced yet",
+      "synced": "Synced",
+      "waiting": "Waiting",
+      "change": "Change PS5",
+      "disconnect": "Disconnect",
+      "connectedOn": "Connected on",
+      "syncs": "Syncs",
+      "syncInterval": "every 15 min",
+      "onAccount": "On the account",
+      "onAccountValue": "{{games}} · {{trophies}}",
+      "trophies_one": "{{count}} trophy",
+      "trophies_other": "{{count}} trophies"
+    },
+    "empty": {
+      "title": "No PS5 connected",
+      "description": "Connect your PS5 to see games, playtime and trophies here, even with the console off.",
+      "cta": "I have a code"
+    },
+    "steps": {
+      "one": "On the PS5, open OpenPSApp from the Media tab.",
+      "two": "Go to Account and tap Link account.",
+      "three": "Scan the QR code with your phone or type the code here."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Site language",
+      "languageShort": "Language",
+      "auto": "Automatic (browser)"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "description": "The PS5 sends only what the app shows: profile name, games, playtime and trophies. It never sends console or PSN IDs.",
+      "whatIsSent": "See everything that is sent",
+      "whatIsSentShort": "What is sent",
+      "delete": "Delete account and data"
+    },
+    "signOut": "Sign out",
+    "disconnect": {
+      "title": "Disconnect the PS5?",
+      "description": "{{name}}'s PS5 stops syncing right away. To connect it again, get a new code on the console.",
+      "purge": "Also delete the account data",
+      "purgeHint": "Games, playtime and trophies that were sent. Without this, they stay here.",
+      "confirm": "Disconnect",
+      "done": "PS5 disconnected",
+      "doneWithData": "PS5 disconnected and data deleted",
+      "failed": "Could not disconnect the PS5. Try again."
+    },
+    "delete": {
+      "title": "Delete your account?",
+      "description": "This deletes your account, the connected PS5 and every game, playtime and trophy that was sent. Game and trophy images are shared between accounts, so they stay on the server. It cannot be undone.",
+      "confirm": "Delete account",
+      "done": "Account deleted",
+      "failed": "Could not delete the account. Try again.",
+      "loginFailed": "Your data was deleted, but the login could not be removed. Try again."
+    }
+  },
+  "link": {
+    "title": "Connect your PS5",
+    "phoneHeader": "Connect PS5",
+    "phoneTitle": "Connect your PS5",
+    "hint": "Type the code shown on the PS5, under OpenPSApp → Account.",
+    "phoneHint": "On the PS5, open OpenPSApp → Account and tap Link account. The TV shows a QR code and a code.",
+    "scan": "Scan the QR code on the TV",
+    "orType": "or type the code",
+    "codeLabel": "Code",
+    "expires": "The code is valid for 10 minutes.",
+    "continue": "Continue",
+    "continuePhone": "Continue with the code",
+    "help": {
+      "title": "Where is the code?",
+      "one": "On the PS5, open OpenPSApp from the Media tab.",
+      "two": "Go to Account and tap Link account.",
+      "three": "Type the code here or point your phone's camera at the QR code on the TV."
+    },
+    "invalid": {
+      "title": "Invalid or expired code",
+      "description": "Codes are valid for 10 minutes. On the PS5, tap Link account again to get a new one."
+    },
+    "rateLimited": "Too many attempts. Wait a minute and try again.",
+    "failed": "Could not check the code. Try again.",
+    "codeFormat": "Type the 8 characters shown on the TV.",
+    "confirm": {
+      "title": "Connect {{name}}'s PS5?",
+      "code": "Code",
+      "checkTitle": "Check the TV",
+      "check": "Only confirm if {{code}} is on your PS5 screen right now. If someone sent you this link, do not confirm.",
+      "checkShort": "Only confirm if this same code is on your PS5 screen right now.",
+      "replacesTitle": "Replaces the PS5 connected now",
+      "replaces": "Your account has one PS5 at a time. The current one (profile {{name}}) stops syncing.",
+      "replacesShort": "Replaces the PS5 connected now. Your account has one PS5 at a time.",
+      "sendsTitle": "This PS5 will send",
+      "sendsProfile": "Profile name",
+      "sendsGames": "Games and playtime",
+      "sendsTrophies": "Trophies and dates",
+      "sendsImages": "Game icons and covers",
+      "never": "It never sends console or PSN IDs",
+      "sendsShort": "This PS5 will send profile name, games, playtime, trophies and covers. It never sends console or PSN IDs.",
+      "otherCode": "Use another code",
+      "typeCode": "Type code",
+      "scanAgain": "Scan another QR",
+      "scanAgainShort": "Scan another",
+      "submit": "Connect"
+    },
+    "done": {
+      "title": "{{name}}'s PS5 connected",
+      "description": "The console finishes connecting in a few seconds and then sends your games and trophies.",
+      "firstSync": "First sync",
+      "waiting": "Waiting for the console…",
+      "syncing": "Console connected, sending games and trophies…",
+      "synced": "Games and trophies received",
+      "cta": "See my profile",
+      "toastTitle": "PS5 connected",
+      "toastDescription": "The first sync starts in a moment.",
+      "step": "{{step}} of {{total}}"
+    },
+    "scanner": {
+      "title": "Scan QR code",
+      "close": "Close scanner",
+      "hint": "Point at the QR code on the TV",
+      "where": "It shows on the PS5 under OpenPSApp → Account → Link account.",
+      "searching": "Looking for the code…",
+      "type": "Type the code",
+      "privacy": "The camera is only used to read the code. Nothing is recorded or sent.",
+      "notOurs": "This isn't an OpenPSApp code.",
+      "deniedTitle": "Camera access denied",
+      "denied": "Allow the camera for this site in your browser settings, or type the code.",
+      "unavailableTitle": "No camera available",
+      "unavailable": "This device has no camera the site can use. Type the code instead.",
+      "failedTitle": "Could not start the camera",
+      "failed": "Try again, or type the code."
+    }
+  },
+  "search": {
+    "title": "Search",
+    "description": "Search your games, earned trophies and pages.",
+    "placeholder": "Search games and trophies…",
+    "games": "Recent games",
+    "trophies": "Latest trophies",
+    "pages": "Go to",
+    "empty": "Nothing found.",
+    "gameMeta": "{{progress}}% · {{duration}}",
+    "trophyGame": "· {{game}}",
+    "footer": "Searching {{games}} and {{trophies}}",
+    "footerGames_one": "{{count}} game",
+    "footerGames_other": "{{count}} games",
+    "footerTrophies_one": "{{count}} trophy",
+    "footerTrophies_other": "{{count}} trophies",
+    "keys": "↑↓ navigate · ↵ open · Esc close"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page does not exist or was moved.",
+    "home": "Go to the home page"
+  }
+}

@@ -1,0 +1,343 @@
+{
+  "startup": {
+    "title": "OpenPSApp",
+    "missingKey": "No se puede iniciar sesión: el servidor no envió su clave de Clerk.",
+    "offline": "No se pudo contactar con el servidor de OpenPSApp."
+  },
+  "common": {
+    "loadError": "No se pudo cargar esta página.",
+    "retry": "Intentar de nuevo",
+    "back": "Volver",
+    "cancel": "Cancelar",
+    "close": "Cerrar"
+  },
+  "nav": {
+    "label": "Principal",
+    "profile": "Perfil",
+    "trophies": "Trofeos",
+    "account": "Cuenta",
+    "accountAndConsole": "Cuenta y PS5",
+    "keys": {
+      "profile": "p",
+      "trophies": "t",
+      "account": "c"
+    }
+  },
+  "header": {
+    "home": "Inicio de OpenPSApp",
+    "search": "Buscar juegos y trofeos…",
+    "searchLabel": "Buscar juegos y trofeos",
+    "accountMenu": "Menú de la cuenta",
+    "whatIsSent": "Qué se envía",
+    "signOut": "Cerrar sesión"
+  },
+  "sync": {
+    "header": "PS5 sincronizada {{ago}}",
+    "short": "Sincronizada {{ago}}",
+    "waiting": "Esperando la primera sincronización",
+    "none": "Ninguna PS5 conectada"
+  },
+  "footer": {
+    "data": "Datos de la PS5 de {{name}} · última sincronización {{date}}",
+    "dataNever": "Datos de la PS5 de {{name}} · aún no se sincronizó",
+    "whatIsSent": "Qué se envía",
+    "openSource": "OpenPSApp es de código abierto. La app de la consola es GPL.",
+    "privacy": "Privacidad",
+    "github": "GitHub"
+  },
+  "landing": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Crear cuenta",
+    "title": "Tus trofeos y horas de la PS5, en cualquier lugar.",
+    "lead": "Mira en el móvil o en el ordenador lo que jugaste y conseguiste en tu PS5 desbloqueada, incluso con la consola apagada.",
+    "whatIsSent": "Qué se envía",
+    "steps": {
+      "label": "Cómo conectar",
+      "one": "En la PS5, abre OpenPSApp → Cuenta",
+      "two": "Toca Vincular cuenta",
+      "three": "Aquí, inicia sesión y confirma el código"
+    },
+    "linkNotice": {
+      "title": "Inicia sesión para conectar tu PS5",
+      "description": "Después de iniciar sesión, confirma el código que aparece en la TV."
+    },
+    "preview": {
+      "game": "Tu último juego",
+      "gameMeta": "14 h 18 min · 21 de 42",
+      "trophy": "Trofeo nuevo",
+      "trophyMeta": "Plata conseguida"
+    }
+  },
+  "profile": {
+    "fallbackName": "Perfil",
+    "games_one": "{{count}} juego",
+    "games_other": "{{count}} juegos",
+    "summary": "{{games}} · {{playtime}} jugadas",
+    "summaryShort": "{{games}} · {{playtime}}",
+    "trophies": "Trofeos",
+    "trophiesOf": "de {{total}}",
+    "trophiesOfLong": "de {{total}} trofeos",
+    "recent": "Jugados recientemente",
+    "seeAll": "Ver todos",
+    "showLess": "Mostrar menos",
+    "playedOn": "{{duration}} · jugado el {{date}}",
+    "notPlayed": "{{duration}} · aún sin jugar",
+    "cardShort": "{{duration}} · {{progress}}%",
+    "setProgress": "{{earned}} de {{total}} trofeos",
+    "noTrophies": "Sin trofeos",
+    "latestTrophies": "Últimos trofeos",
+    "trophyMeta": "{{game}} · {{date}}",
+    "trophyMetaShort": "{{game}} · {{grade}} · {{date}}",
+    "noTrophiesYet": "Aún no conseguiste trofeos.",
+    "month": {
+      "previous": "Mes anterior",
+      "next": "Mes siguiente",
+      "empty": "Ningún trofeo este mes.",
+      "trophies": "Trofeos",
+      "pace": "Ritmo",
+      "perWeek": "/semana",
+      "topGame": "Juego del mes",
+      "topGameCount_one": "{{count}} trofeo en {{month}}",
+      "topGameCount_other": "{{count}} trofeos en {{month}}"
+    },
+    "platinums": {
+      "title": "Platinos",
+      "none": "Ninguno todavía.",
+      "closest": "{{game}} es el más cercano: {{progress}}%.",
+      "count_one": "{{count}} platino.",
+      "count_other": "{{count}} platinos.",
+      "latest": "El último: {{game}}."
+    },
+    "empty": {
+      "title": "Aún no hay ninguna PS5 conectada",
+      "description": "Conecta tu PS5 para ver juegos, tiempo de juego y trofeos aquí, incluso con la consola apagada.",
+      "cta": "Conectar una PS5"
+    },
+    "waiting": {
+      "title": "Esperando la primera sincronización",
+      "description": "La PS5 de {{name}} está conectada. Tus juegos y trofeos aparecen aquí después de la primera sincronización."
+    }
+  },
+  "trophies": {
+    "title": "Trofeos",
+    "summary": "{{earned}} de {{total}} conseguidos · {{games}}",
+    "incompleteOnly": "Solo incompletos",
+    "sortLabel": "Ordenar:",
+    "sort": {
+      "label": "Ordenar juegos",
+      "recent": "Último trofeo",
+      "progress": "Progreso",
+      "name": "Nombre"
+    },
+    "gradeOf": "de {{total}}",
+    "gradeCount": "{{grade}} {{earned}}/{{total}}",
+    "setMeta": "{{earned}} de {{total}} · el último el {{date}}",
+    "setMetaNone": "{{earned}} de {{total}} · ninguno todavía",
+    "timeline": "Línea de tiempo",
+    "timelineDay": "{{day}} · {{count}}",
+    "timelineItem": "{{game}} · {{grade}}",
+    "timelineAll": "Ver la línea de tiempo completa",
+    "timelineLess": "Mostrar menos",
+    "timelineEmpty": "Aún no conseguiste trofeos.",
+    "empty": "Aún no hay trofeos sincronizados.",
+    "emptyFilter": "Todos los juegos aquí están completos."
+  },
+  "game": {
+    "summary": "{{duration}} jugadas · última partida el {{date}}",
+    "summaryNever": "{{duration}} jugadas · aún sin jugar",
+    "summaryShort": "{{duration}} · última partida {{date}}",
+    "recentlyEarned": "Conseguidos recientemente",
+    "recentMeta": "{{grade}} · {{date}}",
+    "filter": {
+      "label": "Filtrar trofeos",
+      "all": "Todos",
+      "earned": "Conseguidos",
+      "locked": "Faltan"
+    },
+    "showHidden": "Mostrar ocultos ({{count}})",
+    "sortLabel": "Ordenar:",
+    "sort": {
+      "label": "Ordenar trofeos",
+      "default": "Predeterminado",
+      "earned": "Fecha de obtención",
+      "grade": "Tipo de trofeo"
+    },
+    "locked": "Bloqueado",
+    "lockedShort": "{{grade}} · bloqueado",
+    "hiddenName": "Trofeo oculto",
+    "hiddenDescription": "Sigue jugando para descubrirlo.",
+    "reveal": "Revelar",
+    "noTrophies": "Este juego no tiene trofeos.",
+    "emptyFilter": "Ningún trofeo coincide con este filtro.",
+    "notFound": "Este juego no está en tu cuenta."
+  },
+  "grade": {
+    "platinum": "Platino",
+    "gold": "Oro",
+    "silver": "Plata",
+    "bronze": "Bronce",
+    "unknown": "Trofeo"
+  },
+  "account": {
+    "title": "Cuenta",
+    "console": {
+      "title": "Tu PS5",
+      "hint": "Una cuenta tiene una PS5 a la vez.",
+      "hintLong": "Una cuenta tiene una PS5 a la vez. Conectar otra reemplaza esta.",
+      "profile": "Perfil {{name}}",
+      "lastSync": "Última sincronización {{date}}",
+      "neverSynced": "Aún no se sincronizó",
+      "synced": "Sincronizada",
+      "waiting": "Esperando",
+      "change": "Cambiar de PS5",
+      "disconnect": "Desconectar",
+      "connectedOn": "Conectada el",
+      "syncs": "Se sincroniza",
+      "syncInterval": "cada 15 min",
+      "onAccount": "En la cuenta",
+      "onAccountValue": "{{games}} · {{trophies}}",
+      "trophies_one": "{{count}} trofeo",
+      "trophies_other": "{{count}} trofeos"
+    },
+    "empty": {
+      "title": "Ninguna PS5 conectada",
+      "description": "Conecta tu PS5 para ver juegos, tiempo de juego y trofeos aquí, incluso con la consola apagada.",
+      "cta": "Ya tengo un código"
+    },
+    "steps": {
+      "one": "En la PS5, abre OpenPSApp desde la pestaña Multimedia.",
+      "two": "Ve a Cuenta y toca Vincular cuenta.",
+      "three": "Escanea el código QR con el móvil o escribe el código aquí."
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "language": "Idioma del sitio",
+      "languageShort": "Idioma",
+      "auto": "Automático (navegador)"
+    },
+    "privacy": {
+      "title": "Privacidad",
+      "description": "La PS5 envía solo lo que muestra la app: nombre del perfil, juegos, tiempo de juego y trofeos. Nunca envía IDs de la consola ni de PSN.",
+      "whatIsSent": "Ver todo lo que se envía",
+      "whatIsSentShort": "Qué se envía",
+      "delete": "Borrar cuenta y datos"
+    },
+    "signOut": "Cerrar sesión",
+    "disconnect": {
+      "title": "¿Desconectar la PS5?",
+      "description": "La PS5 de {{name}} deja de sincronizarse de inmediato. Para conectarla de nuevo, genera un código en la consola.",
+      "purge": "Borrar también los datos de la cuenta",
+      "purgeHint": "Juegos, tiempo de juego y trofeos enviados. Sin esto, se quedan aquí.",
+      "confirm": "Desconectar",
+      "done": "PS5 desconectada",
+      "doneWithData": "PS5 desconectada y datos borrados",
+      "failed": "No se pudo desconectar la PS5. Inténtalo de nuevo."
+    },
+    "delete": {
+      "title": "¿Borrar tu cuenta?",
+      "description": "Esto borra tu cuenta, la PS5 conectada y todos los juegos, tiempos y trofeos enviados. Las imágenes de juegos y trofeos se comparten entre cuentas, así que se quedan en el servidor. No se puede deshacer.",
+      "confirm": "Borrar cuenta",
+      "done": "Cuenta borrada",
+      "failed": "No se pudo borrar la cuenta. Inténtalo de nuevo.",
+      "loginFailed": "Tus datos se borraron, pero no se pudo quitar el inicio de sesión. Inténtalo de nuevo."
+    }
+  },
+  "link": {
+    "title": "Conectar tu PS5",
+    "phoneHeader": "Conectar PS5",
+    "phoneTitle": "Conecta tu PS5",
+    "hint": "Escribe el código que aparece en la PS5, en OpenPSApp → Cuenta.",
+    "phoneHint": "En la PS5, abre OpenPSApp → Cuenta y toca Vincular cuenta. La TV muestra un código QR y un código.",
+    "scan": "Escanear el código QR de la TV",
+    "orType": "o escribe el código",
+    "codeLabel": "Código",
+    "expires": "El código vale por 10 minutos.",
+    "continue": "Continuar",
+    "continuePhone": "Continuar con el código",
+    "help": {
+      "title": "¿Dónde está el código?",
+      "one": "En la PS5, abre OpenPSApp desde la pestaña Multimedia.",
+      "two": "Ve a Cuenta y toca Vincular cuenta.",
+      "three": "Escribe aquí el código o apunta la cámara del móvil al código QR de la TV."
+    },
+    "invalid": {
+      "title": "Código no válido o caducado",
+      "description": "Los códigos valen 10 minutos. En la PS5, toca Vincular cuenta de nuevo para generar otro."
+    },
+    "rateLimited": "Demasiados intentos. Espera un minuto e inténtalo de nuevo.",
+    "failed": "No se pudo comprobar el código. Inténtalo de nuevo.",
+    "codeFormat": "Escribe los 8 caracteres que aparecen en la TV.",
+    "confirm": {
+      "title": "¿Conectar la PS5 de {{name}}?",
+      "code": "Código",
+      "checkTitle": "Compruébalo en la TV",
+      "check": "Confirma solo si {{code}} está en la pantalla de tu PS5 ahora. Si alguien te envió este enlace, no confirmes.",
+      "checkShort": "Confirma solo si este mismo código está en la pantalla de tu PS5 ahora.",
+      "replacesTitle": "Reemplaza la PS5 conectada ahora",
+      "replaces": "Tu cuenta tiene una PS5 a la vez. La actual (perfil {{name}}) deja de sincronizarse.",
+      "replacesShort": "Reemplaza la PS5 conectada ahora. Tu cuenta tiene una PS5 a la vez.",
+      "sendsTitle": "Esta PS5 va a enviar",
+      "sendsProfile": "Nombre del perfil",
+      "sendsGames": "Juegos y tiempo de juego",
+      "sendsTrophies": "Trofeos y fechas",
+      "sendsImages": "Iconos y portadas de los juegos",
+      "never": "Nunca envía IDs de la consola ni de PSN",
+      "sendsShort": "Esta PS5 va a enviar el nombre del perfil, juegos, tiempo de juego, trofeos y portadas. Nunca envía IDs de la consola ni de PSN.",
+      "otherCode": "Usar otro código",
+      "typeCode": "Escribir código",
+      "scanAgain": "Escanear otro QR",
+      "scanAgainShort": "Escanear otro",
+      "submit": "Conectar"
+    },
+    "done": {
+      "title": "PS5 de {{name}} conectada",
+      "description": "La consola termina la conexión en unos segundos y luego envía tus juegos y trofeos.",
+      "firstSync": "Primera sincronización",
+      "waiting": "Esperando la consola…",
+      "syncing": "Consola conectada, enviando juegos y trofeos…",
+      "synced": "Juegos y trofeos recibidos",
+      "cta": "Ver mi perfil",
+      "toastTitle": "PS5 conectada",
+      "toastDescription": "La primera sincronización empieza en un momento.",
+      "step": "{{step}} de {{total}}"
+    },
+    "scanner": {
+      "title": "Escanear código QR",
+      "close": "Cerrar el lector",
+      "hint": "Apunta al código QR de la TV",
+      "where": "Aparece en la PS5 en OpenPSApp → Cuenta → Vincular cuenta.",
+      "searching": "Buscando el código…",
+      "type": "Escribir el código",
+      "privacy": "La cámara solo se usa para leer el código. No se graba ni se envía nada.",
+      "notOurs": "Este no es un código de OpenPSApp.",
+      "deniedTitle": "Acceso a la cámara denegado",
+      "denied": "Permite la cámara para este sitio en los ajustes del navegador, o escribe el código.",
+      "unavailableTitle": "No hay cámara disponible",
+      "unavailable": "Este dispositivo no tiene una cámara que el sitio pueda usar. Escribe el código.",
+      "failedTitle": "No se pudo abrir la cámara",
+      "failed": "Inténtalo de nuevo o escribe el código."
+    }
+  },
+  "search": {
+    "title": "Buscar",
+    "description": "Busca tus juegos, trofeos conseguidos y páginas.",
+    "placeholder": "Buscar juegos y trofeos…",
+    "games": "Juegos recientes",
+    "trophies": "Últimos trofeos",
+    "pages": "Ir a",
+    "empty": "No se encontró nada.",
+    "gameMeta": "{{progress}}% · {{duration}}",
+    "trophyGame": "· {{game}}",
+    "footer": "Busca en {{games}} y {{trophies}}",
+    "footerGames_one": "{{count}} juego",
+    "footerGames_other": "{{count}} juegos",
+    "footerTrophies_one": "{{count}} trofeo",
+    "footerTrophies_other": "{{count}} trofeos",
+    "keys": "↑↓ navegar · ↵ abrir · Esc cerrar"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Esta página no existe o cambió de lugar.",
+    "home": "Ir al inicio"
+  }
+}
