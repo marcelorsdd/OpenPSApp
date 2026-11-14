@@ -1,153 +1,282 @@
 <p align="center"><img src="tile/sce_sys/icon0.png" width="128" alt="OpenPSApp icon"></p>
 
-# OpenPSApp
+<h1 align="center">OpenPSApp</h1>
 
-Homebrew for a jailbroken PS5 that brings PlayStation App features to the console, offline: playtime per game, trophies (hidden ones included), recent trophies per game, a monthly recap and a trophy timeline. It runs as an ELF payload that serves a web UI on port 7777, opened from a tile in the Media tab. It only reads the console's playtime and trophy files; its own settings live in `/data/openpsapp`.
+<p align="center">Your PS5 playtime and trophies, on the console and anywhere else.</p>
+
+<p align="center">
+  <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/marcelorsdd/OpenPSApp"><img src="https://api.scorecard.dev/projects/github.com/marcelorsdd/OpenPSApp/badge" alt="OpenSSF Scorecard"></a>
+  <a href="https://github.com/marcelorsdd/OpenPSApp/releases/latest"><img src="https://img.shields.io/github/v/release/marcelorsdd/OpenPSApp" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue" alt="License: GPL-3.0-or-later"></a>
+  <a href="contract/LICENSE"><img src="https://img.shields.io/badge/contract-MIT-green" alt="contract: MIT"></a>
+  <a href=".nvmrc"><img src="https://img.shields.io/badge/node-24-339933?logo=nodedotjs&logoColor=white" alt="Node 24"></a>
+</p>
+
+<p align="center"><img src=".github/assets/console-tour.gif" width="800" alt="The console app: the profile, a game page and its trophies"></p>
+
+OpenPSApp is homebrew for a jailbroken PS5. A jailbroken console has no PlayStation App, so OpenPSApp brings the parts you miss back to the console itself: playtime per game, trophies (hidden ones included), a monthly recap and a trophy timeline. It works offline. If you want, it can also sync to a website, so you can follow your profile from your phone even with the PS5 off.
+
+## Contents
+
+- [What it does](#what-it-does)
+- [Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Install](#install)
+- [First launch](#first-launch)
+- [Using it](#using-it)
+- [The website (optional)](#the-website-optional)
+- [Privacy](#privacy)
+- [Settings](#settings)
+- [FAQ](#faq)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
+## What it does
+
+- **Profile:** number of games, total time played, trophies and platinums, recently played games and a monthly recap.
+- **Game pages:** playtime, last played date, recent trophies and the full trophy list.
+- **Trophies:** by game or as a timeline. Filter and sort them, and reveal hidden trophies one at a time.
+- **Hide games**, such as homebrew, from the lists and totals.
+- **Three languages:** English, Portuguese (Brazil) and Spanish. It follows the console language by default.
+- **Your phone works too:** open it from any phone or computer on the same network.
+- **Optional website:** link the console to an account and see the same profile anywhere.
+- **Read-only on your data:** it reads the console's playtime and trophy files and never changes them. It writes only to its own folder, `/data/openpsapp`, and installs one Media-tab tile.
+
+## Screenshots
+
+### On the console
+
+<p align="center"><img src=".github/assets/console-profile.png" width="800" alt="Profile on the console"></p>
+
+<table>
+  <tr>
+    <td align="center"><img src=".github/assets/console-game.png" width="400" alt="Game page on the console"><br>Game page</td>
+    <td align="center"><img src=".github/assets/console-trophies.png" width="400" alt="Trophies on the console"><br>Trophies</td>
+  </tr>
+</table>
+
+### On the website
+
+<table>
+  <tr>
+    <td align="center"><img src=".github/assets/web-profile.png" width="400" alt="Profile on the website"><br>Profile</td>
+    <td align="center"><img src=".github/assets/web-game.png" width="400" alt="Game page on the website"><br>Game page</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center"><img src=".github/assets/web-phone-profile.png" width="280" alt="Profile on a phone"><br>Profile on a phone</td>
+    <td align="center"><img src=".github/assets/web-phone-link.png" width="280" alt="Linking a console from a phone"><br>Linking a console</td>
+  </tr>
+</table>
+
+## Requirements
+
+- A jailbroken PS5 that can load ELF payloads built with [ps5-payload-sdk](https://github.com/ps5-payload-dev/sdk), for example through elfldr (port 9021) or Prospero Manager. Which firmware versions work depends on your jailbreak, not on OpenPSApp.
+- To open it from a phone or computer: that device on the same network as the PS5.
+- For the website: internet on the PS5 and an account on the website. See [The website](#the-website-optional).
 
 ## Install
 
 1. Download `openpsapp.elf` from the [latest release](https://github.com/marcelorsdd/OpenPSApp/releases/latest).
-2. Load it with your payload loader (elfldr on port 9021, Prospero Manager or an autoload setup).
-3. A notification confirms it started on port 7777. On first run it adds an OpenPSApp tile to the Media tab; open it to see your profile. From a phone or computer on the same network, open `http://<ps5-ip>:7777`.
+2. Send it to your payload loader.
+   - **elfldr** (listening on port 9021), from a computer on the same network:
+     ```sh
+     socat -t 99999999 - TCP:192.168.1.50:9021 < openpsapp.elf
+     ```
+     Use your console's IP address instead of `192.168.1.50`.
+   - **Prospero Manager:** add `openpsapp.elf` to its payload library from its web page, then launch it.
+3. Wait for the notification **OpenPSApp running on port 7777**.
 
-Settings: `/data/openpsapp/config.json`.
+### Start it with the console
 
-## Repository
+The jailbreak, and OpenPSApp with it, stops when the console restarts. If your loader can autoload payloads (Prospero Manager's autoloader, for example), add `openpsapp.elf` to it so OpenPSApp starts every time you run the jailbreak.
 
-- `payload/`: the ELF (C++20, ps5-payload-sdk). Reads `app.db` and the trophy files and serves `/api/v1` plus the UI.
-- `ui/`: the web UI (React, Vite, Tailwind), embedded into the ELF.
-- `tile/`: the Media-tab tile PKG, embedded into the ELF.
-- `contract/`: the message shapes the console and the cloud server exchange (MIT, see `contract/LICENSE`).
-- [`SYNC.md`](SYNC.md): what the console sends to the cloud, when, and what it never sends.
+### Check the download (optional)
 
-## Payload
-
-### Toolchain (macOS)
-
-```sh
-brew install llvm lld socat
-mkdir -p ~/opt && curl -sSLO https://github.com/ps5-payload-dev/sdk/releases/download/v0.45/ps5-payload-sdk.zip
-unzip -q ps5-payload-sdk.zip -d ~/opt        # -> ~/opt/ps5-payload-sdk
-```
-
-The Makefile defaults to `PS5_PAYLOAD_SDK=~/opt/ps5-payload-sdk` and finds Homebrew's `llvm-config` on its own.
-
-### Run it on the Mac (no console)
+Newer releases include a `SHA256SUMS` file and a signed build provenance attestation:
 
 ```sh
-cd payload
-make host-test     # unit tests, incl. "no route writes console data"
-make host-run      # same code, serves http://localhost:7777 over a fake console filesystem
-curl localhost:7777/api/v1/games
+sha256sum -c SHA256SUMS --ignore-missing
+gh attestation verify openpsapp.elf --repo marcelorsdd/OpenPSApp
 ```
 
-`host-run` uses `tests/fixtures/real/root` when present (files pulled from your console), otherwise a synthetic fixture.
+## First launch
 
-### Run it on the PS5
+1. The first time it runs, OpenPSApp adds a tile to the **Media** tab of the home screen and shows **OpenPSApp added to the Media tab**.
+2. Open the tile. The app opens in the PS5 browser, at `http://127.0.0.1:7777/`.
 
-```sh
-cd payload
-make                          # build/openpsapp.elf
-make deploy PS5_HOST=<ps5-ip> # needs elfldr listening on 9021 (after Y2JB)
-```
+The tile only works while OpenPSApp is running. After a restart, load the ELF again before you open it.
 
-Or through Prospero Manager (uploads to its payload library and launches it):
+Notifications follow the console language: English, Portuguese or Spanish (other languages get English). If you load OpenPSApp twice, the second copy shows **OpenPSApp is already running** and exits.
 
-```sh
-make prospero PS5_HOST=<ps5-ip>
-```
+## Using it
 
-A "OpenPSApp ativo na porta 7777" toast confirms it started.
+The app has three tabs at the top: **Profile**, **Trophies** and **Account**, plus a language picker.
 
-### UI and home-screen tile
+### Profile
 
-The payload embeds two build outputs (via `payload/tools/embed.py`); rebuild them, then `make` again:
+Your games, time played, trophies and platinums. Below them: **Recently played** and the **Monthly recap**, with the trophies of the month, the game of the month and your pace. Use the arrows to move between months.
 
-```sh
-make -C payload ui     # ui/ (React + Vite, target safari13.1) -> ui/dist, served at /
-make -C payload tile   # tile/ -> tile/dist/openpsapp-tile.pkg (runs in Docker: PS5 PFS needs SHA3-256,
-                       # which .NET on macOS lacks)
-```
+### Game page
 
-On first run the payload installs the tile (`OPSA00001`, Media tab, `deeplinkUri http://127.0.0.1:7777/`) through
-`sceAppInstUtilAppInstallPkg`; `GET /api/v1/debug/tile` shows its state. The tile only opens the UI while the
-payload is running, so keep the port at 7777. To change the tile's category or deeplink, delete it on the console
-first: the home screen keeps the category from the first registration.
+Select a game to see how long you played it, when you last played it, its recent trophies and the full trophy list.
 
-The UI is translated with i18next (`ui/src/i18n/locales/*.json`: pt-BR, en, es). By default it follows the console's language (reported by `/api/v1/health`); the header has a picker to choose one, saved in the browser. To add a language, add a locale file with the same keys and register it in `ui/src/i18n/index.ts`. A test fails if any locale is missing a key.
+### Trophies
 
-UI development against a payload: `make -C payload host-run` then `cd ui && npm run dev`
-(`OPENPSAPP_API=http://<ps5-ip>:7777 npm run dev` to use the console).
+- The **Trophies** tab shows every game with trophies (**By game**) or every trophy you earned, newest first (**Timeline**).
+- On a game's trophy list, filter by **All**, **Earned** or **Not earned**, and sort by **Default**, **Date earned** or **Trophy type**. The app remembers your choice.
+- Hidden trophies you have not earned show as **Hidden trophy**. Press **Reveal** to see one, or **Show hidden** to see all of them.
 
-### Endpoints
+### Hiding games
 
-| Route | |
-|---|---|
-| `GET /api/v1/health` | version, capture time |
-| `GET /api/v1/profile` | user + totals |
-| `GET /api/v1/games` | games with playtime, last played, icon and key-art URLs |
-| `GET /api/v1/games/:titleId` | one game, with its `trophySetId` and `hidden` flag |
-| `POST /api/v1/games/:titleId/hide` · `/unhide` | hide a title (e.g. homebrew) from the lists and totals; saved in `hidden.json` |
-| `GET /api/v1/trophy-sets` | trophy sets with progress and counts per grade |
-| `GET /api/v1/trophy-sets/:id` | one set |
-| `GET /api/v1/trophy-sets/:id/trophies` | trophies: name, description, grade, hidden, earned, earnedAt, icon |
-| `GET /api/v1/trophies/earned?limit=N` | every earned trophy across all sets, newest first, with set and game (`limit` optional) |
-| `GET /api/v1/icons/:id` | PNG (game icons, key art and trophy images) |
-| `GET /api/v1/debug/*` | **only with `"debug": true` in config.json** (they expose console files on the LAN): |
-| `GET /api/v1/debug/sources` | what the console has: app.db tables/columns/samples, trophy dirs, appmeta |
-| `GET /api/v1/debug/stats` | uptime, counters, last error |
-| `GET /api/v1/debug/log?lines=200` | recent log lines |
-| `GET /api/v1/debug/ls?path=` / `debug/file?path=` | list / download allowlisted console paths |
-| `GET /api/v1/debug/appdb` | consistent copy of app.db |
-| `GET /api/v1/debug/tile` | home-screen tile: embedded, installed, state, error |
-| `GET /` | the UI |
+On a game page, press **Hide from list** to take a game (homebrew, for example) out of the lists and totals. **Show in list** brings it back. On the profile, **hidden games · show** lists the hidden games again. The list is saved on the console, in `/data/openpsapp/hidden.json`.
 
-Config lives in `/data/openpsapp/config.json` (created on first run: `port`, `language` — `"auto"` follows the console's language, or a tag such as `"pt-BR"` — and `debug`); logs in `/data/openpsapp/openpsapp.log`; hidden titles in `/data/openpsapp/hidden.json`.
+### Language
 
-Console notifications: "OpenPSApp ativo na porta 7777" on start; "OpenPSApp instalado na aba Mídia" when the tile is first installed; "OpenPSApp já está rodando" when loaded twice (the second copy exits); "a porta 7777 está em uso por outro app" if something else holds the port.
+The app follows the console language. To pick another one, use the language picker at the top. The choice is saved in the browser you use, so the PS5 and your phone can use different languages.
 
-### Source layout
+### From a phone or computer
 
-```
-payload/src/
-├── main.cpp      boot: privileges, config, routes, server
-├── config.*      /data/openpsapp/config.json
-├── routes/       HTTP endpoints only, one file per resource (+ views.* for shared JSON shapes)
-├── services/     business logic: playtime, trophies, library (cached join), icons, hidden, tile, console_layout
-├── formats/      parsers for console files: app.db, TROPHY.UCP, TRPTITLE.DAT, npbind.dat
-├── http/         generic HTTP: request/response types, router, server, loopback client
-├── util/         fs, json, log, sha256, time, threads, crash handler, stats, byte readers
-└── platform/     PS5 implementation vs host stand-in
-```
+Open `http://<console-ip>:7777` in any browser on the same network, for example `http://192.168.1.50:7777`. You can find the console's IP address in **Settings → Network → Connection Status → View Connection Status**.
 
-Tests in `payload/tests/host/` follow the same layers: `test_util`, `test_http`, `test_formats`, `test_playtime`, `test_trophies`, `test_services`, `test_routes`, plus `test_readonly`, which checks that no route writes console data.
+Everything works the same, except the website account actions (**Link account**, **Unlink** and **Sync now**): for safety, those only work on the PS5 itself.
 
-```
-ui/src/
-├── types/        API contract (JSON shapes) and UI types
-├── services/     the only code that talks to the payload: typed endpoints, fetch, actions
-├── hooks/        useApi, useStoredState, useRoute, useLanguageChoice, useDate
-├── utils/        pure functions: format, dates, trophies, progress, router (tests sit next to them)
-├── components/   ui/ (generic), trophies/, profile/, game/
-├── pages/        one component per route
-└── i18n/         i18next setup and locales
-```
+## The website (optional)
 
-Imports use the `@/` alias for `ui/src`. Each endpoint in `services/api.ts` carries its response type, so `useApi(endpoints.profile)` is typed without a generic.
+The website shows the same profile, trophies and game pages on any phone or computer, even when the PS5 is off. It also has a search, and you can add it to your phone's home screen. The console uploads your data to the OpenPSApp server, and the website reads it from there.
 
-## Releasing
+The console app and the website are open source and live in this repository. The server is run by the project and is closed source; [`SYNC.md`](SYNC.md) and [`contract/`](contract/) describe exactly what it receives.
 
-```sh
-make -C payload ui tile        # rebuild the embedded UI and tile
-git tag vX.Y.Z
-make -C payload clean all      # build/openpsapp.elf, version taken from the tag
-gh release create vX.Y.Z payload/build/openpsapp.elf ui/dist/licenses.txt --generate-notes
-```
+### Turn the cloud on
 
-`GET /api/v1/health` reports the version the ELF was built from (`git describe --tags`).
+Cloud features are off until OpenPSApp knows the server's address. Set it in the `server` key of `/data/openpsapp/config.json` (see [Settings](#settings)), then restart OpenPSApp. While it is empty, the **Account** tab says **The cloud is not set up on this console.**
+
+> [!NOTE]
+> The official server address is not published yet. When it is, it will be listed here and in the release notes.
+
+### Link your console
+
+1. On the PS5, open OpenPSApp, go to **Account** and press **Link account**.
+2. The TV shows a code such as `K7Q4-PX2A`, a QR code and the website address. The code is valid for 10 minutes.
+3. On your phone or computer, open the website and sign in. Then either:
+   - press **Scan the QR code on the TV** and point the camera at it, or
+   - type the code and press **Continue**.
+4. Check the confirmation page. It shows the profile name, what the console will send and, if your account already has a console, which one it replaces. Only confirm if the same code is on your TV right now. Press **Connect**.
+5. The console finishes linking in a few seconds and sends your games and trophies.
+
+An account has one console. Linking another PS5 replaces the current one.
+
+### When it syncs
+
+The console sends your data when OpenPSApp starts, every 15 minutes, and within about a minute after something changes, such as a new trophy. **Account → Sync now** on the PS5 sends it right away.
+
+### Unlink and delete your data
+
+- **On the PS5:** **Account → Unlink**. The console forgets its token at once and asks the server to revoke it.
+- **On the website:** **Account → Disconnect**. Check **Also delete the account data** to also delete the games, playtime and trophies the console sent; without it, they stay on your account.
+- **Delete everything:** on the website, **Account → Delete account and data**, then **Delete account**. This deletes your account, the linked console, everything it sent and your sign-in. Game and trophy images are shared between accounts, so they stay on the server.
+
+To remove OpenPSApp from the console itself, see [How do I uninstall it?](#how-do-i-uninstall-it)
+
+## Privacy
+
+- **On the console:** OpenPSApp reads the console's playtime database, trophy files and game images. It writes only to `/data/openpsapp`. It never talks to Sony or PSN.
+- **On your network:** anyone on the same network can open `http://<console-ip>:7777`. There is no password, so they can see your profile name, games, playtime and trophies, and hide or show games. Linking and unlinking the website only work on the PS5 itself. Other devices can see whether the console is linked, the profile name, the last sync time and error, and how long a pairing code has left, but never the code.
+- **Nothing leaves the console** until you set a server address and press **Link account**.
+- **When linked,** the console sends your profile name, console language, games, playtime, trophies and game and trophy images to the OpenPSApp server over HTTPS. Games you hid are sent too, marked as hidden, and so are the names of hidden trophies.
+- **No end-to-end encryption.** HTTPS encrypts the data on the way to the server, but the server stores it in a form it can read. Whoever runs the server can technically read your synced data.
+- **Never sent:** console identifiers (serial, MAC address, console id) and PlayStation Network account ids.
+- **The console's token** is kept unencrypted in `/data/openpsapp/cloud.json`. Anything that can read the console's files can read it.
+- **Deleting:** you can unlink or delete your account at any time. Shared game and trophy images stay on the server.
+
+[`SYNC.md`](SYNC.md) lists exactly what is sent, when, and what is never sent.
+
+## Settings
+
+Settings live in `/data/openpsapp/config.json`, created on the first run. Edit it with your loader's FTP server or file manager, then restart OpenPSApp.
+
+| Key        | Default  | What it does                                                                                                                                      |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `port`     | `7777`   | The port of the app. The Media-tab tile always opens port 7777, so keep the default unless you open the app by its address.                       |
+| `language` | `"auto"` | `"auto"` follows the console language. A tag such as `"pt-BR"` sets the language of notifications, trophy texts and the app's default language.   |
+| `debug`    | `false`  | Turns on diagnostic endpoints. They expose console files and console ids to your network, so leave it off unless you are debugging.               |
+| `server`   | `""`     | The HTTPS address of the OpenPSApp server. Empty keeps the cloud off.                                                                             |
+
+Other files in the same folder: `openpsapp.log` (the log), `hidden.json` (hidden games), `cloud.json` (the website link) and `asset-hashes.json` (a cache of image hashes).
+
+## FAQ
+
+### Does it work offline?
+
+Yes. Everything on the console works without internet. Only the website needs it.
+
+### Can it damage my saves or trophies?
+
+OpenPSApp only reads the console's playtime and trophy files; a test checks that no request writes console data. It writes only to `/data/openpsapp`, and installs the Media-tab tile through the console's own installer.
+
+### Does it talk to Sony or PSN?
+
+No. It reads files on the console. The only server it ever contacts is the one you set in `server`.
+
+### Why does the playtime differ from my PSN profile?
+
+OpenPSApp shows what this console recorded. Time played on another console is not included.
+
+### Which profile does it show?
+
+The profile signed in on the PS5. Each profile links to the website on its own.
+
+### Is the server open source?
+
+No. The console app (GPL-3.0-or-later) and the website are open source. The server is run by the project and closed source; [`SYNC.md`](SYNC.md) documents everything the console sends, and [`contract/`](contract/) (MIT) holds the exact message shapes.
+
+### Is my data end-to-end encrypted?
+
+No. See [Privacy](#privacy).
+
+### How do I uninstall it?
+
+1. Stop loading `openpsapp.elf` (and remove it from your loader's autoload).
+2. If it is linked, unlink it first (**Account → Unlink**), or delete the account on the website.
+3. Delete the OpenPSApp tile from the Media tab.
+4. Delete the `/data/openpsapp` folder.
+
+## Troubleshooting
+
+| What you see                                                     | What to do                                                                                                                                                  |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No notification after loading                                    | Check that your loader is running and that the jailbreak is active. If it started, the log is in `/data/openpsapp/openpsapp.log`.                            |
+| **OpenPSApp: port 7777 is used by another app**                  | Another homebrew uses port 7777. Stop it, or change `port` (the tile then stops working; use the address instead).                                          |
+| **OpenPSApp is already running**                                 | Nothing to do: a copy is already running and the second one exits.                                                                                          |
+| The tile opens a page that does not load                         | OpenPSApp is not running. Load the ELF again.                                                                                                               |
+| The tile is missing                                              | It is installed on start when missing. Load OpenPSApp again and wait for **OpenPSApp added to the Media tab**.                                              |
+| `http://<console-ip>:7777` does not open on the phone            | Check that the phone is on the same network as the PS5, that OpenPSApp is running, and that you use the IP address: names like `ps5.local` are refused.     |
+| **The cloud is not set up on this console.**                     | Set `server` in `config.json` and restart OpenPSApp.                                                                                                        |
+| **This can only be done in OpenPSApp on the PS5 itself.**        | Link and unlink from the PS5, not from a phone.                                                                                                             |
+| **No user is signed in on the PS5.**                             | Sign in to a profile on the console and try again.                                                                                                          |
+| **Could not reach the OpenPSApp server.**                        | Check the console's internet connection and the `server` address.                                                                                           |
+| **Error: pairing code expired**                                  | Press **Link account** again for a new code.                                                                                                                |
+| The website keeps saying **Waiting for the first sync**          | Keep the PS5 on with OpenPSApp running. The first sync starts a few seconds after linking.                                                                  |
+| The camera does not open on the website                          | Type the code instead.                                                                                                                                      |
+| **Error: console unlinked on the website**                       | The console was disconnected on the website, or another console replaced it. Link it again if you want.                                                     |
+
+Still stuck? [Open an issue](https://github.com/marcelorsdd/OpenPSApp/issues/new/choose) with the version from `http://<console-ip>:7777/api/v1/health`. Leave out console ids, tokens and IP addresses.
+
+## Contributing
+
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the setup, the checks and the rules, and [ARCHITECTURE.md](ARCHITECTURE.md) for how the pieces fit. Each part has its own README: [payload](payload/README.md), [console UI](ui/README.md), [website](web/README.md), [core](core/README.md), [contract](contract/README.md), [tile](tile/README.md) and [tools](tools/README.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+
+To report a vulnerability, see [SECURITY.md](SECURITY.md). Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-GPL-3.0-or-later (`LICENSE`), except `contract/`, which is MIT. The payload links ps5-payload-sdk (GPL-3.0) and bundles SQLite (public domain), cJSON (MIT, `payload/third_party/cjson/LICENSE`), Mbed TLS (Apache-2.0, `payload/third_party/mbedtls/LICENSE`) and a UI built with React, React DOM, i18next and Tailwind CSS (all MIT).
+OpenPSApp is free software under the [GNU General Public License v3.0 or later](LICENSE), except [`contract/`](contract/), which is under the [MIT License](contract/LICENSE) so other software can use the API shapes. Source files carry no license headers; the directory decides.
 
-`make -C payload ui` writes `ui/dist/licenses.txt` with the license of every package that ends up in the bundle (`ui/plugins/licenses.ts`). The ELF serves it at `http://<ps5-ip>:7777/licenses.txt`, and each release attaches it.
+The payload links [ps5-payload-sdk](https://github.com/ps5-payload-dev/sdk) (GPL-3.0) and bundles SQLite (public domain), cJSON (MIT) and Mbed TLS (Apache-2.0); see [`payload/third_party/`](payload/third_party/README.md). Its embedded UI bundles React, React DOM, i18next, react-i18next, Tailwind CSS and qrcode-generator (all MIT). `licenses.txt` lists every bundled package: the console serves it at `http://<console-ip>:7777/licenses.txt` and every release attaches it. The website serves its own `licenses.txt`.
+
+PlayStation, PS5 and PlayStation App are trademarks of Sony Interactive Entertainment. OpenPSApp is not affiliated with or endorsed by Sony.
