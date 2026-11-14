@@ -2,6 +2,8 @@
 
 #include <cstdio>
 
+#include "cJSON.h"
+
 namespace openpsapp {
 void JsonWriter::BeforeValue() {
     if (after_key_) {
@@ -94,8 +96,27 @@ JsonWriter &JsonWriter::Null() {
     return *this;
 }
 
-JsonWriter &JsonWriter::StringOrNull(std::string_view value) {
-    return value.empty() ? Null() : String(value);
+JsonWriter &JsonWriter::StringOrNull(std::string_view value) { return value.empty() ? Null() : String(value); }
+
+JsonWriter &JsonWriter::BeginObject(std::string_view key) { return Key(key).BeginObject(); }
+
+JsonWriter &JsonWriter::BeginArray(std::string_view key) { return Key(key).BeginArray(); }
+
+JsonWriter &JsonWriter::String(std::string_view key, std::string_view value) { return Key(key).String(value); }
+
+JsonWriter &JsonWriter::Int(std::string_view key, int64_t value) { return Key(key).Int(value); }
+
+JsonWriter &JsonWriter::Bool(std::string_view key, bool value) { return Key(key).Bool(value); }
+
+JsonWriter &JsonWriter::Null(std::string_view key) { return Key(key).Null(); }
+
+JsonWriter &JsonWriter::StringOrNull(std::string_view key, std::string_view value) {
+    return Key(key).StringOrNull(value);
+}
+
+std::string JsonString(const cJSON *object, const char *key) {
+    const cJSON *value = cJSON_GetObjectItemCaseSensitive(object, key);
+    return cJSON_IsString(value) ? value->valuestring : "";
 }
 
 }

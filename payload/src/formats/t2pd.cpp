@@ -33,16 +33,6 @@ bool AllZero(std::string_view b) {
     return true;
 }
 
-std::string Hex(std::string_view b) {
-    static const char kDigits[] = "0123456789abcdef";
-    std::string out;
-    for (unsigned char c : b) {
-        out += kDigits[c >> 4];
-        out += kDigits[c & 0xf];
-    }
-    return out;
-}
-
 bool ReadStream(std::string_view file, std::string *stream, std::string *err) {
     if (file.size() < kHeaderSize || file.substr(0, 4) != "T2PD" || bytes::Be32(file, 4) != kVersion ||
         bytes::Be64(file, 8) != kPageStride) {
@@ -149,9 +139,9 @@ bool ParseTrophyOwner(std::string_view file, TrophyOwner *out, std::string *err)
     if (!ReadStream(file, &stream, err) || !FindTable(stream, kOwnerTag, 0x40, &table, err)) return false;
     size_t payload = static_cast<size_t>(table.offset) + 16;
     std::string_view view(stream);
-    out->account_id_hex = Hex(view.substr(payload + 0x20, 8));
+    out->account_id_hex = bytes::Hex(view.substr(payload + 0x20, 8));
     out->user_id = bytes::Be32(stream, payload + 0x28);
-    out->device_id_hex = Hex(view.substr(payload + 0x30, 16));
+    out->device_id_hex = bytes::Hex(view.substr(payload + 0x30, 16));
     return true;
 }
 

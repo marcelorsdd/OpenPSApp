@@ -13,11 +13,11 @@
 #include "formats/ucp.hpp"
 #include "services/console_layout.hpp"
 #include "util/fs.hpp"
+#include "util/json.hpp"
 
 namespace openpsapp {
 namespace {
-Grade ParseGrade(const char *g) {
-    if (!g) return Grade::Unknown;
+Grade ParseGrade(const std::string &g) {
     switch (g[0]) {
     case 'P': return Grade::Platinum;
     case 'G': return Grade::Gold;
@@ -25,11 +25,6 @@ Grade ParseGrade(const char *g) {
     case 'B': return Grade::Bronze;
     default: return Grade::Unknown;
     }
-}
-
-const char *JsonString(const cJSON *obj, const char *key) {
-    const cJSON *v = cJSON_GetObjectItemCaseSensitive(obj, key);
-    return cJSON_IsString(v) ? v->valuestring : nullptr;
 }
 
 cJSON *ReadJson(const Ucp &ucp, const std::string &name) {
@@ -185,19 +180,18 @@ bool BuildTrophySet(const std::string &id, const std::string &ucp_path, const st
         *err = id + ": tropconf.json missing or without trophies";
         return false;
     }
-    const char *default_lang = JsonString(conf, "defaultLanguage");
-
-    std::vector<std::string> langs = LanguageCandidates(language, TropmetaLanguages(ucp), default_lang ? default_lang : "");
+    std::vector<std::string> langs =
+        LanguageCandidates(language, TropmetaLanguages(ucp), JsonString(conf, "defaultLanguage"));
 
     TrophySet set;
     set.id = id;
     std::unordered_map<int, size_t> index;
     const cJSON *item = nullptr;
     cJSON_ArrayForEach(item, list) {
-        const char *tid = JsonString(item, "id");
-        if (!tid) continue;
+        std::string tid = JsonString(item, "id");
+        if (tid.empty()) continue;
         Trophy t;
-        t.id = std::atoi(tid);
+        t.id = std::atoi(tid.c_str());
         t.grade = ParseGrade(JsonString(item, "grade"));
         t.hidden = cJSON_IsTrue(cJSON_GetObjectItemCaseSensitive(item, "hidden"));
         char icon[32];
@@ -216,16 +210,14 @@ bool BuildTrophySet(const std::string &id, const std::string &ucp_path, const st
         if (ucp.entries()[i].name.rfind("tropmeta_", 0) == 0) meta = ReadJson(ucp, ucp.entries()[i].name);
     }
     const cJSON *metadata = cJSON_GetObjectItemCaseSensitive(meta, "metadata");
-    if (const char *name = JsonString(cJSON_GetObjectItemCaseSensitive(metadata, "titleMetadata"), "name")) {
-        set.name = name;
-    }
+    set.name = JsonString(cJSON_GetObjectItemCaseSensitive(metadata, "titleMetadata"), "name");
     cJSON_ArrayForEach(item, cJSON_GetObjectItemCaseSensitive(metadata, "trophyMetadata")) {
-        const char *tid = JsonString(item, "id");
-        auto it = tid ? index.find(std::atoi(tid)) : index.end();
+        std::string tid = JsonString(item, "id");
+        auto it = tid.empty() ? index.end() : index.find(std::atoi(tid.c_str()));
         if (it == index.end()) continue;
         Trophy &t = set.trophies[it->second];
-        if (const char *v = JsonString(item, "name")) t.name = v;
-        if (const char *v = JsonString(item, "detail")) t.detail = v;
+        t.name = JsonString(item, "name");
+        t.detail = JsonString(item, "detail");
     }
     cJSON_Delete(meta);
     if (set.name.empty()) set.name = id;

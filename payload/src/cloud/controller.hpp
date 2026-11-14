@@ -58,6 +58,8 @@ private:
 
     bool TickPairing(int64_t now_ms);
     void TickSync(int64_t now_ms, const std::string &user_key);
+    void TickRevokes(int64_t now_ms);
+    void FinishRevoke(const std::string &token, bool done, const std::string &err, int64_t now_ms);
     void ResetSchedule();
 
     CloudClient *client_;
@@ -75,6 +77,8 @@ private:
     std::string last_fingerprint_;
     std::string last_sync_at_;
     std::string last_error_;
+    int revoke_failures_ = 0;
+    int64_t revoke_at_ms_ = 0;
 };
 
 }

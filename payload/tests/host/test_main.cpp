@@ -1,5 +1,6 @@
 #include <unistd.h>
 
+#include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -9,6 +10,7 @@
 #include "test.hpp"
 
 int main(int argc, char **argv) {
+    signal(SIGPIPE, SIG_IGN);
     std::string err;
     if (argc == 3 && std::strcmp(argv[1], "--make-fixture") == 0) {
         if (!fixture::Build(argv[2], &err)) {

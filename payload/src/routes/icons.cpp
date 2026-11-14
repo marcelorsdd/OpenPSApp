@@ -1,5 +1,5 @@
-#include "routes/routes.hpp"
 #include "services/icons.hpp"
+#include "routes/routes.hpp"
 #include "services/library.hpp"
 
 namespace openpsapp::routes {
@@ -11,7 +11,7 @@ void RegisterIcons(http::Router &router, const Context &ctx) {
             CurrentLibrary(ctx.language);
             where = icons::Find(id);
         }
-        if (!where) return http::Error(404, "icon not found");
+        if (!where) return http::Error(404, "not_found");
         http::Response res = http::File(where->path, "image/png", where->offset, where->length);
         res.cache_control = http::kCacheForever;
         return res;

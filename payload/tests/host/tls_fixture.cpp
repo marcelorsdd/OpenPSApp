@@ -211,8 +211,9 @@ void TestTlsServer::Serve(int fd) {
         std::string method = request.substr(0, request.find(' '));
         std::string body = "{\"method\":\"" + method + "\",\"auth\":\"" + Field(request, "Authorization: ") +
                            "\",\"body\":\"" + request.substr(head_end, length) + "\"}";
-        response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body.size()) +
-                   "\r\n\r\n" + body;
+        response =
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body.size()) +
+            "\r\n\r\n" + body;
     }
     size_t sent = 0;
     while (sent < response.size()) {

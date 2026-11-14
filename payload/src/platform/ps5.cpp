@@ -5,10 +5,12 @@
 
 #include <cstdio>
 #include <cstring>
+#include <iterator>
 #include <memory>
 
 #include <ps5/kernel.h>
 
+#include "util/bytes.hpp"
 #include "util/thread.hpp"
 
 extern "C" {
@@ -123,34 +125,23 @@ constexpr int kMaxUserSlots = 16;
 constexpr int kRegUserName = 125829632;
 constexpr int kRegAccountId = 125830400;
 constexpr int kRegSlotStride = 65536;
-
-std::string Hex(const unsigned char *data, size_t size) {
-    static const char kDigits[] = "0123456789abcdef";
-    std::string out;
-    for (size_t i = 0; i < size; ++i) {
-        out += kDigits[data[i] >> 4];
-        out += kDigits[data[i] & 0xf];
-    }
-    return out;
-}
 }
 
 std::string AccountIdHex(const User &user) {
     for (int slot = 0; slot < kMaxUserSlots; ++slot) {
         char name[32] = {};
-        if (sceRegMgrGetStr(kRegUserName + slot * kRegSlotStride, name, sizeof(name)) != 0 || user.name != name) continue;
-        unsigned char id[8] = {};
+        if (sceRegMgrGetStr(kRegUserName + slot * kRegSlotStride, name, sizeof(name)) != 0 || user.name != name)
+            continue;
+        char id[8] = {};
         if (sceRegMgrGetBin(kRegAccountId + slot * kRegSlotStride, id, sizeof(id)) != 0) return "";
-        unsigned char number[8];
-        for (int i = 0; i < 8; ++i) number[i] = id[7 - i];
-        return Hex(number, sizeof(number));
+        return bytes::Hex(std::string(std::rbegin(id), std::rend(id)));
     }
     return "";
 }
 
 std::string DeviceIdHex() {
-    unsigned char id[16] = {};
-    return sceKernelGetOpenPsId(id) == 0 ? Hex(id, sizeof(id)) : "";
+    char id[16] = {};
+    return sceKernelGetOpenPsId(id) == 0 ? bytes::Hex(std::string_view(id, sizeof(id))) : "";
 }
 
 bool InstallPkg(const std::string &path, std::string *err) {
@@ -163,19 +154,19 @@ bool InstallPkg(const std::string &path, std::string *err) {
         if (err) *err = code;
         return false;
     }
-    PkgInfo info {};
+    PkgInfo info{};
     rc = sceAppInstUtilAppInstallPkg(visible.c_str(), &info);
     if (rc == 0) return true;
 
     std::string uri = "file://" + visible;
-    PkgMetaInfo meta {};
+    PkgMetaInfo meta{};
     meta.uri = uri.c_str();
     meta.ex_uri = "";
     meta.playgo_scenario_id = "";
     meta.content_id = "";
     meta.content_name = "OpenPSApp";
     meta.icon_url = "";
-    PkgInfo info2 {};
+    PkgInfo info2{};
 
     auto playgo = std::make_unique<PkgPlayGoInfo>();
     int rc2 = sceAppInstUtilInstallByPackage(&meta, &info2, playgo.get());

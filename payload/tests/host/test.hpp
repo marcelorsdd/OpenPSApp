@@ -36,26 +36,26 @@ std::string Show(T v) {
 
 }
 
-#define TEST(name)                                                 \
-    static void test_##name();                                     \
-    static test::Register register_##name(#name, test_##name);     \
+#define TEST(name)                                             \
+    static void test_##name();                                 \
+    static test::Register register_##name(#name, test_##name); \
     static void test_##name()
 
-#define CHECK(cond)                                                                \
-    do {                                                                           \
-        if (!(cond)) {                                                             \
-            std::printf("  FAIL %s:%d: %s\n", __FILE__, __LINE__, #cond);          \
-            ++test::Failures();                                                    \
-        }                                                                          \
+#define CHECK(cond)                                                       \
+    do {                                                                  \
+        if (!(cond)) {                                                    \
+            std::printf("  FAIL %s:%d: %s\n", __FILE__, __LINE__, #cond); \
+            ++test::Failures();                                           \
+        }                                                                 \
     } while (0)
 
-#define CHECK_EQ(actual, expected)                                                                     \
-    do {                                                                                               \
-        auto &&a_ = (actual);                                                                          \
-        auto &&e_ = (expected);                                                                        \
-        if (!(a_ == e_)) {                                                                             \
-            std::printf("  FAIL %s:%d: %s == %s\n    got:  %s\n    want: %s\n", __FILE__, __LINE__,      \
-                        #actual, #expected, test::Show(a_).c_str(), test::Show(e_).c_str());           \
-            ++test::Failures();                                                                        \
-        }                                                                                              \
+#define CHECK_EQ(actual, expected)                                                                           \
+    do {                                                                                                     \
+        auto &&a_ = (actual);                                                                                \
+        auto &&e_ = (expected);                                                                              \
+        if (!(a_ == e_)) {                                                                                   \
+            std::printf("  FAIL %s:%d: %s == %s\n    got:  %s\n    want: %s\n", __FILE__, __LINE__, #actual, \
+                        #expected, test::Show(a_).c_str(), test::Show(e_).c_str());                          \
+            ++test::Failures();                                                                              \
+        }                                                                                                    \
     } while (0)

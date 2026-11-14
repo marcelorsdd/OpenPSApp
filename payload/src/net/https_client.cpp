@@ -162,7 +162,11 @@ HttpsResponse HttpsSend(const HttpsRequest &request, const std::vector<std::stri
     }
     for (std::string_view pem : ca_pems) {
         std::string copy(pem);
-        mbedtls_x509_crt_parse(&tls->ca, reinterpret_cast<const unsigned char *>(copy.c_str()), copy.size() + 1);
+        if (mbedtls_x509_crt_parse(&tls->ca, reinterpret_cast<const unsigned char *>(copy.c_str()), copy.size() + 1) !=
+            0) {
+            out.error = "tls: bad CA certificate";
+            return out;
+        }
     }
     mbedtls_ssl_config_defaults(&tls->conf, MBEDTLS_SSL_IS_CLIENT, MBEDTLS_SSL_TRANSPORT_STREAM,
                                 MBEDTLS_SSL_PRESET_DEFAULT);
@@ -188,7 +192,8 @@ HttpsResponse HttpsSend(const HttpsRequest &request, const std::vector<std::stri
     std::string wire = BuildRequest(request.method, *url, request.headers, request.body);
     size_t sent = 0;
     while (sent < wire.size()) {
-        rc = mbedtls_ssl_write(&tls->ssl, reinterpret_cast<const unsigned char *>(wire.data()) + sent, wire.size() - sent);
+        rc = mbedtls_ssl_write(&tls->ssl, reinterpret_cast<const unsigned char *>(wire.data()) + sent,
+                               wire.size() - sent);
         if (rc == MBEDTLS_ERR_SSL_WANT_READ || rc == MBEDTLS_ERR_SSL_WANT_WRITE) continue;
         if (rc <= 0) {
             out.error = rc == MBEDTLS_ERR_SSL_TIMEOUT ? "timeout: send" : "tls: send " + Hex(rc);

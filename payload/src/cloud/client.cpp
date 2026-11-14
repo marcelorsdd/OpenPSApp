@@ -13,11 +13,6 @@ std::string Failure(const net::HttpsResponse &r) {
     return "HTTP " + std::to_string(r.status);
 }
 
-std::string StringField(const cJSON *obj, const char *name) {
-    const cJSON *v = cJSON_GetObjectItemCaseSensitive(obj, name);
-    return cJSON_IsString(v) ? v->valuestring : "";
-}
-
 std::vector<std::string> StringArray(const cJSON *obj, const char *name) {
     std::vector<std::string> out;
     const cJSON *item = nullptr;
@@ -28,7 +23,8 @@ std::vector<std::string> StringArray(const cJSON *obj, const char *name) {
 }
 }
 
-CloudClient::CloudClient(std::string server, Transport transport) : server_(std::move(server)), transport_(std::move(transport)) {
+CloudClient::CloudClient(std::string server, Transport transport)
+    : server_(std::move(server)), transport_(std::move(transport)) {
     while (!server_.empty() && server_.back() == '/') server_.pop_back();
 }
 
@@ -47,7 +43,7 @@ net::HttpsResponse CloudClient::Call(const char *method, const std::string &path
 
 std::optional<PairingCode> CloudClient::RequestCode(const std::string &profile_name, std::string *err) {
     JsonWriter w;
-    w.BeginObject().Key("profileName").String(profile_name).EndObject();
+    w.BeginObject().String("profileName", profile_name).EndObject();
     net::HttpsResponse r = Call("POST", "/api/v1/devices/codes", w.take(), "", kJson);
     if (!r.ok() || r.status != 200) {
         *err = Failure(r);
@@ -55,10 +51,11 @@ std::optional<PairingCode> CloudClient::RequestCode(const std::string &profile_n
     }
     cJSON *root = cJSON_ParseWithLength(r.body.data(), r.body.size());
     PairingCode code;
-    code.device_code = StringField(root, "deviceCode");
-    code.user_code = StringField(root, "userCode");
-    code.verification_uri = StringField(root, "verificationUri");
-    if (const cJSON *v = cJSON_GetObjectItemCaseSensitive(root, "expiresIn"); cJSON_IsNumber(v)) code.expires_in = v->valueint;
+    code.device_code = JsonString(root, "deviceCode");
+    code.user_code = JsonString(root, "userCode");
+    code.verification_uri = JsonString(root, "verificationUri");
+    if (const cJSON *v = cJSON_GetObjectItemCaseSensitive(root, "expiresIn"); cJSON_IsNumber(v))
+        code.expires_in = v->valueint;
     if (const cJSON *v = cJSON_GetObjectItemCaseSensitive(root, "interval"); cJSON_IsNumber(v) && v->valueint > 0) {
         code.interval = v->valueint;
     }
@@ -72,7 +69,7 @@ std::optional<PairingCode> CloudClient::RequestCode(const std::string &profile_n
 
 TokenResult CloudClient::PollToken(const std::string &device_code, const std::string &profile_name) {
     JsonWriter w;
-    w.BeginObject().Key("deviceCode").String(device_code).EndObject();
+    w.BeginObject().String("deviceCode", device_code).EndObject();
     net::HttpsResponse r = Call("POST", "/api/v1/devices/token", w.take(), "", kJson);
     TokenResult out;
     if (!r.ok()) {
@@ -87,7 +84,7 @@ TokenResult CloudClient::PollToken(const std::string &device_code, const std::st
         out.state = TokenState::Invalid;
     } else if (r.status == 200) {
         cJSON *root = cJSON_ParseWithLength(r.body.data(), r.body.size());
-        out.link = {StringField(root, "token"), StringField(root, "deviceId"), profile_name};
+        out.link = {JsonString(root, "token"), JsonString(root, "deviceId"), profile_name};
         cJSON_Delete(root);
         out.state = out.link.token.empty() ? TokenState::Failed : TokenState::Granted;
         if (out.link.token.empty()) out.error = "unexpected token answer";
@@ -121,15 +118,26 @@ SyncResult CloudClient::Sync(const std::string &token, const Snapshot &snapshot,
     }
     for (const std::string &id : need_assets) {
         auto asset = snapshot.assets.find(id);
+        if (asset == snapshot.assets.end()) continue;
         std::string bytes;
-        if (asset == snapshot.assets.end() || !read(asset->second, &bytes)) continue;
-        net::HttpsResponse r =
-            Call("PUT", "/api/v1/sync/assets/" + id, std::move(bytes), token, "application/octet-stream", kAssetTimeoutMs);
+        if (!read(asset->second, &bytes)) {
+            out.unread_assets++;
+            continue;
+        }
+        net::HttpsResponse r = Call("PUT", "/api/v1/sync/assets/" + id, std::move(bytes), token,
+                                    "application/octet-stream", kAssetTimeoutMs);
         if (!r.ok() || r.status / 100 != 2) return fail(r);
         out.assets++;
     }
     out.ok = true;
     return out;
+}
+
+bool CloudClient::Revoke(const std::string &token, std::string *err) {
+    net::HttpsResponse r = Call("DELETE", "/api/v1/devices/self", "", token, nullptr);
+    if (r.ok() && (r.status == 204 || r.status == 401 || r.status == 404)) return true;
+    *err = Failure(r);
+    return false;
 }
 
 }

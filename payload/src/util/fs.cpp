@@ -7,10 +7,11 @@
 
 #include <algorithm>
 #include <cerrno>
+#include <cstdio>
 
 namespace openpsapp::fs {
 std::optional<Stat> StatPath(const std::string &path) {
-    struct stat st {};
+    struct stat st{};
     if (stat(path.c_str(), &st) != 0) return std::nullopt;
     Stat out;
     out.is_dir = S_ISDIR(st.st_mode);
@@ -47,7 +48,7 @@ std::vector<Entry> ListDir(const std::string &path) {
 bool ReadRange(const std::string &path, uint64_t offset, int64_t length, std::string *out, int64_t max_bytes) {
     int fd = open(path.c_str(), O_RDONLY);
     if (fd < 0) return false;
-    struct stat st {};
+    struct stat st{};
     int64_t size = fstat(fd, &st) == 0 ? st.st_size : -1;
     if (length < 0) length = size - static_cast<int64_t>(offset);
     if (size < 0 || length < 0 || length > max_bytes || static_cast<int64_t>(offset) + length > size) {
@@ -71,9 +72,10 @@ bool ReadFile(const std::string &path, std::string *out, int64_t max_bytes) {
     return ReadRange(path, 0, -1, out, max_bytes);
 }
 
-bool WriteFileAtomic(const std::string &path, std::string_view data) {
+bool WriteFileAtomic(const std::string &path, std::string_view data, mode_t mode) {
     std::string tmp = path + ".tmp";
-    int fd = open(tmp.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    unlink(tmp.c_str());
+    int fd = open(tmp.c_str(), O_WRONLY | O_CREAT | O_EXCL, mode);
     if (fd < 0) return false;
     size_t done = 0;
     while (done < data.size()) {

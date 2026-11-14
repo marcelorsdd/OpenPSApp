@@ -11,11 +11,11 @@ namespace openpsapp::http {
 bool LocalGet(uint16_t port, const std::string &path, std::string *body, int timeout_ms) {
     int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) return false;
-    timeval tv {timeout_ms / 1000, (timeout_ms % 1000) * 1000};
+    timeval tv{timeout_ms / 1000, (timeout_ms % 1000) * 1000};
     setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
 
-    sockaddr_in addr {};
+    sockaddr_in addr{};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);

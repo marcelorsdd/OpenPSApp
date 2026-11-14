@@ -71,12 +71,14 @@ constexpr const char *kTropConf = R"JSON({
 })JSON";
 
 std::string TropMeta(const char *title, const char *const names[4]) {
-    std::string out = std::string(R"({"schemaVersion":"0.90","trophyNpCommId":"NPWR00001_00","metadata":{"titleMetadata":{"name":")") +
-                      title + R"("},"trophyMetadata":[)";
+    std::string out =
+        std::string(
+            R"({"schemaVersion":"0.90","trophyNpCommId":"NPWR00001_00","metadata":{"titleMetadata":{"name":")") +
+        title + R"("},"trophyMetadata":[)";
     for (int i = 0; i < 4; ++i) {
         char item[160];
-        std::snprintf(item, sizeof(item), R"(%s{"id":"%04d","name":"%s","detail":"%s detail"})", i ? "," : "", i, names[i],
-                      names[i]);
+        std::snprintf(item, sizeof(item), R"(%s{"id":"%04d","name":"%s","detail":"%s detail"})", i ? "," : "", i,
+                      names[i], names[i]);
         out += item;
     }
     return out + "]}}";
@@ -227,7 +229,8 @@ bool Build(const std::string &root, std::string *err) {
          WriteFile(root + "/user/appmeta/PPSA01234/pic0.png", Png("astro-hero")) &&
          WriteFile(root + "/user/appmeta/external/CUSA00001/icon0.png", Png("old")) &&
          WriteFile(conf + kSetId + "/TROPHY.UCP", ucp) && WriteFile(home + kSetId + "/TRPTITLE.DAT", dat) &&
-         WriteFile(conf + kCorruptSetId + "/TROPHY.UCP", ucp) && WriteFile(home + kCorruptSetId + "/TRPTITLE.DAT", corrupt) &&
+         WriteFile(conf + kCorruptSetId + "/TROPHY.UCP", ucp) &&
+         WriteFile(home + kCorruptSetId + "/TRPTITLE.DAT", corrupt) &&
          WriteFile(root + "/mnt/ext0/user/app/PPSA01234/sce_sys/trophy2/npbind.dat", MakeNpbind(kSetId)) &&
          WriteFile(root + "/user/app/PPSA05555/sce_sys/trophy2/npbind.dat", MakeNpbind(kCorruptSetId));
     if (!ok) *err = "writing fixture files under " + root;

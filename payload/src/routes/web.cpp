@@ -24,15 +24,15 @@ http::Response Serve(const web::Asset &asset, const char *cache_control) {
 void RegisterWeb(http::Router &router, const Context &) {
     router.Get("/", [](const http::Request &) {
         const web::Asset *page = Find("/index.html");
-        return page ? Serve(*page, "no-cache") : http::Error(404, "UI not embedded");
+        return page ? Serve(*page, "no-cache") : http::Error(404, "not_found");
     });
     router.Get("/:file", [](const http::Request &req) {
         const web::Asset *asset = Find("/" + req.params.at("file"));
-        return asset ? Serve(*asset, "no-cache") : http::Error(404, "not found");
+        return asset ? Serve(*asset, "no-cache") : http::Error(404, "not_found");
     });
     router.Get("/assets/:file", [](const http::Request &req) {
         const web::Asset *asset = Find("/assets/" + req.params.at("file"));
-        return asset ? Serve(*asset, http::kCacheForever) : http::Error(404, "not found");
+        return asset ? Serve(*asset, http::kCacheForever) : http::Error(404, "not_found");
     });
 }
 

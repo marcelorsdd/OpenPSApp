@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sys/types.h>
+
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -27,7 +29,7 @@ bool ReadRange(const std::string &path, uint64_t offset, int64_t length, std::st
                int64_t max_bytes = 64 << 20);
 bool ReadFile(const std::string &path, std::string *out, int64_t max_bytes = 64 << 20);
 
-bool WriteFileAtomic(const std::string &path, std::string_view data);
+bool WriteFileAtomic(const std::string &path, std::string_view data, mode_t mode = 0644);
 bool EnsureDir(const std::string &path);
 
 }

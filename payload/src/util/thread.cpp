@@ -12,9 +12,9 @@ constexpr size_t kThreadStackBytes = 256 * 1024;
 constexpr size_t kSignalStackBytes = 64 * 1024;
 
 void ReleaseSignalStack() {
-    stack_t current {};
+    stack_t current{};
     if (sigaltstack(nullptr, &current) != 0 || (current.ss_flags & SS_DISABLE)) return;
-    stack_t off {};
+    stack_t off{};
     off.ss_flags = SS_DISABLE;
     if (sigaltstack(&off, nullptr) == 0) std::free(current.ss_sp);
 }
@@ -29,7 +29,7 @@ void *Run(void *arg) {
 }
 
 void InstallSignalStack() {
-    stack_t ss {};
+    stack_t ss{};
     ss.ss_sp = std::malloc(kSignalStackBytes);
     ss.ss_size = kSignalStackBytes;
     if (ss.ss_sp && sigaltstack(&ss, nullptr) != 0) std::free(ss.ss_sp);

@@ -5,6 +5,8 @@
 #include <string_view>
 #include <vector>
 
+struct cJSON;
+
 namespace openpsapp {
 class JsonWriter {
 public:
@@ -20,7 +22,14 @@ public:
 
     JsonWriter &StringOrNull(std::string_view value);
 
-    const std::string &str() const { return out_; }
+    JsonWriter &BeginObject(std::string_view key);
+    JsonWriter &BeginArray(std::string_view key);
+    JsonWriter &String(std::string_view key, std::string_view value);
+    JsonWriter &Int(std::string_view key, int64_t value);
+    JsonWriter &Bool(std::string_view key, bool value);
+    JsonWriter &Null(std::string_view key);
+    JsonWriter &StringOrNull(std::string_view key, std::string_view value);
+
     std::string take() { return std::move(out_); }
 
 private:
@@ -31,5 +40,7 @@ private:
     std::vector<bool> has_items_;
     bool after_key_ = false;
 };
+
+std::string JsonString(const cJSON *object, const char *key);
 
 }

@@ -18,7 +18,6 @@
 #include "util/timeutil.hpp"
 #include "version.hpp"
 
-
 using namespace openpsapp;
 
 int main() {

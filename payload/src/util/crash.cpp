@@ -25,7 +25,7 @@ void OnFatalSignal(int sig) {
 
 void InstallHandlers() {
     InstallSignalStack();
-    struct sigaction sa {};
+    struct sigaction sa{};
     sa.sa_handler = OnFatalSignal;
     sa.sa_flags = SA_ONSTACK;
     sigemptyset(&sa.sa_mask);

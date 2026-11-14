@@ -21,9 +21,9 @@ void RegisterTrophies(http::Router &router, const Context &ctx) {
         for (const EarnedTrophy &e : lib->EarnedTrophies(EarnedLimit(req))) {
             auto title = lib->title_for_set.find(e.set->id);
             w.BeginObject()
-                .Key("setId").String(e.set->id)
-                .Key("setName").String(e.set->name)
-                .Key("titleId").StringOrNull(title != lib->title_for_set.end() ? title->second : "")
+                .String("setId", e.set->id)
+                .String("setName", e.set->name)
+                .StringOrNull("titleId", title != lib->title_for_set.end() ? title->second : "")
                 .Key("trophy");
             WriteTrophy(w, *e.trophy);
             w.EndObject();
@@ -44,7 +44,7 @@ void RegisterTrophies(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/trophy-sets/:id", [&ctx](const http::Request &req) {
         auto lib = CurrentLibrary(ctx.language);
         const TrophySet *set = lib->FindSet(req.params.at("id"));
-        if (!set) return http::Error(404, "trophy set not found");
+        if (!set) return http::Error(404, "not_found");
         JsonWriter w;
         WriteTrophySet(w, *lib, *set);
         return http::Json(w.take());
@@ -53,7 +53,7 @@ void RegisterTrophies(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/trophy-sets/:id/trophies", [&ctx](const http::Request &req) {
         auto lib = CurrentLibrary(ctx.language);
         const TrophySet *set = lib->FindSet(req.params.at("id"));
-        if (!set) return http::Error(404, "trophy set not found");
+        if (!set) return http::Error(404, "not_found");
         JsonWriter w;
         w.BeginArray();
         for (const Trophy &t : set->trophies) WriteTrophy(w, t);

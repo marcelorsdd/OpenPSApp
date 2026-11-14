@@ -12,11 +12,11 @@ void RegisterHealth(http::Router &router, const Context &ctx) {
     router.Get("/api/v1/health", [&ctx](const http::Request &) {
         JsonWriter w;
         w.BeginObject()
-            .Key("ok").Bool(true)
-            .Key("version").String(ctx.version)
-            .Key("source").String("console")
-            .Key("capturedAt").String(timeutil::NowIso())
-            .Key("language").String(ctx.language)
+            .Bool("ok", true)
+            .String("version", ctx.version)
+            .String("source", "console")
+            .String("capturedAt", timeutil::NowIso())
+            .String("language", ctx.language)
             .EndObject();
         return http::Json(w.take());
     });

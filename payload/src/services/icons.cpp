@@ -19,8 +19,8 @@ std::string FileVersion(const std::string &path) {
 
 std::string Register(const Location &where) {
     if (where.path.empty()) return "";
-    std::string key = where.path + "#" + std::to_string(where.offset) + "+" + std::to_string(where.length) + "@" +
-                      where.version;
+    std::string key =
+        where.path + "#" + std::to_string(where.offset) + "+" + std::to_string(where.length) + "@" + where.version;
     std::string id = Sha256::Hex(key).substr(0, 32);
     std::lock_guard<std::mutex> lock(g_mu);
     g_by_id.emplace(id, where);

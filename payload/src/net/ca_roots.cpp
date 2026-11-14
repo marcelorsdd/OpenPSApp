@@ -50,6 +50,12 @@ tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
 -----END CERTIFICATE-----
 )PEM";
 
-std::vector<std::string_view> ProductionRoots() { return {kIsrgRootX1, kIsrgRootX2}; }
+std::vector<std::string_view> ProductionRoots() {
+#ifdef OPENPSAPP_DEV_CA
+    return {kIsrgRootX1, kIsrgRootX2, kDevCa};
+#else
+    return {kIsrgRootX1, kIsrgRootX2};
+#endif
+}
 
 }

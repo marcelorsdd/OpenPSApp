@@ -1,3 +1,5 @@
+#include "routes/cloud.hpp"
+
 #include "cloud/service.hpp"
 #include "routes/routes.hpp"
 #include "util/json.hpp"
@@ -5,28 +7,29 @@
 
 namespace openpsapp::routes {
 namespace {
-http::Response StatusJson(const cloud::CloudController *controller) {
+using ControllerFn = std::function<cloud::CloudController *()>;
+
+http::Response StatusJson(const cloud::CloudController *controller, bool local) {
     JsonWriter w;
     if (!controller) {
-        w.BeginObject().Key("configured").Bool(false).Key("linked").Bool(false).EndObject();
+        w.BeginObject().Bool("configured", false).Bool("linked", false).Bool("local", local).EndObject();
         return http::Json(w.take());
     }
     cloud::CloudStatus s = controller->Status();
     w.BeginObject()
-        .Key("configured").Bool(true)
-        .Key("linked").Bool(s.linked)
-        .Key("syncing").Bool(s.syncing)
-        .Key("profileName").StringOrNull(s.profile_name)
-        .Key("lastSyncAt").StringOrNull(s.last_sync_at)
-        .Key("lastError").StringOrNull(s.last_error)
+        .Bool("configured", true)
+        .Bool("local", local)
+        .Bool("linked", s.linked)
+        .Bool("syncing", s.syncing)
+        .StringOrNull("profileName", s.profile_name)
+        .StringOrNull("lastSyncAt", s.last_sync_at)
+        .StringOrNull("lastError", s.last_error)
         .Key("pairing");
     if (s.pairing) {
         int64_t left = (s.pairing->expires_at_ms - timeutil::NowMillis()) / 1000;
-        w.BeginObject()
-            .Key("userCode").String(s.pairing->user_code)
-            .Key("verificationUri").String(s.pairing->verification_uri)
-            .Key("expiresIn").Int(left > 0 ? left : 0)
-            .EndObject();
+        w.BeginObject();
+        if (local) w.String("userCode", s.pairing->user_code).String("verificationUri", s.pairing->verification_uri);
+        w.Int("expiresIn", left > 0 ? left : 0).EndObject();
     } else {
         w.Null();
     }
@@ -34,33 +37,48 @@ http::Response StatusJson(const cloud::CloudController *controller) {
     return http::Json(w.take());
 }
 
-http::Response NotConfigured() { return http::Error(409, "cloud not configured"); }
+void PostConsoleAction(http::Router &router, std::string path, int port, ControllerFn controller,
+                       std::function<http::Response(cloud::CloudController &)> run) {
+    router.Post(std::move(path), [port, controller, run](const http::Request &req) {
+        if (!FromConsole(req, port) || !FromApp(req)) return http::Error(403, "console_only");
+        cloud::CloudController *c = controller();
+        if (!c) return http::Error(409, "not_configured");
+        return run(*c);
+    });
+}
 }
 
-void RegisterCloud(http::Router &router, const Context &) {
-    router.Get("/api/v1/cloud", [](const http::Request &) { return StatusJson(cloud::Controller()); });
+bool FromConsole(const http::Request &req, int port) {
+    if (!http::IsLoopback(req.peer)) return false;
+    std::string host = http::Header(req, "host");
+    std::string suffix = ":" + std::to_string(port);
+    return host == "127.0.0.1" + suffix || host == "localhost" + suffix;
+}
 
-    router.Post("/api/v1/cloud/link", [](const http::Request &) {
-        cloud::CloudController *controller = cloud::Controller();
-        if (!controller) return NotConfigured();
+void RegisterCloud(http::Router &router, int port, ControllerFn controller) {
+    router.Get("/api/v1/cloud", [port, controller](const http::Request &req) {
+        return StatusJson(controller(), FromConsole(req, port));
+    });
+
+    PostConsoleAction(router, "/api/v1/cloud/link", port, controller, [](cloud::CloudController &c) {
         std::string err;
-        if (!controller->StartLink(timeutil::NowMillis(), &err)) return http::Error(502, err);
-        return StatusJson(controller);
+        if (!c.StartLink(timeutil::NowMillis(), &err)) return http::Error(err == "cloud_unavailable" ? 502 : 409, err);
+        return StatusJson(&c, true);
     });
 
-    router.Post("/api/v1/cloud/unlink", [](const http::Request &) {
-        cloud::CloudController *controller = cloud::Controller();
-        if (!controller) return NotConfigured();
-        controller->Unlink();
-        return StatusJson(controller);
+    PostConsoleAction(router, "/api/v1/cloud/unlink", port, controller, [](cloud::CloudController &c) {
+        c.Unlink();
+        return StatusJson(&c, true);
     });
 
-    router.Post("/api/v1/cloud/sync", [](const http::Request &) {
-        cloud::CloudController *controller = cloud::Controller();
-        if (!controller) return NotConfigured();
-        controller->RequestSync();
-        return StatusJson(controller);
+    PostConsoleAction(router, "/api/v1/cloud/sync", port, controller, [](cloud::CloudController &c) {
+        c.RequestSync();
+        return StatusJson(&c, true);
     });
+}
+
+void RegisterCloud(http::Router &router, const Context &ctx) {
+    RegisterCloud(router, ctx.config.port, cloud::Controller);
 }
 
 }

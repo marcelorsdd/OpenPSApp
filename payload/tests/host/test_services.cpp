@@ -1,5 +1,7 @@
 #include <unistd.h>
 
+#include <cstdlib>
+
 #include "fixture.hpp"
 #include "platform/platform.hpp"
 #include "services/hidden.hpp"
@@ -20,7 +22,7 @@ TEST(trophy_set_lookup_prefers_app_db_path_and_falls_back_to_internal) {
 }
 
 TEST(icon_ids_follow_location_and_file_version) {
-    icons::Location a {"/x/icon.png", 0, -1, "10-1"};
+    icons::Location a{"/x/icon.png", 0, -1, "10-1"};
     icons::Location b = a;
     b.version = "10-2";
     std::string id = icons::Register(a);

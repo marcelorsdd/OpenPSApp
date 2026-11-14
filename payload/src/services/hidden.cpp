@@ -16,7 +16,7 @@ std::set<std::string> g_ids;
 
 bool Save() {
     JsonWriter w;
-    w.BeginObject().Key("titleIds").BeginArray();
+    w.BeginObject().BeginArray("titleIds");
     for (const std::string &id : g_ids) w.String(id);
     w.EndArray().EndObject();
     return fs::WriteFileAtomic(g_path, w.take() + "\n");

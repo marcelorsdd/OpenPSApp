@@ -26,5 +26,6 @@ void RegisterWeb(http::Router &router, const Context &ctx);
 void RegisterCloud(http::Router &router, const Context &ctx);
 
 bool ServedByOpenPSApp(uint16_t port);
+bool FromApp(const http::Request &req);
 
 }

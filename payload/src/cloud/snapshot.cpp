@@ -17,21 +17,21 @@ std::string AssetId(Snapshot &snap, const icons::Location &where, const AssetHas
 std::string SetJson(Snapshot &snap, const TrophySet &set, const AssetHashFn &hash) {
     JsonWriter w;
     w.BeginObject()
-        .Key("id").String(set.id)
-        .Key("version").String(set.version)
-        .Key("name").String(set.name.empty() ? set.id : set.name)
-        .Key("iconId").StringOrNull(AssetId(snap, set.icon, hash))
-        .Key("trophies").BeginArray();
+        .String("id", set.id)
+        .String("version", set.version)
+        .String("name", set.name.empty() ? set.id : set.name)
+        .StringOrNull("iconId", AssetId(snap, set.icon, hash))
+        .BeginArray("trophies");
     for (const Trophy &t : set.trophies) {
         w.BeginObject()
-            .Key("id").Int(t.id)
-            .Key("name").String(t.name)
-            .Key("description").String(t.detail)
-            .Key("grade").String(GradeName(t.grade))
-            .Key("hidden").Bool(t.hidden)
-            .Key("earned").Bool(t.earned)
-            .Key("earnedAt").StringOrNull(t.earned ? timeutil::FormatIsoOrEmpty(t.earned_at) : "")
-            .Key("iconId").StringOrNull(AssetId(snap, t.icon, hash))
+            .Int("id", t.id)
+            .String("name", t.name)
+            .String("description", t.detail)
+            .String("grade", GradeName(t.grade))
+            .Bool("hidden", t.hidden)
+            .Bool("earned", t.earned)
+            .StringOrNull("earnedAt", t.earned ? timeutil::FormatIsoOrEmpty(t.earned_at) : "")
+            .StringOrNull("iconId", AssetId(snap, t.icon, hash))
             .EndObject();
     }
     w.EndArray().EndObject();
@@ -46,29 +46,29 @@ Snapshot BuildSnapshot(const Library &lib, const std::string &profile_name, cons
 
     JsonWriter w;
     w.BeginObject()
-        .Key("profile").BeginObject()
-        .Key("name").String(profile_name)
-        .Key("language").StringOrNull(language)
+        .BeginObject("profile")
+        .String("name", profile_name)
+        .StringOrNull("language", language)
         .EndObject()
-        .Key("games").BeginArray();
+        .BeginArray("games");
     for (const GamePlaytime &g : lib.playtime.games) {
         auto set = lib.set_for_title.find(g.title_id);
         w.BeginObject()
-            .Key("titleId").String(g.title_id)
-            .Key("name").String(g.name.empty() ? g.title_id : g.name)
-            .Key("playtimeSeconds").Int(g.playtime_seconds)
-            .Key("lastPlayedAt").StringOrNull(g.last_played_at)
-            .Key("iconId").StringOrNull(AssetId(snap, g.icon, hash))
-            .Key("heroId").StringOrNull(AssetId(snap, g.hero, hash))
-            .Key("trophySetId").StringOrNull(set != lib.set_for_title.end() ? set->second : "")
-            .Key("hidden").Bool(hidden::Contains(g.title_id))
+            .String("titleId", g.title_id)
+            .String("name", g.name.empty() ? g.title_id : g.name)
+            .Int("playtimeSeconds", g.playtime_seconds)
+            .StringOrNull("lastPlayedAt", g.last_played_at)
+            .StringOrNull("iconId", AssetId(snap, g.icon, hash))
+            .StringOrNull("heroId", AssetId(snap, g.hero, hash))
+            .StringOrNull("trophySetId", set != lib.set_for_title.end() ? set->second : "")
+            .Bool("hidden", hidden::Contains(g.title_id))
             .EndObject();
     }
-    w.EndArray().Key("sets").BeginArray();
+    w.EndArray().BeginArray("sets");
     for (const TrophySet &set : lib.trophies.sets) {
-        w.BeginObject().Key("id").String(set.id).Key("version").String(set.version).EndObject();
+        w.BeginObject().String("id", set.id).String("version", set.version).EndObject();
     }
-    w.EndArray().Key("assets").BeginArray();
+    w.EndArray().BeginArray("assets");
     for (const auto &[id, where] : snap.assets) w.String(id);
     w.EndArray().EndObject();
     snap.manifest = w.take();

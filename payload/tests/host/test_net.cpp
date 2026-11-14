@@ -47,8 +47,9 @@ TEST(responses_parse_content_length_chunked_and_close) {
     CHECK_EQ(status, 200);
     CHECK_EQ(body, std::string("hello"));
 
-    CHECK(ParseResponse("HTTP/1.1 201 Created\r\nTransfer-Encoding: chunked\r\n\r\n4\r\nWiki\r\n5;ext=1\r\npedia\r\n0\r\nT: 1\r\n\r\n",
-                        &status, &body, &err));
+    CHECK(ParseResponse(
+        "HTTP/1.1 201 Created\r\nTransfer-Encoding: chunked\r\n\r\n4\r\nWiki\r\n5;ext=1\r\npedia\r\n0\r\nT: 1\r\n\r\n",
+        &status, &body, &err));
     CHECK_EQ(status, 201);
     CHECK_EQ(body, std::string("Wikipedia"));
 
@@ -70,6 +71,27 @@ TEST(responses_reject_truncation_and_garbage) {
     CHECK(!err.empty());
 }
 
+TEST(chunked_responses_reject_sizes_past_the_data) {
+    const std::string head = "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n";
+    int status = 0;
+    std::string body, err;
+    for (const char *size : {"ffffffffffffffff", "fffffffffffffffe", "fffffffffffffffd", "7fffffffffffffff"}) {
+        body = "untouched";
+        CHECK(!ParseResponse(head + size + "\r\nabc\r\n0\r\n\r\n", &status, &body, &err));
+        CHECK_EQ(err, std::string("truncated chunk"));
+        CHECK(body.size() < 16);
+    }
+    CHECK(!ParseResponse(head + "10000000000000000\r\nabc\r\n0\r\n\r\n", &status, &body, &err));
+    CHECK_EQ(err, std::string("bad chunk size"));
+    CHECK(!ParseResponse(head + "-1\r\nabc\r\n0\r\n\r\n", &status, &body, &err));
+    CHECK_EQ(err, std::string("bad chunk size"));
+    CHECK(!ParseResponse(head + " 3\r\nabc\r\n0\r\n\r\n", &status, &body, &err));
+    CHECK(!ParseResponse(head + "3\r\nabcXY0\r\n\r\n", &status, &body, &err));
+    CHECK_EQ(err, std::string("bad chunk terminator"));
+    CHECK(!ParseResponse(head + "3\r\nabc", &status, &body, &err));
+    CHECK_EQ(err, std::string("truncated chunk"));
+}
+
 namespace {
 using tls_fixture::TestTlsServer;
 
@@ -88,7 +110,8 @@ TEST(https_round_trips_with_a_trusted_ca) {
     CHECK_EQ(r.status, 200);
     CHECK(r.body.find("\"auth\":\"Bearer opsa_t\"") != std::string::npos);
 
-    HttpsRequest post{"POST", LocalUrl(server, "localhost", "/sync"), {{"Content-Type", "application/json"}}, "{\"a\":1}", 3000};
+    HttpsRequest post{
+        "POST", LocalUrl(server, "localhost", "/sync"), {{"Content-Type", "application/json"}}, "{\"a\":1}", 3000};
     HttpsResponse p = HttpsSend(post, {tls_fixture::kCaA});
     CHECK(p.ok());
     CHECK(p.body.find("\"method\":\"POST\"") != std::string::npos);
@@ -132,7 +155,18 @@ TEST(https_decodes_chunked_responses) {
 
 TEST(https_refuses_other_schemes_and_unknown_hosts) {
     CHECK(StartsWith(HttpsSend({"GET", "http://example.com/", {}, "", 1000}, ProductionRoots()).error, "url"));
-    CHECK(StartsWith(HttpsSend({"GET", "https://does-not-exist.invalid/", {}, "", 1000}, ProductionRoots()).error, "dns"));
+    CHECK(StartsWith(HttpsSend({"GET", "https://does-not-exist.invalid/", {}, "", 1000}, ProductionRoots()).error,
+                     "dns"));
+}
+
+TEST(https_refuses_to_run_with_a_broken_ca_certificate) {
+    std::string broken(tls_fixture::kCaA);
+    broken.replace(broken.find("MIIB"), 4, "AAAA");
+    for (std::string_view ca : {std::string_view("not a certificate"), std::string_view(broken)}) {
+        HttpsResponse r = HttpsSend({"GET", "https://localhost:9/", {}, "", 1000}, {tls_fixture::kCaA, ca});
+        CHECK_EQ(r.error, std::string("tls: bad CA certificate"));
+        CHECK_EQ(r.status, 0);
+    }
 }
 
 TEST(production_roots_are_lets_encrypt_only) {

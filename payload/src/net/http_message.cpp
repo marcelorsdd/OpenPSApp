@@ -1,6 +1,7 @@
 #include "net/http_message.hpp"
 
 #include <cctype>
+#include <charconv>
 #include <cstdlib>
 
 namespace openpsapp::net {
@@ -26,17 +27,22 @@ bool DecodeChunked(std::string_view data, std::string *body, std::string *err) {
             *err = "truncated chunk size";
             return false;
         }
-        std::string size_text(data.substr(pos, data.find_first_of(";\r", pos) - pos));
-        char *end = nullptr;
-        unsigned long size = std::strtoul(size_text.c_str(), &end, 16);
-        if (size_text.empty() || *end != '\0') {
+        std::string_view size_text = data.substr(pos, data.find_first_of(";\r", pos) - pos);
+        size_t size = 0;
+        auto [end, ec] = std::from_chars(size_text.data(), size_text.data() + size_text.size(), size, 16);
+        if (size_text.empty() || ec != std::errc() || end != size_text.data() + size_text.size()) {
             *err = "bad chunk size";
             return false;
         }
         pos = line_end + 2;
         if (size == 0) return true;
-        if (data.size() < pos + size + 2) {
+        size_t left = data.size() - pos;
+        if (left < 2 || size > left - 2) {
             *err = "truncated chunk";
+            return false;
+        }
+        if (data.substr(pos + size, 2) != "\r\n") {
+            *err = "bad chunk terminator";
             return false;
         }
         body->append(data.substr(pos, size));

@@ -14,12 +14,16 @@ using namespace openpsapp;
 TEST(json_writer_nests_and_escapes) {
     JsonWriter w;
     w.BeginObject()
-        .Key("a").Int(1)
-        .Key("b").BeginArray().String("x\"y").Bool(true).Null().EndArray()
-        .Key("c").StringOrNull("")
-        .Key("d").String("line\nbreak\x01")
+        .Int("a", 1)
+        .BeginArray("b")
+        .String("x\"y")
+        .Bool(true)
+        .Null()
+        .EndArray()
+        .StringOrNull("c", "")
+        .String("d", "line\nbreak\x01")
         .EndObject();
-    CHECK_EQ(w.str(), std::string(R"({"a":1,"b":["x\"y",true,null],"c":null,"d":"line\nbreak\u0001"})"));
+    CHECK_EQ(w.take(), std::string(R"({"a":1,"b":["x\"y",true,null],"c":null,"d":"line\nbreak\u0001"})"));
 }
 
 TEST(sha256_matches_known_vectors) {
@@ -39,6 +43,20 @@ TEST(timestamps_normalize_to_utc) {
     CHECK_EQ(timeutil::NormalizeTimestamp("0"), std::string(""));
     CHECK_EQ(timeutil::NormalizeTimestamp("garbage"), std::string(""));
     CHECK_EQ(timeutil::FormatIsoOrEmpty(0), std::string(""));
+}
+
+TEST(timestamps_reject_overflowing_and_malformed_input) {
+    CHECK_EQ(timeutil::NormalizeTimestamp("9223372036854775808"), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp("12345678901234567890"), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp(std::string(64, '9')), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp("-1762546500"), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp("1762546500x"), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp(" 1762546500"), std::string(""));
+    std::string with_nul = "1762546500";
+    with_nul[5] = '\0';
+    CHECK_EQ(timeutil::NormalizeTimestamp(with_nul), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp("2026-11-07"), std::string(""));
+    CHECK_EQ(timeutil::NormalizeTimestamp("0000-00-00 00:00:00"), std::string(""));
 }
 
 TEST(read_range_reads_slices_and_rejects_overruns) {

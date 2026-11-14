@@ -10,12 +10,12 @@ void RegisterProfile(http::Router &router, const Context &ctx) {
         JsonWriter w;
         w.BeginObject().Key("user");
         WriteUser(w, lib->user);
-        w.Key("totals").BeginObject()
-            .Key("games").Int(totals.games)
-            .Key("playtimeSeconds").Int(totals.playtime_seconds)
-            .Key("trophies").BeginObject();
-        for (size_t i = 0; i < kGrades.size(); ++i) w.Key(GradeName(kGrades[i])).Int(totals.trophies.by_grade[i].earned);
-        w.Key("earned").Int(totals.trophies.earned).Key("total").Int(totals.trophies.total).EndObject();
+        w.BeginObject("totals")
+            .Int("games", totals.games)
+            .Int("playtimeSeconds", totals.playtime_seconds)
+            .BeginObject("trophies");
+        for (size_t i = 0; i < kGrades.size(); ++i) w.Int(GradeName(kGrades[i]), totals.trophies.by_grade[i].earned);
+        w.Int("earned", totals.trophies.earned).Int("total", totals.trophies.total).EndObject();
         w.EndObject().EndObject();
         return http::Json(w.take());
     });

@@ -33,6 +33,7 @@ struct SyncResult {
     bool unauthorized = false;
     int sets = 0;
     int assets = 0;
+    int unread_assets = 0;
     std::string error;
 };
 
@@ -43,6 +44,7 @@ public:
     std::optional<PairingCode> RequestCode(const std::string &profile_name, std::string *err);
     TokenResult PollToken(const std::string &device_code, const std::string &profile_name);
     SyncResult Sync(const std::string &token, const Snapshot &snapshot, const ReadAssetFn &read);
+    bool Revoke(const std::string &token, std::string *err);
 
 private:
     net::HttpsResponse Call(const char *method, const std::string &path, std::string body, const std::string &token,

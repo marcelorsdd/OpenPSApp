@@ -36,8 +36,8 @@ std::unordered_map<std::string, TitleMeta> LoadTitleMeta(const AppDb &db) {
     std::set<std::string> cols = ColumnSet(db, "tbl_contentinfo");
     if (!cols.empty()) {
         std::string sql = "SELECT titleId, " + ColumnOr(cols, "titleName", "''") + ", " +
-                          ColumnOr(cols, "is3rdPartyVideoApp", "0") + ", " + ColumnOr(cols, "categoryType", "0") + ", " +
-                          ColumnOr(cols, "metaDataPath", "''") + " FROM tbl_contentinfo";
+                          ColumnOr(cols, "is3rdPartyVideoApp", "0") + ", " + ColumnOr(cols, "categoryType", "0") +
+                          ", " + ColumnOr(cols, "metaDataPath", "''") + " FROM tbl_contentinfo";
         db.ForEachRow(sql, {}, [&meta](const AppDb::Row &r) {
             TitleMeta &m = meta[r.Text(0)];
             if (m.name.empty()) m.name = r.Text(1);
@@ -48,8 +48,8 @@ std::unordered_map<std::string, TitleMeta> LoadTitleMeta(const AppDb &db) {
     }
 
     if (ColumnSet(db, "tbl_appbrowse").count("titleName")) {
-        db.ForEachRow("SELECT titleId, titleName FROM tbl_appbrowse WHERE titleName IS NOT NULL AND titleName != ''", {},
-                      [&meta](const AppDb::Row &r) {
+        db.ForEachRow("SELECT titleId, titleName FROM tbl_appbrowse WHERE titleName IS NOT NULL AND titleName != ''",
+                      {}, [&meta](const AppDb::Row &r) {
                           TitleMeta &m = meta[r.Text(0)];
                           if (m.name.empty()) m.name = r.Text(1);
                       });
@@ -127,7 +127,7 @@ PlaytimeReport CollectPlaytime(const std::optional<platform::User> &user) {
     for (const std::string &table : report.tables) {
         std::set<std::string> cols = ColumnSet(db, table);
         std::string last = cols.count("lastPlayedDateOnConsole") ? ColumnOr(cols, "lastPlayedDateOnConsole", "''")
-                                                                  : ColumnOr(cols, "lastAccessTime", "''");
+                                                                 : ColumnOr(cols, "lastAccessTime", "''");
         std::string sql = "SELECT titleId, COALESCE(playedTimeOnConsole,0), " + last + " FROM " + table;
         db.ForEachRow(sql, {}, [&](const AppDb::Row &r) {
             std::string title_id = r.Text(0);

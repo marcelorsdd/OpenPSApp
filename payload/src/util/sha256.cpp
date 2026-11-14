@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cstring>
 
+#include "util/bytes.hpp"
+
 namespace openpsapp {
 namespace {
 constexpr uint32_t kK[64] = {
@@ -25,8 +27,8 @@ Sha256::Sha256()
 void Sha256::Block(const uint8_t *block) {
     uint32_t w[64];
     for (int i = 0; i < 16; ++i) {
-        w[i] = (uint32_t(block[i * 4]) << 24) | (uint32_t(block[i * 4 + 1]) << 16) |
-               (uint32_t(block[i * 4 + 2]) << 8) | uint32_t(block[i * 4 + 3]);
+        w[i] = (uint32_t(block[i * 4]) << 24) | (uint32_t(block[i * 4 + 1]) << 16) | (uint32_t(block[i * 4 + 2]) << 8) |
+               uint32_t(block[i * 4 + 3]);
     }
     for (int i = 16; i < 64; ++i) {
         uint32_t s0 = Rotr(w[i - 15], 7) ^ Rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
@@ -94,7 +96,7 @@ std::array<uint8_t, 32> Sha256::Digest() {
     for (int i = 0; i < 8; ++i) len[i] = static_cast<uint8_t>(bits >> (56 - 8 * i));
     Update(len, 8);
 
-    std::array<uint8_t, 32> out {};
+    std::array<uint8_t, 32> out{};
     for (int i = 0; i < 8; ++i) {
         out[i * 4] = static_cast<uint8_t>(state_[i] >> 24);
         out[i * 4 + 1] = static_cast<uint8_t>(state_[i] >> 16);
@@ -105,13 +107,8 @@ std::array<uint8_t, 32> Sha256::Digest() {
 }
 
 std::string Sha256::HexDigest() {
-    static const char kHex[] = "0123456789abcdef";
-    std::string out;
-    for (uint8_t b : Digest()) {
-        out += kHex[b >> 4];
-        out += kHex[b & 0xf];
-    }
-    return out;
+    std::array<uint8_t, 32> digest = Digest();
+    return bytes::Hex(std::string_view(reinterpret_cast<const char *>(digest.data()), digest.size()));
 }
 
 std::string Sha256::Hex(std::string_view data) {

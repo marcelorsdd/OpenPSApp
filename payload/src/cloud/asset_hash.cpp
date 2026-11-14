@@ -38,7 +38,7 @@ void AssetHasher::Flush() {
     if (!dirty_) return;
     JsonWriter w;
     w.BeginObject();
-    for (const auto &[id, hash] : hashes_) w.Key(id).String(hash);
+    for (const auto &[id, hash] : hashes_) w.String(id, hash);
     w.EndObject();
     if (fs::WriteFileAtomic(cache_path_, w.take() + "\n")) dirty_ = false;
 }

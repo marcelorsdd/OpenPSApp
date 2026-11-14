@@ -8,18 +8,18 @@
 namespace openpsapp {
 namespace {
 constexpr const char *kSystemLanguages[] = {
-    "ja-JP", "en-US", "fr-FR", "es-ES", "de-DE", "it-IT", "nl-NL", "pt-PT", "ru-RU", "ko-KR", "zh-Hant",
+    "ja-JP",   "en-US", "fr-FR", "es-ES", "de-DE", "it-IT", "nl-NL", "pt-PT", "ru-RU", "ko-KR",  "zh-Hant",
     "zh-Hans", "fi-FI", "sv-SE", "da-DK", "no-NO", "pl-PL", "pt-BR", "en-GB", "tr-TR", "es-419", "ar-AE",
-    "fr-CA", "cs-CZ", "hu-HU", "el-GR", "ro-RO", "th-TH", "vi-VN", "id-ID", "uk-UA",
+    "fr-CA",   "cs-CZ", "hu-HU", "el-GR", "ro-RO", "th-TH", "vi-VN", "id-ID", "uk-UA",
 };
 
 std::string Serialize(const Config &cfg) {
     JsonWriter w;
     w.BeginObject()
-        .Key("port").Int(cfg.port)
-        .Key("language").String(cfg.language)
-        .Key("debug").Bool(cfg.debug)
-        .Key("server").String(cfg.server)
+        .Int("port", cfg.port)
+        .String("language", cfg.language)
+        .Bool("debug", cfg.debug)
+        .String("server", cfg.server)
         .EndObject();
     return w.take() + "\n";
 }

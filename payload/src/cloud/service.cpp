@@ -2,6 +2,7 @@
 
 #include <unistd.h>
 
+#include <exception>
 #include <memory>
 
 #include "cloud/asset_hash.hpp"
@@ -55,7 +56,11 @@ void Start(const routes::Context &ctx) {
     g_controller = std::make_unique<CloudController>(g_client.get(), g_store.get(), std::move(source));
     Spawn([] {
         for (;;) {
-            g_controller->Tick(timeutil::NowMillis());
+            try {
+                g_controller->Tick(timeutil::NowMillis());
+            } catch (const std::exception &e) {
+                log::Error("cloud: sync tick failed: %s", e.what());
+            }
             sleep(kTickSeconds);
         }
     });

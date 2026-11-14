@@ -10,8 +10,10 @@ namespace openpsapp::http {
 struct Request {
     std::string method;
     std::string path;
+    std::string peer;
     std::map<std::string, std::string> query;
     std::map<std::string, std::string> params;
+    std::map<std::string, std::string> headers;
     std::string body;
 };
 
@@ -29,10 +31,14 @@ struct Response {
 constexpr const char *kCacheForever = "public, max-age=31536000, immutable";
 
 Response Json(std::string body, int status = 200);
-Response Error(int status, std::string_view message);
+Response Error(int status, std::string_view code);
 Response File(std::string path, std::string content_type, uint64_t offset = 0, int64_t length = -1);
 
 void ParseTarget(std::string_view target, std::string *path, std::map<std::string, std::string> *query);
+void ParseHeaders(std::string_view head, std::map<std::string, std::string> *headers);
+std::string Header(const Request &req, const std::string &name);
+bool IsLoopback(const std::string &address);
+bool IsAllowedHost(std::string_view host);
 
 class Router {
 public:

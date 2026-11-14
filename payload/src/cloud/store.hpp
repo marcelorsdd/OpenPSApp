@@ -3,6 +3,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace openpsapp::cloud {
 struct CloudLink {
@@ -18,12 +19,16 @@ public:
     std::optional<CloudLink> Get(const std::string &user) const;
     bool Put(const std::string &user, const CloudLink &link);
     bool Remove(const std::string &user);
+    std::optional<std::string> Retire(const std::string &user);
+    std::vector<std::string> Revocations() const { return revoke_; }
+    bool Revoked(const std::string &token);
 
 private:
     bool Save() const;
 
     std::string path_;
     std::map<std::string, CloudLink> links_;
+    std::vector<std::string> revoke_;
 };
 
 }

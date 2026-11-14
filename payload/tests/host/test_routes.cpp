@@ -74,6 +74,29 @@ TEST(debug_paths_are_allowlisted) {
     CHECK(!routes::IsAllowedDebugPath("/etc/passwd"));
 }
 
+TEST(debug_routes_refuse_encoded_traversal) {
+    test::App app(true);
+    for (const char *target : {"/api/v1/debug/file?path=/user/trophy2/%2e%2e/home/x",
+                               "/api/v1/debug/file?path=%2Fuser%2Ftrophy2%2F%2E%2E%2F%2E%2E%2Fetc%2Fpasswd",
+                               "/api/v1/debug/ls?path=/user/appmeta/%2e%2e",
+                               "/api/v1/debug/ls?path=/user/home/1eb71bbd/trophy2/..%2F..%2Fsavedata",
+                               "/api/v1/debug/ls?path=/user/appmeta/.%2e/..%2e"}) {
+        http::Response res = test::Get(app.router, target);
+        CHECK_EQ(res.status, 403);
+        CHECK_EQ(res.body, std::string(R"({"error":"path_not_allowed"})"));
+    }
+    CHECK_EQ(test::Get(app.router, "/api/v1/debug/%2e%2e/file?path=/user/appmeta").status, 404);
+    CHECK_EQ(test::Get(app.router, "/%2e%2e/%2e%2e/etc/passwd").status, 404);
+    CHECK_EQ(test::Get(app.router, "/api/v1/debug/ls?path=%2Fuser%2Fappmeta").status, 200);
+}
+
+TEST(debug_sources_describe_app_db_tables) {
+    test::App app(true);
+    std::string body = test::Get(app.router, "/api/v1/debug/sources").body;
+    CHECK(body.find("\"appDb\":{\"path\":\"/system_data/priv/mms/app.db\",\"ok\":true") != std::string::npos);
+    CHECK(body.find("\"details\":[{\"name\":\"tbl_") != std::string::npos);
+}
+
 TEST(routes_link_games_and_sets_and_serve_trophy_icons) {
     setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
     test::App app;
@@ -110,15 +133,41 @@ TEST(hide_and_unhide_routes_update_the_game_and_profile) {
 
     CHECK(test::Get(app.router, "/api/v1/profile").body.find("\"games\":3,\"playtimeSeconds\":10860") !=
           std::string::npos);
-    http::Response hid = test::Call(app.router, "POST", "/api/v1/games/PPSA01234/hide");
+    http::Response hid = test::AppPost(app.router, "/api/v1/games/PPSA01234/hide");
     CHECK_EQ(hid.status, 200);
     CHECK(hid.body.find("\"hidden\":true") != std::string::npos);
     CHECK(test::Get(app.router, "/api/v1/profile").body.find("\"games\":2,\"playtimeSeconds\":3660") !=
           std::string::npos);
 
-    CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA01234/unhide").status, 200);
+    CHECK_EQ(test::AppPost(app.router, "/api/v1/games/PPSA01234/unhide").status, 200);
     CHECK(test::Get(app.router, "/api/v1/games/PPSA01234").body.find("\"hidden\":false") != std::string::npos);
-    CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA00000/hide").status, 404);
+    CHECK_EQ(test::AppPost(app.router, "/api/v1/games/PPSA00000/hide").status, 404);
+    unsetenv("OPENPSAPP_USER");
+}
+
+TEST(hide_and_unhide_require_the_openpsapp_header) {
+    hidden::Load(platform::Root() + "/data/openpsapp");
+    setenv("OPENPSAPP_USER", fixture::kUserHex, 1);
+    test::App app;
+    for (const char *action : {"hide", "unhide"}) {
+        std::string target = std::string("/api/v1/games/PPSA01234/") + action;
+        CHECK_EQ(test::Call(app.router, "POST", target).status, 403);
+        CHECK_EQ(test::Call(app.router, "POST", target, {{"x-openpsapp", "0"}}).status, 403);
+        CHECK_EQ(test::Call(app.router, "POST", target, {{"x-openpsapp", "true"}}).status, 403);
+        CHECK_EQ(test::Call(app.router, "POST", target, {{"content-type", "application/x-www-form-urlencoded"}}).status,
+                 403);
+        CHECK_EQ(test::Call(app.router, "POST", "/api/v1/games/PPSA00000/" + std::string(action)).status, 403);
+    }
+    CHECK(!hidden::Contains("PPSA01234"));
+    CHECK(test::Get(app.router, "/api/v1/games/PPSA01234").body.find("\"hidden\":false") != std::string::npos);
+    http::Request phone;
+    phone.method = "POST";
+    phone.path = "/api/v1/games/PPSA01234/hide";
+    phone.peer = "192.168.1.20";
+    phone.headers = {{"host", "192.168.1.10:7777"}, {"x-openpsapp", "1"}};
+    CHECK_EQ(app.router.Dispatch(phone).status, 200);
+    CHECK(hidden::Contains("PPSA01234"));
+    CHECK_EQ(test::AppPost(app.router, "/api/v1/games/PPSA01234/unhide").status, 200);
     unsetenv("OPENPSAPP_USER");
 }
 
