@@ -1,0 +1,3 @@
+GET /api/v1/games/PPSA00000 HTTP/1.1
+Host: 127.0.0.1:7777
+
