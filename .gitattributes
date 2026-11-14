@@ -7,3 +7,5 @@
 
 payload/third_party/** linguist-vendored
 package-lock.json linguist-generated
+
+payload/tests/fuzz/seeds/** binary
