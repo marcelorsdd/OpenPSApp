@@ -275,6 +275,7 @@ TrophyReport CollectTrophies(const std::optional<platform::User> &user, const st
             report.errors.push_back(entry.name + ": " + err);
             continue;
         }
+        set.version = ucp_version + "|" + dat_version + "|" + language;
         g_cache[entry.name] = {ucp_version, dat_version, language, set};
         report.sets.push_back(std::move(set));
     }

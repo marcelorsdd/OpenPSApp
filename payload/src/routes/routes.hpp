@@ -23,6 +23,7 @@ void RegisterTrophies(http::Router &router, const Context &ctx);
 void RegisterIcons(http::Router &router, const Context &ctx);
 void RegisterDebug(http::Router &router, const Context &ctx);
 void RegisterWeb(http::Router &router, const Context &ctx);
+void RegisterCloud(http::Router &router, const Context &ctx);
 
 bool ServedByOpenPSApp(uint16_t port);
 

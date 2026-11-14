@@ -8,6 +8,7 @@ void RegisterAll(http::Router &router, const Context &ctx) {
     RegisterTrophies(router, ctx);
     RegisterIcons(router, ctx);
     RegisterDebug(router, ctx);
+    RegisterCloud(router, ctx);
     RegisterWeb(router, ctx);
 }
 

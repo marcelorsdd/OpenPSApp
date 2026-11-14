@@ -132,3 +132,17 @@ TEST(progress_matches_the_console_and_ignores_platinum) {
     for (Trophy &t : wolverine.trophies) t.earned = t.grade != Grade::Platinum;
     CHECK_EQ(wolverine.Progress(), 100);
 }
+
+TEST(trophy_sets_carry_a_version_of_their_files_and_language) {
+    TrophyReport pt = CollectTrophies(fixture::User(), "pt-BR");
+    TrophyReport en = CollectTrophies(fixture::User(), "en-US");
+    const TrophySet *a = pt.Find(fixture::kSetId);
+    const TrophySet *b = en.Find(fixture::kSetId);
+    CHECK(a != nullptr && b != nullptr);
+    if (!a || !b) return;
+    CHECK(a->version.find('|') != std::string::npos);
+    CHECK(a->version != b->version);
+    TrophyReport again = CollectTrophies(fixture::User(), "pt-BR");
+    const TrophySet *c = again.Find(fixture::kSetId);
+    CHECK(c != nullptr && c->version == a->version);
+}

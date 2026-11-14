@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <cstdlib>
 
 #include "config.hpp"
@@ -71,4 +72,19 @@ TEST(config_language_follows_the_console_when_auto) {
     CHECK_EQ(ResolveLanguage("auto"), std::string("en-US"));
     unsetenv("OPENPSAPP_LANG_ID");
     CHECK_EQ(ResolveLanguage("auto"), std::string("en-US"));
+}
+
+TEST(config_reads_and_writes_the_cloud_server) {
+    std::string dir = platform::Root() + "/data";
+    CHECK(fs::EnsureDir(dir));
+    std::string path = dir + "/config-cloud-test.json";
+    std::remove(path.c_str());
+    std::string warning;
+    CHECK_EQ(LoadOrCreateConfig(path, &warning).server, std::string(""));
+    std::string text;
+    CHECK(fs::ReadFile(path, &text, 4096));
+    CHECK(text.find("\"server\":\"\"") != std::string::npos);
+    CHECK(fs::WriteFileAtomic(path, "{\"port\":7777,\"server\":\"https://api.example.test\"}"));
+    CHECK_EQ(LoadOrCreateConfig(path, &warning).server, std::string("https://api.example.test"));
+    std::remove(path.c_str());
 }

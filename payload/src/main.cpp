@@ -3,6 +3,7 @@
 #include <csignal>
 #include <string>
 
+#include "cloud/service.hpp"
 #include "config.hpp"
 #include "http/server.hpp"
 #include "platform/platform.hpp"
@@ -63,6 +64,7 @@ int main() {
     log::Info("listening on :%d, language %s", ctx.config.port, ctx.language.c_str());
     platform::Notify(messages::Text(messages::Id::Started, ctx.language, ctx.config.port));
     tile::InstallIfNeeded(data_dir, ctx.config.port, ctx.language);
+    cloud::Start(ctx);
 
     server.Serve();
     return 0;

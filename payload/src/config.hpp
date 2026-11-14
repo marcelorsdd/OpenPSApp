@@ -7,6 +7,7 @@ struct Config {
     int port = 7777;
     std::string language = "auto";
     bool debug = false;
+    std::string server;
 };
 
 Config LoadOrCreateConfig(const std::string &path, std::string *warning);

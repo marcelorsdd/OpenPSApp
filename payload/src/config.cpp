@@ -19,6 +19,7 @@ std::string Serialize(const Config &cfg) {
         .Key("port").Int(cfg.port)
         .Key("language").String(cfg.language)
         .Key("debug").Bool(cfg.debug)
+        .Key("server").String(cfg.server)
         .EndObject();
     return w.take() + "\n";
 }
@@ -48,6 +49,9 @@ Config LoadOrCreateConfig(const std::string &path, std::string *warning) {
     }
     if (const cJSON *v = cJSON_GetObjectItemCaseSensitive(root, "debug"); cJSON_IsBool(v)) {
         cfg.debug = cJSON_IsTrue(v);
+    }
+    if (const cJSON *v = cJSON_GetObjectItemCaseSensitive(root, "server"); cJSON_IsString(v)) {
+        cfg.server = v->valuestring;
     }
     cJSON_Delete(root);
     return cfg;

@@ -44,6 +44,7 @@ struct Tally {
 
 struct TrophySet {
     std::string id;
+    std::string version;
     std::string name;
     icons::Location icon;
     std::vector<Trophy> trophies;
