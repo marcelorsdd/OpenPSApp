@@ -174,7 +174,7 @@ Releases are built by [`.github/workflows/release.yml`](.github/workflows/releas
    - builds the ELF twice and fails if the two SHA-256 hashes differ;
    - packs `web/dist` into a reproducible `web.zip` (sorted entries, fixed timestamps, no extra attributes);
    - writes `SHA256SUMS` and a signed build provenance attestation for `openpsapp.elf`, `openpsapp-tile.pkg`, `licenses.txt` and `web.zip`;
-   - creates the GitHub release with generated notes and those files;
+   - creates the GitHub release with that version's `CHANGELOG.md` section as its notes, and those files;
    - prints `WEB_SHA256` in the job summary.
 4. Deploy the website: the server downloads `web.zip` from the release and checks it against `WEB_SHA256`.
 
