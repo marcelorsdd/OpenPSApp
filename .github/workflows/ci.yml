@@ -1,0 +1,157 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint and format
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  web-core:
+    name: Website and core
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck -w @openpsapp/contract -w @openpsapp/core -w @openpsapp/web
+      - run: npm test -w @openpsapp/core -w @openpsapp/web
+      - run: npm run build:web
+
+  ui:
+    name: Console UI
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck -w @openpsapp/ui
+      - run: npm test -w @openpsapp/ui
+      - run: npm run build:ui
+      - name: Check that Clerk is not bundled
+        run: '! grep -ril clerk ui/dist'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-dist
+          path: ui/dist
+          if-no-files-found: error
+          retention-days: 7
+
+  payload-host:
+    name: Payload host tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld python3 make
+      - run: make -C payload -j"$(nproc)" host-test HOST_CXX=clang++ HOST_CC=clang
+
+  payload-format:
+    name: Payload format
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install clang-format
+        env:
+          CLANG_FORMAT_SHA256: 58bf1804216501669832a39f2415e14284337438a062ff564729792adec664ac
+        run: |
+          printf 'clang-format==23.1.3 --hash=sha256:%s\n' "$CLANG_FORMAT_SHA256" > "$RUNNER_TEMP/clang-format.txt"
+          python -m pip install --disable-pip-version-check --no-deps --require-hashes -r "$RUNNER_TEMP/clang-format.txt"
+          clang-format --version
+      - run: find payload/src payload/tests/host payload/tests/fuzz \( -name '*.cpp' -o -name '*.hpp' -o -name '*.h' \) -print0 | xargs -0 clang-format --dry-run --Werror
+
+  tile:
+    name: Media-tab tile
+    runs-on: ubuntu-24.04
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.402
+      - run: tile/build.sh
+        env:
+          TILE_LOCAL_DOTNET: '1'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tile-pkg
+          path: tile/dist/openpsapp-tile.pkg
+          if-no-files-found: error
+          retention-days: 7
+
+  payload-elf:
+    name: Payload ELF
+    needs: [ui, tile]
+    runs-on: ubuntu-24.04
+    env:
+      LLVM_CONFIG: llvm-config-18
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install the toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18 lld-18 llvm-18 python3 make curl unzip
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ui-dist
+          path: ui/dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: tile-pkg
+          path: tile/dist
+      - name: Install ps5-payload-sdk
+        run: make -C payload sdk PS5_PAYLOAD_SDK="$RUNNER_TEMP/ps5-payload-sdk"
+      - name: Build the ELF
+        run: make -C payload -j"$(nproc)" PS5_PAYLOAD_SDK="$RUNNER_TEMP/ps5-payload-sdk"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: openpsapp-elf
+          path: payload/build/openpsapp.elf
+          if-no-files-found: error

@@ -1,0 +1,149 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      LLVM_CONFIG: llvm-config-18
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check that the version matches the tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="$(git describe --tags --always --dirty)"
+          if [ "$version" != "$TAG" ]; then
+            echo "git describe gives $version, but the tag is $TAG" >&2
+            exit 1
+          fi
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run build:ui
+      - run: npm run build:web
+      - name: Check that Clerk is not bundled in the console UI
+        run: '! grep -ril clerk ui/dist'
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.402
+      - name: Build the tile
+        run: tile/build.sh
+        env:
+          TILE_LOCAL_DOTNET: '1'
+      - name: Install the payload toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18 lld-18 llvm-18 python3 make curl unzip zip
+      - name: Install ps5-payload-sdk
+        run: make -C payload sdk PS5_PAYLOAD_SDK="$RUNNER_TEMP/ps5-payload-sdk"
+      - name: Build the ELF twice and compare
+        run: |
+          make -C payload -j"$(nproc)" PS5_PAYLOAD_SDK="$RUNNER_TEMP/ps5-payload-sdk"
+          first="$(sha256sum payload/build/openpsapp.elf | cut -d ' ' -f 1)"
+          make -C payload clean
+          make -C payload -j"$(nproc)" PS5_PAYLOAD_SDK="$RUNNER_TEMP/ps5-payload-sdk"
+          second="$(sha256sum payload/build/openpsapp.elf | cut -d ' ' -f 1)"
+          echo "first build:  $first"
+          echo "second build: $second"
+          if [ "$first" != "$second" ]; then
+            echo "The ELF is not reproducible" >&2
+            exit 1
+          fi
+      - name: Package
+        run: |
+          mkdir -p release
+          cp payload/build/openpsapp.elf tile/dist/openpsapp-tile.pkg release/
+          cp ui/dist/licenses.txt release/licenses.txt
+          epoch="$(git log -1 --format=%ct)"
+          find web/dist -type d -exec chmod 755 {} +
+          find web/dist -type f -exec chmod 644 {} +
+          find web/dist -exec touch -h -d "@$epoch" {} +
+          (cd web/dist && find . -type f | LC_ALL=C sort | sed 's|^\./||' | TZ=UTC zip -X -D -q -@ "$GITHUB_WORKSPACE/release/web.zip")
+          (cd release && sha256sum openpsapp.elf openpsapp-tile.pkg licenses.txt web.zip > SHA256SUMS)
+          cat release/SHA256SUMS
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release
+          path: release/
+          if-no-files-found: error
+
+  attest:
+    name: Attest
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: release
+      - name: Check the checksums
+        run: cd release && sha256sum -c SHA256SUMS
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            release/openpsapp.elf
+            release/openpsapp-tile.pkg
+            release/licenses.txt
+            release/web.zip
+
+  publish:
+    name: Publish
+    needs: [build, attest]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: release
+      - name: Check the checksums
+        run: cd release && sha256sum -c SHA256SUMS
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
+            release/openpsapp.elf release/openpsapp-tile.pkg release/licenses.txt release/web.zip release/SHA256SUMS
+      - name: Print WEB_SHA256 for the server deploy
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          web_sha256="$(sha256sum release/web.zip | cut -d ' ' -f 1)"
+          echo "WEB_VERSION=$TAG"
+          echo "WEB_SHA256=$web_sha256"
+          {
+            echo '### Server deploy'
+            echo
+            echo '```'
+            echo "WEB_VERSION=$TAG"
+            echo "WEB_SHA256=$web_sha256"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

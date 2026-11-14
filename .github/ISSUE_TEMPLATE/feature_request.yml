@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest something OpenPSApp could do.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the idea. Please search the existing issues first.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - Console app
+        - Website
+        - Linking or sync
+        - Build or tooling
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would it solve?
+      description: Describe what you are trying to do and what gets in the way.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+  - type: textarea
+    id: data
+    attributes:
+      label: Data it needs
+      description: If it needs data from the console or new data sent to the cloud, say which. Anything new that the console sends must be added to SYNC.md.

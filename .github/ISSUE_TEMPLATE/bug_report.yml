@@ -1,0 +1,81 @@
+name: Bug report
+description: Something in OpenPSApp does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. For a security problem, do not open an issue: follow [SECURITY.md](https://github.com/marcelorsdd/OpenPSApp/blob/main/SECURITY.md).
+
+        Leave out console ids, PSN ids, tokens and your IP addresses.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it happen?
+      options:
+        - Console app on the PS5
+        - Console app from a phone or computer on the network
+        - Media-tab tile or notifications
+        - Linking or sync
+        - Website
+        - Building from source
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OpenPSApp version
+      description: The `version` field of `http://<console-ip>:7777/api/v1/health`.
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: PS5 firmware version
+      placeholder: '9.60'
+    validations:
+      required: true
+  - type: input
+    id: jailbreak
+    attributes:
+      label: Jailbreak and payload loader
+      description: How you jailbreak the console and load payloads.
+      placeholder: Y2JB with elfldr, Prospero Manager, ...
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: The PS5 browser, or the browser and device you used.
+      placeholder: PS5 browser, Safari on iPhone, Chrome on Windows, ...
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Include the exact message you saw, if any.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log
+      description: Relevant lines from `/data/openpsapp/openpsapp.log`. Remove anything personal.
+      render: text

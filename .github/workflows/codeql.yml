@@ -1,0 +1,60 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '23 4 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
+          - language: c-cpp
+            build-mode: manual
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the toolchain
+        if: matrix.language == 'c-cpp'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld python3 make
+      - name: Build the vendored C libraries before tracing
+        if: matrix.language == 'c-cpp'
+        working-directory: payload
+        run: |
+          objects=()
+          for source in third_party/sqlite/sqlite3.c third_party/cjson/cJSON.c third_party/mbedtls/library/*.c; do
+            objects+=("build/host/${source%.c}.o")
+          done
+          make -j"$(nproc)" HOST_CC=clang "${objects[@]}"
+      - uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - name: Build the payload for the host
+        if: matrix.language == 'c-cpp'
+        run: make -C payload -j"$(nproc)" build/host/openpsapp build/host/openpsapp-tests HOST_CXX=clang++ HOST_CC=clang
+      - uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          category: /language:${{ matrix.language }}
