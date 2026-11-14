@@ -1,0 +1,33 @@
+{
+  "name": "@openpsapp/contract",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./api": {
+      "types": "./api.ts",
+      "default": "./api.ts"
+    },
+    "./pairing": {
+      "types": "./pairing.ts",
+      "default": "./pairing.ts"
+    },
+    "./sync": {
+      "types": "./sync.ts",
+      "default": "./sync.ts"
+    }
+  },
+  "files": [
+    "api.ts",
+    "pairing.ts",
+    "sync.ts"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}

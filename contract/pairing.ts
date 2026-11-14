@@ -16,6 +16,7 @@ export interface PairingConfirmRequest {
 
 export interface PairingInspectResponse {
   profileName: string;
+  replaces: string | null;
 }
 
 export interface PairingConfirmResponse {
