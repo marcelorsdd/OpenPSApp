@@ -22,7 +22,7 @@ export default function GamePage({ titleId }: { titleId: string }) {
 
   const toggleHidden = (g: Game) => {
     setSaving(true);
-    setGameHidden(g.titleId, !g.hidden)
+    void setGameHidden(g.titleId, !g.hidden)
       .then(game.reload)
       .catch(() => undefined)
       .then(() => setSaving(false));
@@ -42,11 +42,7 @@ export default function GamePage({ titleId }: { titleId: string }) {
     <>
       <BackLink />
       <GameHeader game={game.data} set={set.data} actions={hideButton} />
-      {setId ? (
-        <TrophySetSection setId={setId} />
-      ) : (
-        <p className="mt-10 text-muted">{t('game.noTrophies')}</p>
-      )}
+      {setId ? <TrophySetSection setId={setId} /> : <p className="mt-10 text-muted">{t('game.noTrophies')}</p>}
     </>
   );
 }

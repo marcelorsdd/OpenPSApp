@@ -1,7 +1,8 @@
 {
   "nav": {
     "profile": "Profile",
-    "trophies": "Trophies"
+    "trophies": "Trophies",
+    "account": "Account"
   },
   "language": {
     "label": "Language",
@@ -22,7 +23,6 @@
     "trophies": "Trophies",
     "platinums": "Platinums",
     "recent": "Recently played",
-    "playedOn": "{{duration}} · played on {{date}}",
     "hiddenTag": "hidden",
     "hideHidden": "Hide hidden games",
     "showHidden_one": "{{count}} hidden game · show",
@@ -87,5 +87,47 @@
     "gold": "Gold",
     "silver": "Silver",
     "bronze": "Bronze"
+  },
+  "account": {
+    "title": "Account",
+    "notConfigured": "The cloud is not set up on this console.",
+    "notConfiguredHint": "Set \"server\" in /data/openpsapp/config.json and restart the payload.",
+    "intro": "Link this profile to an account to see your games and trophies on your phone or the web, even with the PS5 off.",
+    "consoleOnly": "To link or change the account, open OpenPSApp on the PS5 itself.",
+    "connect": "Link account",
+    "connecting": "Getting a code…",
+    "pairingTitle": "Enter this code",
+    "pairingHint": "On your phone or computer, open {{url}} and sign in. Or point your camera at the QR code.",
+    "expiresIn_one": "Expires in {{count}} minute",
+    "expiresIn_other": "Expires in {{count}} minutes",
+    "qrLabel": "QR code of the link page",
+    "cancel": "Cancel",
+    "linked": "Profile {{name}} linked",
+    "lastSync": "Last sync: {{date}}",
+    "neverSynced": "Not synced yet",
+    "syncing": "Syncing…",
+    "syncNow": "Sync now",
+    "disconnect": "Unlink",
+    "error": "Error: {{message}}"
+  },
+  "errors": {
+    "generic": "Something went wrong. Try again.",
+    "no_profile": "No user is signed in on the PS5. Sign in to a profile on the console and try again.",
+    "already_linked": "This profile is already linked to an account.",
+    "cloud_unavailable": "Could not reach the OpenPSApp server. Check the console's internet connection and try again.",
+    "console_only": "This can only be done in OpenPSApp on the PS5 itself.",
+    "not_configured": "The cloud is not set up on this console.",
+    "forbidden": "The console refused the request. Reload the page and try again.",
+    "busy": "The console is busy. Try again in a moment.",
+    "internal": "The console hit an internal error. Try again.",
+    "not_found": "The console could not find what was asked for.",
+    "method_not_allowed": "The console does not accept this request.",
+    "bad_request": "The console could not understand the request.",
+    "headers_too_large": "The request is too large for the console.",
+    "too_large": "The request is too large for the console.",
+    "save_failed": "The console could not save the change. Try again.",
+    "playtime_unavailable": "The console could not read the playtime.",
+    "path_not_allowed": "The console does not allow access to that file.",
+    "appdb_copy_failed": "The console could not read its game database."
   }
 }

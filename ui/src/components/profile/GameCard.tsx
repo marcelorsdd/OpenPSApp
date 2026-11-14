@@ -1,10 +1,9 @@
+import { formatDuration, isComplete } from '@openpsapp/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import GradeCounts from '@/components/trophies/GradeCounts';
 import Cover from '@/components/ui/Cover';
 import type { Game, TrophySet } from '@/types/api';
-import { formatDuration } from '@/utils/format';
-import { isComplete } from '@/utils/progress';
 import { href } from '@/utils/router';
 
 export default function GameCard({ game, set }: { game: Game; set?: TrophySet }) {
@@ -13,8 +12,8 @@ export default function GameCard({ game, set }: { game: Game; set?: TrophySet })
     <li className="mb-3">
       <a href={href.game(game.titleId)} className="block rounded-2xl bg-surface border border-line hover:bg-raised">
         <div className="flex items-center p-4">
-          <Cover src={game.iconUrl} size="w-24 h-24" />
-          <div className="ml-5 flex-1 min-w-0">
+          <Cover src={game.iconUrl} size="w-20 h-20 sm:w-24 sm:h-24" />
+          <div className="ml-4 sm:ml-5 flex-1 min-w-0">
             <div className="text-lg font-semibold truncate">
               {game.name}
               {game.hidden && <span className="ml-3 text-sm font-normal text-muted">{t('profile.hiddenTag')}</span>}
@@ -27,7 +26,7 @@ export default function GameCard({ game, set }: { game: Game; set?: TrophySet })
         </div>
         {set && (
           <div className="flex items-center px-4 py-3 border-t border-line">
-            <span className="font-semibold">{t('gameCard.trophies')}</span>
+            <span className="hidden sm:inline font-semibold">{t('gameCard.trophies')}</span>
             {isComplete(set) && (
               <span className="ml-2 text-accent font-bold" title={t('gameCard.complete')} aria-label={t('gameCard.complete')}>
                 ✓
@@ -36,7 +35,7 @@ export default function GameCard({ game, set }: { game: Game; set?: TrophySet })
             <div className="ml-auto">
               <GradeCounts counts={set.counts} />
             </div>
-            <span className="ml-4 text-xl text-muted" aria-hidden="true">
+            <span className="ml-3 sm:ml-4 text-xl text-muted" aria-hidden="true">
               ›
             </span>
           </div>
@@ -48,9 +47,9 @@ export default function GameCard({ game, set }: { game: Game; set?: TrophySet })
 
 function Figure({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="mr-10">
+    <div className="mr-6 sm:mr-10">
       <div className="text-xs uppercase tracking-wide text-muted">{label}</div>
-      <div className="mt-1 text-lg font-semibold tabular-nums">{children}</div>
+      <div className="mt-1 text-lg font-semibold tabular-nums whitespace-nowrap">{children}</div>
     </div>
   );
 }

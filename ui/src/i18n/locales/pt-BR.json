@@ -1,7 +1,8 @@
 {
   "nav": {
     "profile": "Perfil",
-    "trophies": "Troféus"
+    "trophies": "Troféus",
+    "account": "Conta"
   },
   "language": {
     "label": "Idioma",
@@ -22,7 +23,6 @@
     "trophies": "Troféus",
     "platinums": "Platinas",
     "recent": "Jogados recentemente",
-    "playedOn": "{{duration}} · jogado em {{date}}",
     "hiddenTag": "oculto",
     "hideHidden": "Esconder ocultos",
     "showHidden_one": "{{count}} jogo oculto · mostrar",
@@ -87,5 +87,47 @@
     "gold": "Ouro",
     "silver": "Prata",
     "bronze": "Bronze"
+  },
+  "account": {
+    "title": "Conta",
+    "notConfigured": "A nuvem não está configurada neste console.",
+    "notConfiguredHint": "Defina \"server\" em /data/openpsapp/config.json e reinicie o payload.",
+    "intro": "Conecte este perfil a uma conta para ver seus jogos e troféus no celular ou na web, mesmo com o PS5 desligado.",
+    "consoleOnly": "Para conectar ou trocar a conta, abra o OpenPSApp no próprio PS5.",
+    "connect": "Conectar conta",
+    "connecting": "Gerando código…",
+    "pairingTitle": "Digite este código",
+    "pairingHint": "No celular ou no computador, abra {{url}} e entre com sua conta. Ou aponte a câmera para o QR code.",
+    "expiresIn_one": "Expira em {{count}} minuto",
+    "expiresIn_other": "Expira em {{count}} minutos",
+    "qrLabel": "QR code do link de conexão",
+    "cancel": "Cancelar",
+    "linked": "Perfil {{name}} conectado",
+    "lastSync": "Última sincronização: {{date}}",
+    "neverSynced": "Ainda não sincronizado",
+    "syncing": "Sincronizando…",
+    "syncNow": "Sincronizar agora",
+    "disconnect": "Desconectar",
+    "error": "Erro: {{message}}"
+  },
+  "errors": {
+    "generic": "Algo deu errado. Tente de novo.",
+    "no_profile": "Nenhum usuário entrou no PS5. Entre em um perfil no console e tente de novo.",
+    "already_linked": "Este perfil já está conectado a uma conta.",
+    "cloud_unavailable": "Não foi possível falar com o servidor do OpenPSApp. Verifique a internet do console e tente de novo.",
+    "console_only": "Isso só pode ser feito no OpenPSApp do próprio PS5.",
+    "not_configured": "A nuvem não está configurada neste console.",
+    "forbidden": "O console recusou o pedido. Recarregue a página e tente de novo.",
+    "busy": "O console está ocupado. Tente de novo em instantes.",
+    "internal": "O console teve um erro interno. Tente de novo.",
+    "not_found": "O console não encontrou o que foi pedido.",
+    "method_not_allowed": "O console não aceita este pedido.",
+    "bad_request": "O console não entendeu o pedido.",
+    "headers_too_large": "O pedido é grande demais para o console.",
+    "too_large": "O pedido é grande demais para o console.",
+    "save_failed": "O console não conseguiu salvar a alteração. Tente de novo.",
+    "playtime_unavailable": "O console não conseguiu ler o tempo jogado.",
+    "path_not_allowed": "O console não permite acessar esse arquivo.",
+    "appdb_copy_failed": "O console não conseguiu ler o banco de dados de jogos."
   }
 }

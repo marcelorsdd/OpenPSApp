@@ -1,12 +1,10 @@
-import { useState, type ReactNode } from 'react';
+import { formatMonth, monthKey, monthSummary, shiftMonth } from '@openpsapp/core';
+import { type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import GradeCounts from '@/components/trophies/GradeCounts';
 import Cover from '@/components/ui/Cover';
 import Section from '@/components/ui/Section';
 import type { EarnedTrophy, TrophySet } from '@/types/api';
-import { monthKey, shiftMonth } from '@/utils/dates';
-import { formatMonth } from '@/utils/format';
-import { monthSummary } from '@/utils/progress';
 import { href } from '@/utils/router';
 
 export default function MonthCard({ earned, sets }: { earned: EarnedTrophy[]; sets: TrophySet[] }) {
@@ -26,7 +24,12 @@ export default function MonthCard({ earned, sets }: { earned: EarnedTrophy[]; se
     <Section title={t('month.title')}>
       <div className="rounded-2xl bg-surface border border-line p-6">
         <div className="flex items-center justify-between">
-          <button className={arrow} disabled={month <= first} onClick={() => setMonth(shiftMonth(month, -1))} aria-label={t('month.previous')}>
+          <button
+            className={arrow}
+            disabled={month <= first}
+            onClick={() => setMonth(shiftMonth(month, -1))}
+            aria-label={t('month.previous')}
+          >
             ‹
           </button>
           <div className="text-xl font-semibold">{formatMonth(month, i18n.language)}</div>

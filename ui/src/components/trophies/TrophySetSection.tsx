@@ -1,3 +1,4 @@
+import { filterTrophies, recentlyEarned, sortTrophies, type TrophyFilter, type TrophySort, trophyView } from '@openpsapp/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RecentTrophies from '@/components/trophies/RecentTrophies';
@@ -12,8 +13,6 @@ import { useDate } from '@/hooks/useDate';
 import { useStoredState } from '@/hooks/useStoredState';
 import { endpoints } from '@/services/api';
 import type { Trophy } from '@/types/api';
-import type { TrophyFilter, TrophySort } from '@/types/trophies';
-import { filterTrophies, recentlyEarned, sortTrophies, trophyView } from '@/utils/trophies';
 
 const SORTS: TrophySort[] = ['default', 'earned', 'grade'];
 const RECENT = 6;

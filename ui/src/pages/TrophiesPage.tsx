@@ -50,7 +50,7 @@ export default function TrophiesPage() {
           <ul className="mt-8">
             {sets.data.map((s) => {
               const aside = (
-                <div className="text-sm text-muted hidden sm:block">
+                <div className="w-28 text-sm text-muted hidden sm:block">
                   <div>
                     {s.earned}/{s.total}
                   </div>

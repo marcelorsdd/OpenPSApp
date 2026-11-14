@@ -1,17 +1,20 @@
+import { effectiveLanguage, type LanguageChoice, parseChoice } from '@openpsapp/core';
 import { useEffect } from 'react';
-import { useApi } from '@/hooks/useApi';
 import { useStoredState } from '@/hooks/useStoredState';
-import i18n, { browserLanguage, effectiveLanguage, parseChoice, type LanguageChoice } from '@/i18n';
-import { endpoints } from '@/services/api';
+import i18n, { browserLanguage } from '@/i18n';
 
-export function useLanguageChoice() {
+export interface LanguageState {
+  choice: LanguageChoice;
+  setChoice: (choice: LanguageChoice) => void;
+}
+
+export function useLanguageChoice(consoleLanguage: string | null): LanguageState {
   const [stored, setChoice] = useStoredState<LanguageChoice>('ui.language', 'auto');
   const choice = parseChoice(stored);
-  const health = useApi(endpoints.health);
-  const language = effectiveLanguage(choice, health.data?.language ?? null, browserLanguage);
+  const language = effectiveLanguage(choice, consoleLanguage, browserLanguage);
 
   useEffect(() => {
-    if (i18n.language !== language) i18n.changeLanguage(language);
+    if (i18n.language !== language) void i18n.changeLanguage(language);
   }, [language]);
 
   return { choice, setChoice };

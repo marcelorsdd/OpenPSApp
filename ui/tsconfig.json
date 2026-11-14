@@ -11,6 +11,7 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "noEmit": true,
     "types": ["vite/client"],
     "paths": { "@/*": ["./src/*"] }
   },

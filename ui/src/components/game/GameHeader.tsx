@@ -1,11 +1,11 @@
-import { useState, type ReactNode } from 'react';
+import { formatDuration } from '@openpsapp/core';
+import { type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import GradeCounts from '@/components/trophies/GradeCounts';
 import Cover from '@/components/ui/Cover';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { useDate } from '@/hooks/useDate';
 import type { Game, TrophySet } from '@/types/api';
-import { formatDuration } from '@/utils/format';
 
 export default function GameHeader({ game, set, actions }: { game?: Game | null; set?: TrophySet | null; actions?: ReactNode }) {
   const { t } = useTranslation();

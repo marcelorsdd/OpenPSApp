@@ -1,3 +1,4 @@
+import { formatLongDate, groupByDay } from '@openpsapp/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EarnedTrophyRow from '@/components/trophies/EarnedTrophyRow';
@@ -5,8 +6,6 @@ import ErrorBox from '@/components/ui/ErrorBox';
 import Loading from '@/components/ui/Loading';
 import { useApi } from '@/hooks/useApi';
 import { endpoints } from '@/services/api';
-import { formatLongDate } from '@/utils/format';
-import { groupByDay } from '@/utils/progress';
 
 const PAGE = 50;
 
@@ -32,7 +31,10 @@ export default function TrophyTimeline() {
         </section>
       ))}
       {shown < earned.data.length && (
-        <button className="mt-4 px-6 py-3 rounded-xl border border-line font-semibold hover:bg-raised" onClick={() => setShown(shown + PAGE)}>
+        <button
+          className="mt-4 px-6 py-3 rounded-xl border border-line font-semibold hover:bg-raised"
+          onClick={() => setShown(shown + PAGE)}
+        >
           {t('trophies.loadMore')}
         </button>
       )}

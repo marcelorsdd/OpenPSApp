@@ -10,6 +10,7 @@ export default {
         ink: '#e8ecf5',
         muted: '#8a94ad',
         accent: '#2f7cf6',
+        danger: '#f07178',
         platinum: '#b4c8e0',
         gold: '#e3b341',
         silver: '#b9c0c9',

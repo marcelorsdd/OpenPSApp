@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { get, type Endpoint } from '@/services/api';
+import { type Endpoint, get } from '@/services/api';
 
 export interface ApiState<T> {
   data: T | null;
@@ -7,25 +7,36 @@ export interface ApiState<T> {
   reload: () => void;
 }
 
+interface Loaded<T> {
+  endpoint: Endpoint<T> | null;
+  data: T | null;
+  error: string | null;
+}
+
 export function useApi<T>(endpoint: Endpoint<T> | null): ApiState<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState<Loaded<T>>({ endpoint, data: null, error: null });
   const [attempt, setAttempt] = useState(0);
-  const reload = useCallback(() => setAttempt((n) => n + 1), []);
+  const reload = useCallback(() => {
+    setLoaded((last) => (last.error ? { ...last, error: null } : last));
+    setAttempt((n) => n + 1);
+  }, []);
 
   useEffect(() => {
     if (endpoint === null) return;
     let cancelled = false;
-    setError(null);
     get(endpoint)
-      .then((body) => !cancelled && setData(body))
-      .catch((e: Error) => !cancelled && setError(e.message));
+      .then((data) => !cancelled && setLoaded({ endpoint, data, error: null }))
+      .catch(
+        (e: Error) =>
+          !cancelled && setLoaded((last) => ({ endpoint, data: last.endpoint === endpoint ? last.data : null, error: e.message })),
+      );
     return () => {
       cancelled = true;
     };
   }, [endpoint, attempt]);
 
-  return { data, error, reload };
+  const current = loaded.endpoint === endpoint;
+  return { data: current ? loaded.data : null, error: current ? loaded.error : null, reload };
 }
 
 export function combine(...states: ApiState<unknown>[]) {

@@ -1,3 +1,4 @@
+import { formatDuration } from '@openpsapp/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import GameCard from '@/components/profile/GameCard';
@@ -10,7 +11,6 @@ import Section from '@/components/ui/Section';
 import Stat from '@/components/ui/Stat';
 import { combine, useApi } from '@/hooks/useApi';
 import { endpoints } from '@/services/api';
-import { formatDuration } from '@/utils/format';
 
 export default function ProfilePage() {
   const { t } = useTranslation();

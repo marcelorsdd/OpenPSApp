@@ -1,7 +1,7 @@
+import { GRADES } from '@openpsapp/core';
 import { useTranslation } from 'react-i18next';
 import TrophyGlyph from '@/components/trophies/TrophyGlyph';
 import type { Grade, GradeCount } from '@/types/api';
-import { GRADES } from '@/utils/trophies';
 
 export default function GradeCounts({ counts }: { counts: Record<Grade, GradeCount | number> }) {
   const { t } = useTranslation();
