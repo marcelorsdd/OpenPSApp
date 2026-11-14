@@ -127,6 +127,7 @@ make -C payload prospero PS5_HOST=192.168.1.50          # or through Prospero Ma
 - Dependabot security updates skip the cooldown. When the fix is younger than 14 days, the maintainer decides case by case.
 - Dependabot ignores major updates of `typescript` (typescript-eslint needs the root on 6.0.x), `tailwindcss` (the console UI stays on Tailwind 3 for the PS5 browser) and `@types/node` (it follows the Node 24 runtime).
 - **Overrides.** The root `package.json` forces `minimatch` to `11.0.3`. It fixes [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) (denial of service, fixed in 11.0.1), which comes in through `eslint`, `typescript-eslint` and `ts-morph` (a dependency of the `shadcn` CLI). Remove the override once all of them depend on minimatch 11.0.1 or later.
+- **Ignored advisories.** [`osv-scanner.toml`](osv-scanner.toml) ignores [GHSA-gcqx-w48m-w2h4](https://github.com/advisories/GHSA-gcqx-w48m-w2h4) in `deepmerge` until 2027-02-14: only the `shadcn` CLI uses it, by hand, and no patched version exists. Every entry needs a reason and an end date.
 - **Two TypeScript versions.** typescript-eslint supports TypeScript below 6.1, so the root keeps TypeScript 6.0.3 for ESLint, while each workspace type-checks and builds with TypeScript 7.0.2. Unify them once typescript-eslint supports TypeScript 7.
 
 ### Commits
