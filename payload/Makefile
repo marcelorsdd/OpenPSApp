@@ -11,6 +11,8 @@ LLVM_CONFIG_CANDIDATES := $(shell command -v brew >/dev/null 2>&1 && echo "$$(br
                           $(foreach v,23 22 21 20 19 18,llvm-config-$(v)) llvm-config
 ifeq ($(origin LLVM_CONFIG),undefined)
 LLVM_CONFIG := $(shell for c in $(LLVM_CONFIG_CANDIDATES); do command -v "$$c" && break; done 2>/dev/null)
+else
+LLVM_CONFIG := $(or $(shell command -v "$(LLVM_CONFIG)" 2>/dev/null),$(LLVM_CONFIG))
 endif
 ifneq ($(LLVM_CONFIG),)
 export LLVM_CONFIG
