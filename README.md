@@ -17,6 +17,8 @@ Settings: `/data/openpsapp/config.json`.
 - `payload/`: the ELF (C++20, ps5-payload-sdk). Reads `app.db` and the trophy files and serves `/api/v1` plus the UI.
 - `ui/`: the web UI (React, Vite, Tailwind), embedded into the ELF.
 - `tile/`: the Media-tab tile PKG, embedded into the ELF.
+- `contract/`: the message shapes the console and the cloud server exchange (MIT, see `contract/LICENSE`).
+- [`SYNC.md`](SYNC.md): what the console sends to the cloud, when, and what it never sends.
 
 ## Payload
 
@@ -146,6 +148,6 @@ gh release create vX.Y.Z payload/build/openpsapp.elf ui/dist/licenses.txt --gene
 
 ## License
 
-GPL-3.0-or-later (`LICENSE`). The payload links ps5-payload-sdk (GPL-3.0) and bundles SQLite (public domain), cJSON (MIT, `payload/third_party/cjson/LICENSE`) and a UI built with React, React DOM, i18next and Tailwind CSS (all MIT).
+GPL-3.0-or-later (`LICENSE`), except `contract/`, which is MIT. The payload links ps5-payload-sdk (GPL-3.0) and bundles SQLite (public domain), cJSON (MIT, `payload/third_party/cjson/LICENSE`), Mbed TLS (Apache-2.0, `payload/third_party/mbedtls/LICENSE`) and a UI built with React, React DOM, i18next and Tailwind CSS (all MIT).
 
 `make -C payload ui` writes `ui/dist/licenses.txt` with the license of every package that ends up in the bundle (`ui/plugins/licenses.ts`). The ELF serves it at `http://<ps5-ip>:7777/licenses.txt`, and each release attaches it.

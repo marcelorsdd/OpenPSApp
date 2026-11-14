@@ -15,6 +15,7 @@ It includes the following third-party software.`;
 const extras = [
   { name: 'tailwindcss (generated CSS)', license: 'MIT', file: local('./node_modules/tailwindcss/LICENSE') },
   { name: 'cJSON', license: 'MIT', file: local('../payload/third_party/cjson/LICENSE') },
+  { name: 'Mbed TLS 3.6.7', license: 'Apache-2.0', file: local('../payload/third_party/mbedtls/LICENSE') },
   { name: 'SQLite', license: 'Public Domain', text: 'SQLite is in the public domain: https://sqlite.org/copyright.html' },
 ];
 

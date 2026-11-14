@@ -24,11 +24,12 @@ TILE_PKG := ../tile/dist/openpsapp-tile.pkg
 TILE_PARAM := ../tile/sce_sys/param.json
 GEN_SRCS := $(GEN)/web_assets.cpp $(GEN)/tile_pkg.cpp
 
-INCLUDES := -Isrc -I$(GEN) -Ithird_party/sqlite -Ithird_party/cjson
+MBEDTLS := -Ithird_party/mbedtls/include -DMBEDTLS_CONFIG_FILE='"net/mbedtls_config.h"'
+INCLUDES := -Isrc -I$(GEN) -Ithird_party/sqlite -Ithird_party/cjson $(MBEDTLS)
 
 CXXFLAGS := -std=c++20 -O2 -Wall -Wextra -Wframe-larger-than=8192 -Werror=frame-larger-than -MMD -MP $(INCLUDES)
-CFLAGS_C := -O2 -w -DSQLITE_THREADSAFE=1 -DSQLITE_OMIT_LOAD_EXTENSION=1 -DSQLITE_DQS=0
-THIRD_PARTY_SRCS := third_party/sqlite/sqlite3.c third_party/cjson/cJSON.c
+CFLAGS_C := -O2 -w -DSQLITE_THREADSAFE=1 -DSQLITE_OMIT_LOAD_EXTENSION=1 -DSQLITE_DQS=0 -Isrc $(MBEDTLS)
+THIRD_PARTY_SRCS := third_party/sqlite/sqlite3.c third_party/cjson/cJSON.c $(sort $(wildcard third_party/mbedtls/library/*.c))
 
 PS5_ELF := $(BUILD)/openpsapp.elf
 PS5_OBJS := $(patsubst %.cpp,$(BUILD)/ps5/%.o,$(CORE_SRCS) $(GEN_SRCS) src/main.cpp src/platform/ps5.cpp) \
@@ -90,11 +91,11 @@ prospero: $(PS5_ELF)
 
 $(BUILD)/host/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(HOST_CXX) $(CXXFLAGS) -g -c -o $@ $<
+	$(HOST_CXX) $(CXXFLAGS) -DOPENPSAPP_TLS_TEST_SERVER -g -c -o $@ $<
 
 $(BUILD)/host/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(HOST_CC) $(CFLAGS_C) -c -o $@ $<
+	$(HOST_CC) $(CFLAGS_C) -DOPENPSAPP_TLS_TEST_SERVER -c -o $@ $<
 
 $(HOST_BIN): $(HOST_LIB_OBJS) $(BUILD)/host/src/main.o
 	$(HOST_CXX) -o $@ $^ -lpthread
