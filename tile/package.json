@@ -1,12 +1,14 @@
 {
-  "name": "openpsapp-tile",
+  "name": "@openpsapp/tile",
+  "version": "0.1.0",
   "private": true,
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "art": "node art.mjs",
     "build": "./build.sh"
   },
   "devDependencies": {
-    "sharp": "0.34.4"
+    "sharp": "0.35.5"
   }
 }

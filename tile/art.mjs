@@ -1,9 +1,10 @@
-import sharp from 'sharp';
-import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const out = (name) => path.join(here, 'sce_sys', name);
+const web = (name) => path.join(here, '..', 'web', 'public', name);
 
 const BACKGROUND = '#101a33';
 const RING = '#b4c8e0';
@@ -32,4 +33,11 @@ const banner = `
 
 await sharp(Buffer.from(icon)).png().toFile(out('icon0.png'));
 await sharp(Buffer.from(banner)).png().toFile(out('pic0.png'));
-console.log('wrote sce_sys/icon0.png and sce_sys/pic0.png');
+for (const [name, size] of [
+  ['icon-192.png', 192],
+  ['icon-512.png', 512],
+  ['apple-touch-icon.png', 180],
+]) {
+  await sharp(Buffer.from(icon)).resize(size, size).png().toFile(web(name));
+}
+console.log('wrote sce_sys/icon0.png, sce_sys/pic0.png and the web/public app icons');
