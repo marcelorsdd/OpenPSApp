@@ -1,0 +1,42 @@
+{
+  "name": "openpsapp",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "contract",
+    "core",
+    "ui",
+    "web",
+    "tile"
+  ],
+  "scripts": {
+    "build": "npm run build:web && npm run build:ui",
+    "build:web": "npm run build -w @openpsapp/web",
+    "build:ui": "npm run build -w @openpsapp/ui",
+    "dev:web": "npm run dev -w @openpsapp/web",
+    "dev:ui": "npm run dev -w @openpsapp/ui",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-simple-import-sort": "14.0.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1"
+  },
+  "overrides": {
+    "minimatch": "11.0.3"
+  }
+}

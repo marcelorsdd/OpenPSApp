@@ -5,7 +5,21 @@ dist/
 
 # Payload build output and fixtures (real fixtures hold personal console data)
 payload/build/
+payload/build-dev/
 payload/tests/fixtures/
+
+# libFuzzer output: make fuzz writes its grown corpus and crash artifacts under payload/build/fuzz/;
+# these catch a harness run by hand from payload/ or tests/fuzz/
+payload/crash-*
+payload/leak-*
+payload/timeout-*
+payload/slow-unit-*
+payload/tests/fuzz/crash-*
+payload/tests/fuzz/leak-*
+payload/tests/fuzz/timeout-*
+payload/tests/fuzz/slow-unit-*
 
 # Docs and planning notes stay local
 docs/
+/ui.zip
+/web.zip

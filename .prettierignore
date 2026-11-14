@@ -1,0 +1,12 @@
+node_modules/
+dist/
+docs/
+payload/
+tile/builder/
+tile/sce_sys/
+tile/.cache/
+.vitest/
+web/src/components/ui/
+package-lock.json
+package.json
+*.md
