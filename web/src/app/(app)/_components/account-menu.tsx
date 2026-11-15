@@ -8,9 +8,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { UserAvatar } from './user-avatar';
 
 export function AccountMenu({
   initial,
+  avatarUrl,
   name,
   email,
   whatIsSentUrl,
@@ -18,6 +20,7 @@ export function AccountMenu({
   onSignOut,
 }: {
   initial: string;
+  avatarUrl: string | null;
   name: string | null;
   email: string | null;
   whatIsSentUrl: string;
@@ -29,9 +32,9 @@ export function AccountMenu({
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t('header.accountMenu')}
-        className="flex size-(--control-md) items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/30 data-popup-open:ring-3 data-popup-open:ring-ring/30"
+        className="flex size-(--control-md) items-center justify-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/30 data-popup-open:ring-3 data-popup-open:ring-ring/30"
       >
-        {initial}
+        <UserAvatar initial={initial} imageUrl={avatarUrl} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="w-60">
         <DropdownMenuGroup>

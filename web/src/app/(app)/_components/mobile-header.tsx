@@ -4,17 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { LogoMark } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
+import { UserAvatar } from './user-avatar';
 
 export function MobileHeader({
   homeTo,
   accountTo,
   initial,
+  avatarUrl,
   status,
   onSearch,
 }: {
   homeTo: string;
   accountTo: string;
   initial: string;
+  avatarUrl: string | null;
   status: ReactNode;
   onSearch: () => void;
 }) {
@@ -31,9 +34,9 @@ export function MobileHeader({
       <Link
         to={accountTo}
         aria-label={t('nav.account')}
-        className="flex size-(--control-md) shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground"
+        className="flex size-(--control-md) shrink-0 items-center justify-center rounded-full"
       >
-        {initial}
+        <UserAvatar initial={initial} imageUrl={avatarUrl} fallbackClassName="font-bold" />
       </Link>
     </header>
   );

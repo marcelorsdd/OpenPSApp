@@ -1,3 +1,4 @@
+import { useUser } from '@clerk/react';
 import { formatDuration } from '@openpsapp/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,10 +7,12 @@ import { PageLoader } from '@/components/page-loader';
 import { useDevices } from '@/hooks/use-devices';
 import { useEarnedTrophies } from '@/hooks/use-earned-trophies';
 import { useGames } from '@/hooks/use-games';
+import { useImageSync } from '@/hooks/use-image-sync';
 import { useProfile } from '@/hooks/use-profile';
 import { useTrophySets } from '@/hooks/use-trophy-sets';
 import { paths } from '@/lib/links';
-import { describeSync } from '../_lib/sync-status';
+import { avatarUrl, describeSync, pendingImages } from '../_lib/sync-status';
+import { ImageSyncBanner } from './_components/image-sync-banner';
 import { LatestTrophies } from './_components/latest-trophies';
 import { MonthRecap } from './_components/month-recap';
 import { PlatinumCard } from './_components/platinum-card';
@@ -29,6 +32,8 @@ export default function ProfilePage() {
   const sets = useTrophySets();
   const earned = useEarnedTrophies();
   const devices = useDevices();
+  const images = pendingImages(useImageSync());
+  const { user: account } = useUser();
   const [expanded, setExpanded] = useState(false);
   const recap = useMonthRecap(earned.data ?? NO_ITEMS, games.data ?? NO_ITEMS, sets.data ?? NO_ITEMS);
 
@@ -64,12 +69,14 @@ export default function ProfilePage() {
       <ProfileHero
         name={name}
         initial={name.slice(0, 1).toUpperCase()}
+        avatarUrl={avatarUrl(account)}
         summary={t('profile.summary', { games: gamesLabel, playtime })}
         summaryShort={t('profile.summaryShort', { games: gamesLabel, playtime })}
         heroUrl={heroImage(list)}
         aside={<TrophySummary totals={totals.trophies} className="max-md:hidden" />}
       />
       <div className="mx-auto flex max-w-page flex-wrap items-start gap-5 px-4 pb-16 sm:px-6 md:gap-10 md:pt-2 lg:px-12">
+        {images && <ImageSyncBanner images={images} className="w-full" />}
         <TrophySummaryCompact totals={totals.trophies} className="w-full md:hidden" />
         <div className="flex min-w-0 grow-999 basis-main flex-col gap-5 md:gap-10">
           <RecentGames

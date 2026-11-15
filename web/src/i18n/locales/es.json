@@ -37,6 +37,11 @@
     "waiting": "Esperando la primera sincronización",
     "none": "Ninguna PS5 conectada"
   },
+  "images": {
+    "title": "Imágenes en camino",
+    "description": "Tu PS5 está enviando las imágenes de juegos y trofeos: {{stored}} de {{total}}. Aparecen aquí a medida que llegan.",
+    "badge": "Enviando imágenes {{stored}}/{{total}}"
+  },
   "footer": {
     "data": "Datos de la PS5 de {{name}} · última sincronización {{date}}",
     "dataNever": "Datos de la PS5 de {{name}} · aún no se sincronizó",

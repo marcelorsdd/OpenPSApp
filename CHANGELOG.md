@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- The website uses your Google or Discord picture as your profile picture when you sign in with one of them.
+- While the console is still sending images, the website shows how many have arrived (in the sync badge and on the profile), and they appear as they arrive.
+
+### Changed
+
+- Images the console has not sent yet show the placeholder instead of a broken image.
+
 ### Security
 
 - The console's pairing QR code puts the code in the URL fragment (`/link#code=…`), which browsers never send, so the code no longer reaches the server or its logs. The website still accepts `/link?code=…` from older consoles.

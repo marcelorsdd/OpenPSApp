@@ -37,6 +37,11 @@
     "waiting": "Waiting for the first sync",
     "none": "No PS5 connected"
   },
+  "images": {
+    "title": "Images on their way",
+    "description": "Your PS5 is sending game and trophy images: {{stored}} of {{total}}. They show up here as they arrive.",
+    "badge": "Sending images {{stored}}/{{total}}"
+  },
   "footer": {
     "data": "Data from {{name}}'s PS5 · last sync {{date}}",
     "dataNever": "Data from {{name}}'s PS5 · not synced yet",
