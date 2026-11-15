@@ -50,8 +50,8 @@ describe('isUserCode', () => {
 });
 
 describe('pairingLink', () => {
-  it('appends the code without the dash to the link page', () => {
-    expect(pairingLink('https://openpsapp.app/link', 'ABCD-2345')).toBe('https://openpsapp.app/link?code=ABCD2345');
+  it('puts the code without the dash in the fragment, which browsers never send to the server', () => {
+    expect(pairingLink('https://openpsapp.app/link', 'ABCD-2345')).toBe('https://openpsapp.app/link#code=ABCD2345');
   });
 });
 

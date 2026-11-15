@@ -6,6 +6,10 @@ import type { CodeError, FirstSyncPhase } from '../_types/link';
 export const FIRST_SYNC_POLL_MS = 3000;
 export const FIRST_SYNC_STEPS: FirstSyncPhase[] = ['waiting', 'connected', 'synced'];
 
+export function linkCodeParam(search: string, hash: string): string | null {
+  return new URLSearchParams(hash.replace(/^#/, '')).get('code') ?? new URLSearchParams(search).get('code');
+}
+
 export function initialCode(param: string | null): string {
   return sanitizeTypedCode(param ?? '');
 }

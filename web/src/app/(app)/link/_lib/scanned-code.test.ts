@@ -5,6 +5,7 @@ const origin = 'https://openpsapp.app';
 
 describe('readScannedCode', () => {
   it('reads the link page URL the console shows', () => {
+    expect(readScannedCode('https://openpsapp.app/link#code=ABCD2345', origin)).toBe('ABCD2345');
     expect(readScannedCode('https://openpsapp.app/link?code=ABCD2345', origin)).toBe('ABCD2345');
     expect(readScannedCode('https://openpsapp.app/link/?code=abcd-2345', origin)).toBe('ABCD2345');
     expect(readScannedCode('  https://openpsapp.app/link?code=ABCD2345\n', origin)).toBe('ABCD2345');
@@ -30,6 +31,7 @@ describe('readScannedCode', () => {
     expect(readScannedCode('https://openpsapp.app/link', origin)).toBeNull();
     expect(readScannedCode('https://openpsapp.app/link?code=ABCD', origin)).toBeNull();
     expect(readScannedCode('https://openpsapp.app/link?code=ABCD2345&code=WXYZ2345', origin)).toBeNull();
+    expect(readScannedCode('https://openpsapp.app/link?code=ABCD2345#code=WXYZ2345', origin)).toBeNull();
     expect(readScannedCode('https://openpsapp.app/link?code=ABCD0OI1', origin)).toBeNull();
   });
 

@@ -20,6 +20,6 @@ export function readScannedCode(raw: string, origin: string): string | null {
     return null;
   }
   if (url.origin !== origin || url.username || url.password || !LINK_PATHS.has(url.pathname)) return null;
-  const codes = url.searchParams.getAll('code');
+  const codes = [...new URLSearchParams(url.hash.slice(1)).getAll('code'), ...url.searchParams.getAll('code')];
   return codes.length === 1 ? asCode(codes[0]) : null;
 }

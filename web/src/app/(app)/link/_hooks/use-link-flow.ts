@@ -2,11 +2,11 @@ import type { DeviceInfo, PairingConfirmResponse } from '@openpsapp/contract/pai
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { api, apiPost } from '@/lib/api';
 import { queryKeys } from '@/lib/query-keys';
-import { codeError, initialCode, shouldInspectOnLoad } from '../_lib/describe-link';
+import { codeError, initialCode, linkCodeParam, shouldInspectOnLoad } from '../_lib/describe-link';
 import { readScannedCode } from '../_lib/scanned-code';
 import type { LinkStep } from '../_types/link';
 import { useLinkCodeForm } from './use-link-code-form';
@@ -14,8 +14,9 @@ import { useLinkCodeForm } from './use-link-code-form';
 export function useLinkFlow() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const [params, setParams] = useSearchParams();
-  const [start] = useState(() => initialCode(params.get('code')));
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [start] = useState(() => initialCode(linkCodeParam(location.search, location.hash)));
   const inspectedOnLoad = useRef(false);
   const [step, setStep] = useState<LinkStep>({ kind: 'code' });
   const code = useLinkCodeForm({
@@ -33,7 +34,7 @@ export function useLinkFlow() {
     onSuccess: ({ result, previousDeviceIds }) => {
       toast.success(t('link.done.toastTitle'), { description: t('link.done.toastDescription') });
       setStep({ kind: 'done', profileName: result.profileName, previousDeviceIds });
-      if (params.has('code')) setParams({}, { replace: true });
+      if (location.search || location.hash) void navigate({ pathname: location.pathname }, { replace: true });
     },
     onError: (error) => {
       setStep({ kind: 'code' });

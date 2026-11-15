@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Security
+
+- The console's pairing QR code puts the code in the URL fragment (`/link#code=…`), which browsers never send, so the code no longer reaches the server or its logs. The website still accepts `/link?code=…` from older consoles.
+
 ## [0.3.0] - 2026-11-15
 
 ### Added

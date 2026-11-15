@@ -3,7 +3,7 @@ import type { DeviceInfo } from '@openpsapp/contract/pairing';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { MemoryRouter, useSearchParams } from 'react-router';
+import { MemoryRouter, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createQueryClient } from '@/lib/query-client';
 import { queryKeys } from '@/lib/query-keys';
@@ -77,8 +77,8 @@ function renderLinkPage(entry: string) {
     () => {
       const flow = useLinkFlow();
       const sync = useFirstSync(flow.step.kind === 'done' ? flow.step.previousDeviceIds : null);
-      const [params] = useSearchParams();
-      return { flow, sync, code: params.get('code') };
+      const location = useLocation();
+      return { flow, sync, url: `${location.pathname}${location.search}${location.hash}` };
     },
     { wrapper },
   );
@@ -100,7 +100,7 @@ describe('useLinkFlow', () => {
       'POST /api/v1/devices/inspect',
       'POST /api/v1/devices/confirm',
     ]);
-    expect(result.current.code).toBeNull();
+    expect(result.current.url).toBe('/link');
     expect(toast.success).toHaveBeenCalledTimes(1);
     expect(result.current.sync).toEqual({ phase: 'waiting', step: 1, steps: 3 });
 
@@ -118,6 +118,14 @@ describe('useLinkFlow', () => {
     expect(requests).toHaveLength(polls);
   });
 
+  it('takes the code from the fragment the console shows and clears it once linked', async () => {
+    const { result } = renderLinkPage('/link#code=abcd-2345');
+    await waitFor(() => expect(result.current.flow.step.kind).toBe('confirm'));
+    act(() => result.current.flow.confirm());
+    await waitFor(() => expect(result.current.flow.step.kind).toBe('done'));
+    expect(result.current.url).toBe('/link');
+  });
+
   it('goes back to the code with the reason when the confirmation fails', async () => {
     confirmReply = { status: 404, body: { error: 'invalid_code' } };
     const { result } = renderLinkPage('/link?code=ABCD2345');
@@ -126,7 +134,7 @@ describe('useLinkFlow', () => {
     act(() => result.current.flow.confirm());
     await waitFor(() => expect(result.current.flow.step).toEqual({ kind: 'code' }));
     expect(result.current.flow.code.rootError).toBe('invalid');
-    expect(result.current.code).toBe('ABCD2345');
+    expect(result.current.url).toBe('/link?code=ABCD2345');
   });
 
   it('accepts only scans of a pairing code or of this site link page', async () => {
