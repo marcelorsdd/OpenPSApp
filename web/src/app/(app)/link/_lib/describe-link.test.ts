@@ -1,7 +1,7 @@
 import type { DeviceInfo } from '@openpsapp/contract/pairing';
 import { describe, expect, it, vi } from 'vitest';
 import { ApiError } from '@/lib/api';
-import { codeError, displayCode, firstSyncPhase, initialCode, shouldInspectOnLoad } from './describe-link';
+import { codeError, displayCode, firstSyncPhase, initialCode, linkCodeParam, shouldInspectOnLoad } from './describe-link';
 
 vi.mock('@clerk/react', () => ({ getToken: () => Promise.resolve(null) }));
 
@@ -19,6 +19,15 @@ describe('initialCode', () => {
     expect(shouldInspectOnLoad('ABCD2345')).toBe(true);
     expect(shouldInspectOnLoad('ABCD')).toBe(false);
     expect(displayCode('ABCD2345')).toBe('ABCD-2345');
+  });
+});
+
+describe('linkCodeParam', () => {
+  it('reads the code from the fragment, or from the query of older consoles', () => {
+    expect(linkCodeParam('', '#code=ABCD2345')).toBe('ABCD2345');
+    expect(linkCodeParam('?code=ABCD2345', '')).toBe('ABCD2345');
+    expect(linkCodeParam('?code=WXYZ2345', '#code=ABCD2345')).toBe('ABCD2345');
+    expect(linkCodeParam('', '')).toBeNull();
   });
 });
 

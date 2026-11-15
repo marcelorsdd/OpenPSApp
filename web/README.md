@@ -2,7 +2,7 @@
 
 `@openpsapp/web` is the OpenPSApp website: sign in, see the synced profile, trophies and games from any browser, manage the linked PS5 and the account, and link a console by typing its code or scanning its QR code. It is a single-page app built with React 19, Vite, Tailwind CSS 4, shadcn (`base-nova` on Base UI), React Router, TanStack Query, react-hook-form with zod, i18next and Clerk.
 
-The cloud server serves it. Each release attaches the build as `web.zip`, and the server downloads that file and checks it against `WEB_SHA256` (see [Releasing](../CONTRIBUTING.md#releasing)). The server answers the browser-history routes (`/`, `/trophies`, `/games/:titleId`, `/account`, `/link?code=`) with `index.html`.
+The cloud server serves it. Each release attaches the build as `web.zip`, and the server downloads that file and checks it against `WEB_SHA256` (see [Releasing](../CONTRIBUTING.md#releasing)). The server answers the browser-history routes (`/`, `/trophies`, `/games/:titleId`, `/account`, `/link`) with `index.html`. The console's QR code carries the pairing code in the fragment (`/link#code=…`), which browsers never send to the server; `/link?code=…` from older consoles still works.
 
 ## Commands
 

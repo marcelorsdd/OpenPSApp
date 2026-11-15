@@ -12,7 +12,7 @@ export default function LandingPage() {
   const { t } = useTranslation();
   const clerk = useClerk();
   const location = useLocation();
-  const back = `${location.pathname}${location.search}`;
+  const back = `${location.pathname}${location.search}${location.hash}`;
   const signIn = () => clerk.openSignIn({ forceRedirectUrl: back, signUpForceRedirectUrl: back });
   const signUp = () => clerk.openSignUp({ forceRedirectUrl: back, signInForceRedirectUrl: back });
   return (

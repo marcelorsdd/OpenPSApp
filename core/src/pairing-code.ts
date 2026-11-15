@@ -23,7 +23,7 @@ export function parseUserCode(input: string): string | null {
 }
 
 export function pairingLink(verificationUri: string, userCode: string): string {
-  return `${verificationUri}?code=${userCode.replace(/-/g, '')}`;
+  return `${verificationUri}#code=${userCode.replace(/-/g, '')}`;
 }
 
 export function displayUrl(uri: string): string {
