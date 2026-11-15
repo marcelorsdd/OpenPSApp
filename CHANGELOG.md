@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The console uses the official server, `https://openpsapp.com`, when `server` in `config.json` is empty, so **Link account** works without editing the settings. Nothing is sent until a profile is linked.
+
 ## [0.2.0] - 2026-11-14
 
 ### Added

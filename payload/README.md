@@ -73,7 +73,7 @@ Only with `"debug": true` in `config.json`. These expose console files and ids t
 
 - **`Host` allowlist:** every request needs a `Host` of `localhost` or an IP address (`127.0.0.1:7777`, `192.168.1.50:7777`, `[::1]:7777`), or it gets `403 bad_host`. Host names are refused, which blocks DNS rebinding: a website cannot point its own name at the console and read the API.
 - **`POST` routes** need the header `X-OpenPSApp: 1`, or they answer `403 forbidden`. The payload sends no CORS headers, so pages on other origins cannot send it.
-- **Cloud actions** (`/api/v1/cloud/link`, `/unlink`, `/sync`) also need a loopback peer and a `Host` of `127.0.0.1:<port>` or `localhost:<port>`, or they answer `403 console_only`. Without `server` in `config.json` they answer `409 not_configured`.
+- **Cloud actions** (`/api/v1/cloud/link`, `/unlink`, `/sync`) also need a loopback peer and a `Host` of `127.0.0.1:<port>` or `localhost:<port>`, or they answer `403 console_only`. They answer `409 not_configured` only while the cloud thread has not started.
 - **Limits:** 16 KiB of headers (`431 headers_too_large`), 64 KiB of body (`413 too_large`), a 10 s deadline to receive each request, and 32 connections at once (`503 busy`).
 
 Error codes: `bad_host`, `not_found`, `method_not_allowed`, `bad_request`, `headers_too_large`, `too_large`, `busy`, `internal`, `forbidden`, `console_only`, `not_configured`, `no_profile`, `already_linked`, `cloud_unavailable`, `save_failed`, `playtime_unavailable`, `path_not_allowed`, `appdb_copy_failed`.
@@ -87,7 +87,7 @@ Error codes: `bad_host`, `not_found`, `method_not_allowed`, `bad_request`, `head
 | `port`     | number  | `7777`   | HTTP port. The tile opens the port in `tile/sce_sys/param.json` (7777); the payload logs a mismatch.      |
 | `language` | string  | `"auto"` | `"auto"` follows the console's system language; otherwise a tag such as `"pt-BR"`. Used for notifications, trophy texts and the UI's default. |
 | `debug`    | boolean | `false`  | Registers the `/api/v1/debug/*` routes.                                                                   |
-| `server`   | string  | `""`     | The cloud server's `https://` address. Empty disables the cloud thread and makes `/api/v1/cloud` answer `configured: false`. |
+| `server`   | string  | `""`     | The cloud server's `https://` address. Empty uses the official server, `https://openpsapp.com`. The cloud thread sends nothing until a profile is linked. |
 
 Other files in `/data/openpsapp`:
 

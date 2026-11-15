@@ -1,6 +1,6 @@
 # What OpenPSApp sends to the cloud
 
-OpenPSApp works fully offline on the console. Sending data to the cloud is optional. It needs two things: a server address in the `server` key of `/data/openpsapp/config.json` (empty by default, which keeps the cloud off), and a console profile linked to an account. This page lists everything the console sends, when it sends it, and what it never sends. The message shapes are in [`contract/`](contract/) (MIT).
+OpenPSApp works fully offline on the console. Sending data to the cloud is optional. It starts only when a console profile is linked to an account, on the official server `https://openpsapp.com` or the one set in the `server` key of `/data/openpsapp/config.json`. This page lists everything the console sends, when it sends it, and what it never sends. The message shapes are in [`contract/`](contract/) (MIT).
 
 The console talks only to the server set in `server`. Every request carries the header `User-Agent: OpenPSApp`; after linking, it also carries the console's token.
 

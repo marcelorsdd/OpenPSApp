@@ -102,7 +102,9 @@ TEST(config_reads_and_writes_the_cloud_server) {
     std::string text;
     CHECK(fs::ReadFile(path, &text, 4096));
     CHECK(text.find("\"server\":\"\"") != std::string::npos);
+    CHECK_EQ(CloudServer(LoadOrCreateConfig(path, &warning)), std::string("https://openpsapp.com"));
     CHECK(fs::WriteFileAtomic(path, "{\"port\":7777,\"server\":\"https://api.example.test\"}"));
     CHECK_EQ(LoadOrCreateConfig(path, &warning).server, std::string("https://api.example.test"));
+    CHECK_EQ(CloudServer(LoadOrCreateConfig(path, &warning)), std::string("https://api.example.test"));
     std::remove(path.c_str());
 }
