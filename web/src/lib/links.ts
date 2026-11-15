@@ -6,5 +6,7 @@ export const paths = {
   trophies: '/trophies',
   account: '/account',
   link: '/link',
+  privacy: '/privacy',
+  terms: '/terms',
   game: (titleId: string) => `/games/${encodeURIComponent(titleId)}`,
 };

@@ -2,7 +2,8 @@ import { useClerk } from '@clerk/react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 import { SiteFooter } from '@/components/layout/site-footer';
-import { GITHUB_URL, paths, SYNC_DOC_URL } from '@/lib/links';
+import { SiteLinks } from '@/components/layout/site-links';
+import { paths, SYNC_DOC_URL } from '@/lib/links';
 import { LandingHeader } from './_components/landing-header';
 import { LandingHero } from './_components/landing-hero';
 import { LandingPreview } from './_components/landing-preview';
@@ -21,19 +22,7 @@ export default function LandingPage() {
         <LandingHero linkNotice={location.pathname === paths.link} whatIsSentUrl={SYNC_DOC_URL} onSignIn={signIn} />
         <LandingPreview />
       </main>
-      <SiteFooter
-        start={t('footer.openSource')}
-        end={
-          <>
-            <a href={SYNC_DOC_URL} target="_blank" rel="noreferrer" className="text-link hover:text-link-hover">
-              {t('footer.privacy')}
-            </a>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-link hover:text-link-hover">
-              {t('footer.github')}
-            </a>
-          </>
-        }
-      />
+      <SiteFooter start={t('footer.openSource')} end={<SiteLinks github />} />
     </div>
   );
 }

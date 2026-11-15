@@ -43,6 +43,7 @@
     "whatIsSent": "What is sent",
     "openSource": "OpenPSApp is open source. The console app is GPL.",
     "privacy": "Privacy",
+    "terms": "Terms",
     "github": "GitHub"
   },
   "landing": {
@@ -339,5 +340,156 @@
     "title": "Page not found",
     "description": "This page does not exist or was moved.",
     "home": "Go to the home page"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: November 15, 2026",
+    "intro": "OpenPSApp is a free, open-source homebrew for the PS5, with a website, openpsapp.com, where you can follow your playtime and trophies. This policy explains what the website and its server receive, why, and how to delete it. OpenPSApp is run by Marcelo Camargo, an individual developer, and is not affiliated with Sony Interactive Entertainment.",
+    "sections": [
+      {
+        "title": "What we collect",
+        "body": ["Only what the service needs to work:"],
+        "items": [
+          "Account: when you sign up, our sign-in provider, Clerk, receives your e-mail address and, if you sign in with Google or Discord, the name and profile picture those services share. Clerk also records sign-in details such as the time, browser and IP address, to keep your account secure.",
+          "Console data, only after you link a console: your PS5 profile name, the console language, your games, playtime, trophies, and game and trophy images. Games you hid are sent too, marked as hidden.",
+          "Technical logs: the server records requests, such as the time, the address requested and the IP address, to keep the service running and to stop abuse. They are rotated automatically."
+        ]
+      },
+      {
+        "title": "What we never collect",
+        "body": [],
+        "items": [
+          "Console identifiers, such as the serial number, MAC address or console id.",
+          "PlayStation Network account ids or passwords.",
+          "Your Google or Discord password. You sign in on their own pages."
+        ]
+      },
+      {
+        "title": "How we use it",
+        "body": [
+          "Only to show your profile, games and trophies to you on the website, and to keep the service secure. There are no ads and no analytics or tracking tools, and we do not sell your data or share it for marketing."
+        ]
+      },
+      {
+        "title": "Who processes it",
+        "body": ["A few companies run parts of the service:"],
+        "items": [
+          "Hetzner Online, in Helsinki, Finland: the server and the database.",
+          "Clerk, in the United States: sign-in and accounts.",
+          "Cloudflare: the domain's DNS and the encrypted backups.",
+          "Google and Discord, only if you choose to sign in with them."
+        ]
+      },
+      {
+        "title": "Security",
+        "body": [
+          "Data travels over HTTPS. The server keeps the console's access token only as a hash, and backups are encrypted before they leave the server. The data is not end-to-end encrypted: whoever runs the server can technically read it.",
+          "To report a security problem, follow the security policy at github.com/marcelorsdd/OpenPSApp/security."
+        ]
+      },
+      {
+        "title": "Cookies and browser storage",
+        "body": [
+          "The website uses only the cookies Clerk needs to keep you signed in, and your browser's storage to remember choices such as the language. There are no advertising or analytics cookies."
+        ]
+      },
+      {
+        "title": "How long we keep it",
+        "body": [
+          "We keep your data while your account exists. When you disconnect a console and delete its data, or delete your account, the data is removed from the database right away and disappears from the encrypted backups within 6 months, as old backups are deleted. Game and trophy images are shared between accounts, so they stay on the server. Clerk keeps sign-in records under its own policy."
+        ]
+      },
+      {
+        "title": "Your choices and rights",
+        "body": [
+          "You can see all your synced data on the website. On the Account page you can disconnect the console, delete the data it sent, or delete your account and everything in it. You can also unlink from the console at any time.",
+          "Depending on where you live, laws such as the GDPR or Brazil's LGPD give you the right to access, correct, delete and receive a copy of your data. To use any of them, or for any question, e-mail us."
+        ]
+      },
+      {
+        "title": "Children",
+        "body": [
+          "OpenPSApp is not meant for children under 13. If you are under the age at which you can agree to this policy in your country, use it only with a parent's or guardian's permission."
+        ]
+      },
+      {
+        "title": "Changes",
+        "body": [
+          "If this policy changes, we will update this page and its date. Important changes are also announced in the release notes on GitHub."
+        ]
+      },
+      {
+        "title": "Contact",
+        "body": ["marcelorsdd@gmail.com"]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "updated": "Last updated: November 15, 2026",
+    "intro": "These terms apply to the OpenPSApp website, openpsapp.com, and its server. By creating an account or linking a console, you agree to them. The console app is free software under its own license, described below.",
+    "sections": [
+      {
+        "title": "The service",
+        "body": [
+          "OpenPSApp shows your PS5 playtime and trophies on the website after you link a console. It is free, has no paid features, and is run by one person in their spare time."
+        ]
+      },
+      {
+        "title": "Your account",
+        "body": [
+          "You need an account to use the website. Keep your sign-in secure: you are responsible for what happens in your account. Each account has one linked console."
+        ]
+      },
+      {
+        "title": "Homebrew and your console",
+        "body": [
+          "The console app runs on jailbroken consoles. Jailbreaking a console and running homebrew may break Sony's terms or void your warranty, and you do it at your own risk. OpenPSApp is not affiliated with or endorsed by Sony Interactive Entertainment. PlayStation and PS5 are trademarks of Sony Interactive Entertainment Inc."
+        ]
+      },
+      {
+        "title": "Acceptable use",
+        "body": ["Use the service fairly. Security research is welcome when it follows our security policy on GitHub. Do not:"],
+        "items": [
+          "attack, overload or try to break into the service or other people's accounts;",
+          "use automated tools to collect data from the service;",
+          "send data that does not come from your own console, or use the service to break the law."
+        ]
+      },
+      {
+        "title": "Open source",
+        "body": [
+          "The console app and the website are free software under the GPL-3.0-or-later license, and the API shapes are under the MIT license. Those licenses, not these terms, govern the code. The server's code is not public."
+        ]
+      },
+      {
+        "title": "No warranty",
+        "body": [
+          "The service is provided \"as is\", without warranties of any kind. It may have errors, be unavailable or lose data. Your console keeps its own data; the website shows a copy."
+        ]
+      },
+      {
+        "title": "Limitation of liability",
+        "body": [
+          "To the extent the law allows, OpenPSApp and its maintainer are not liable for indirect or consequential damages, or for loss of data, arising from the use of the service."
+        ]
+      },
+      {
+        "title": "Changes and ending the service",
+        "body": [
+          "The service may change, be suspended or end. When possible, we will announce it on GitHub in advance. You can stop using it and delete your account at any time. Accounts that break these terms may be suspended."
+        ]
+      },
+      {
+        "title": "Changes to these terms",
+        "body": [
+          "If these terms change, we will update this page and its date. Using the service after a change means you accept the new terms."
+        ]
+      },
+      {
+        "title": "Contact",
+        "body": ["marcelorsdd@gmail.com"]
+      }
+    ]
   }
 }
