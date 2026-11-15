@@ -33,6 +33,7 @@ OpenPSApp is homebrew for a jailbroken PS5. A jailbroken console has no PlayStat
 - [FAQ](#faq)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [Support](#support)
 - [License](#license)
 
 ## What it does
@@ -267,6 +268,10 @@ Still stuck? [Open an issue](https://github.com/marcelorsdd/OpenPSApp/issues/new
 Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the setup, the checks and the rules, and [ARCHITECTURE.md](ARCHITECTURE.md) for how the pieces fit. Each part has its own README: [payload](payload/README.md), [console UI](ui/README.md), [website](web/README.md), [core](core/README.md), [contract](contract/README.md), [tile](tile/README.md) and [tools](tools/README.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 To report a vulnerability, see [SECURITY.md](SECURITY.md). Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Support
+
+OpenPSApp is free, with no ads and no paid features. If you want to help, you can [buy me a coffee](https://buymeacoffee.com/marcelorsdd): it pays for the server and domain behind the website. Starring the repository and reporting bugs help too.
 
 ## License
 
