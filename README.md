@@ -5,6 +5,13 @@
 <p align="center">Your PS5 playtime and trophies, on the console and anywhere else.</p>
 
 <p align="center">
+  <a href="https://openpsapp.com"><img src="https://img.shields.io/badge/Website-openpsapp.com-2563eb?style=for-the-badge" alt="Website: openpsapp.com" height="36"></a>
+  <a href="https://github.com/marcelorsdd/OpenPSApp/releases/latest"><img src="https://img.shields.io/badge/Download-openpsapp.elf-e3b341?style=for-the-badge" alt="Download openpsapp.elf" height="36"></a>
+</p>
+
+<p align="center"><b>Create your account at <a href="https://openpsapp.com">openpsapp.com</a></b> to follow your profile and trophies from your phone, even with the PS5 off.</p>
+
+<p align="center">
   <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/marcelorsdd/OpenPSApp"><img src="https://api.scorecard.dev/projects/github.com/marcelorsdd/OpenPSApp/badge" alt="OpenSSF Scorecard"></a>
@@ -17,7 +24,7 @@
 
 <p align="center"><img src=".github/assets/console-tour.gif" width="800" alt="The console app: the profile, a game page and its trophies"></p>
 
-OpenPSApp is homebrew for a jailbroken PS5. A jailbroken console has no PlayStation App, so OpenPSApp brings the parts you miss back to the console itself: playtime per game, trophies (hidden ones included), a monthly recap and a trophy timeline. It works offline. If you want, it can also sync to a website, so you can follow your profile from your phone even with the PS5 off.
+OpenPSApp is homebrew for a jailbroken PS5. A jailbroken console has no PlayStation App, so OpenPSApp brings the parts you miss back to the console itself: playtime per game, trophies (hidden ones included), a monthly recap and a trophy timeline. It works offline. If you want, it can also sync to the website, **[openpsapp.com](https://openpsapp.com)**, so you can follow your profile from your phone even with the PS5 off.
 
 ## Contents
 
@@ -154,13 +161,14 @@ The website shows the same profile, trophies and game pages on any phone or comp
 
 The console app and the website are open source and live in this repository. The server is run by the project and is closed source; [`SYNC.md`](SYNC.md) and [`contract/`](contract/) describe exactly what it receives.
 
-The website is **[openpsapp.com](https://openpsapp.com)**. OpenPSApp uses it out of the box, and the console sends nothing until you link it to an account.
+> [!TIP]
+> **The website is [openpsapp.com](https://openpsapp.com).** Create your account there, then link your console as below. OpenPSApp uses it out of the box, and the console sends nothing until you link it to an account.
 
 ### Link your console
 
 1. On the PS5, open OpenPSApp, go to **Account** and press **Link account**.
 2. The TV shows a code such as `K7Q4-PX2A`, a QR code and the website address. The code is valid for 10 minutes.
-3. On your phone or computer, open the website and sign in. Then either:
+3. On your phone or computer, open [openpsapp.com](https://openpsapp.com) and sign in, or create an account with your e-mail, Google or Discord. Then either:
    - press **Scan the QR code on the TV** and point the camera at it, or
    - type the code and press **Continue**.
 4. Check the confirmation page. It shows the profile name, what the console will send and, if your account already has a console, which one it replaces. Only confirm if the same code is on your TV right now. Press **Connect**.
