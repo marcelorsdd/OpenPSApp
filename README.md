@@ -153,12 +153,7 @@ The website shows the same profile, trophies and game pages on any phone or comp
 
 The console app and the website are open source and live in this repository. The server is run by the project and is closed source; [`SYNC.md`](SYNC.md) and [`contract/`](contract/) describe exactly what it receives.
 
-### Turn the cloud on
-
-Cloud features are off until OpenPSApp knows the server's address. Set it in the `server` key of `/data/openpsapp/config.json` (see [Settings](#settings)), then restart OpenPSApp. While it is empty, the **Account** tab says **The cloud is not set up on this console.**
-
-> [!NOTE]
-> The official server address is not published yet. When it is, it will be listed here and in the release notes.
+The website is **[openpsapp.com](https://openpsapp.com)**. OpenPSApp uses it out of the box, and the console sends nothing until you link it to an account.
 
 ### Link your console
 
@@ -188,7 +183,7 @@ To remove OpenPSApp from the console itself, see [How do I uninstall it?](#how-d
 
 - **On the console:** OpenPSApp reads the console's playtime database, trophy files and game images. It writes only to `/data/openpsapp`. It never talks to Sony or PSN.
 - **On your network:** anyone on the same network can open `http://<console-ip>:7777`. There is no password, so they can see your profile name, games, playtime and trophies, and hide or show games. Linking and unlinking the website only work on the PS5 itself. Other devices can see whether the console is linked, the profile name, the last sync time and error, and how long a pairing code has left, but never the code.
-- **Nothing leaves the console** until you set a server address and press **Link account**.
+- **Nothing leaves the console** until you press **Link account**.
 - **When linked,** the console sends your profile name, console language, games, playtime, trophies and game and trophy images to the OpenPSApp server over HTTPS. Games you hid are sent too, marked as hidden, and so are the names of hidden trophies.
 - **No end-to-end encryption.** HTTPS encrypts the data on the way to the server, but the server stores it in a form it can read. Whoever runs the server can technically read your synced data.
 - **Never sent:** console identifiers (serial, MAC address, console id) and PlayStation Network account ids.
@@ -206,7 +201,7 @@ Settings live in `/data/openpsapp/config.json`, created on the first run. Edit i
 | `port`     | `7777`   | The port of the app. The Media-tab tile always opens port 7777, so keep the default unless you open the app by its address.                       |
 | `language` | `"auto"` | `"auto"` follows the console language. A tag such as `"pt-BR"` sets the language of notifications, trophy texts and the app's default language.   |
 | `debug`    | `false`  | Turns on diagnostic endpoints. They expose console files and console ids to your network, so leave it off unless you are debugging.               |
-| `server`   | `""`     | The HTTPS address of the OpenPSApp server. Empty keeps the cloud off.                                                                             |
+| `server`   | `""`     | The HTTPS address of the OpenPSApp server. Empty uses the official one, `https://openpsapp.com`.                                                  |
 
 Other files in the same folder: `openpsapp.log` (the log), `hidden.json` (hidden games), `cloud.json` (the website link) and `asset-hashes.json` (a cache of image hashes).
 
@@ -257,7 +252,6 @@ No. See [Privacy](#privacy).
 | The tile opens a page that does not load                         | OpenPSApp is not running. Load the ELF again.                                                                                                               |
 | The tile is missing                                              | It is installed on start when missing. Load OpenPSApp again and wait for **OpenPSApp added to the Media tab**.                                              |
 | `http://<console-ip>:7777` does not open on the phone            | Check that the phone is on the same network as the PS5, that OpenPSApp is running, and that you use the IP address: names like `ps5.local` are refused.     |
-| **The cloud is not set up on this console.**                     | Set `server` in `config.json` and restart OpenPSApp.                                                                                                        |
 | **This can only be done in OpenPSApp on the PS5 itself.**        | Link and unlink from the PS5, not from a phone.                                                                                                             |
 | **No user is signed in on the PS5.**                             | Sign in to a profile on the console and try again.                                                                                                          |
 | **Could not reach the OpenPSApp server.**                        | Check the console's internet connection and the `server` address.                                                                                           |

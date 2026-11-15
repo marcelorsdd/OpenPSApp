@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "cloud/asset_hash.hpp"
+#include "config.hpp"
 #include "net/ca_roots.hpp"
 #include "platform/platform.hpp"
 #include "services/library.hpp"
@@ -28,12 +29,12 @@ std::unique_ptr<CloudController> g_controller;
 CloudController *Controller() { return g_controller.get(); }
 
 void Start(const routes::Context &ctx) {
-    if (ctx.config.server.empty() || g_controller) return;
+    if (g_controller) return;
+    std::string server = CloudServer(ctx.config);
     g_store = std::make_unique<CloudStore>(ctx.data_dir + "/cloud.json");
     g_hasher = std::make_unique<AssetHasher>(ctx.data_dir + "/asset-hashes.json");
-    g_client = std::make_unique<CloudClient>(ctx.config.server, [](const net::HttpsRequest &request) {
-        return net::HttpsSend(request, net::ProductionRoots());
-    });
+    g_client = std::make_unique<CloudClient>(
+        server, [](const net::HttpsRequest &request) { return net::HttpsSend(request, net::ProductionRoots()); });
     std::string language = ctx.language;
     SnapshotSource source{
         []() -> std::optional<std::pair<std::string, std::string>> {
@@ -64,7 +65,7 @@ void Start(const routes::Context &ctx) {
             sleep(kTickSeconds);
         }
     });
-    log::Info("cloud sync enabled for %s", ctx.config.server.c_str());
+    log::Info("cloud server: %s", server.c_str());
 }
 
 }

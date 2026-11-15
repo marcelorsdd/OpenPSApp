@@ -57,6 +57,8 @@ Config LoadOrCreateConfig(const std::string &path, std::string *warning) {
     return cfg;
 }
 
+std::string CloudServer(const Config &cfg) { return cfg.server.empty() ? kOfficialServer : cfg.server; }
+
 std::string ResolveLanguage(const std::string &configured) {
     if (!configured.empty() && configured != "auto") return configured;
     int id = platform::SystemLanguageId();
