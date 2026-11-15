@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-15
+
 ### Added
 
 - The website uses your Google or Discord picture as your profile picture when you sign in with one of them.
@@ -92,7 +94,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Diagnostic endpoints, off by default (`"debug": true`).
 - Builds take their version from the git tag.
 
-[Unreleased]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/marcelorsdd/OpenPSApp/releases/tag/v0.1.0
