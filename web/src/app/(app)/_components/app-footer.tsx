@@ -1,6 +1,7 @@
 import { formatDateTime } from '@openpsapp/core';
 import { useTranslation } from 'react-i18next';
 import { SiteFooter } from '@/components/layout/site-footer';
+import { SiteLinks } from '@/components/layout/site-links';
 import type { SyncState } from '../_types/sync';
 
 export function AppFooter({ sync, whatIsSentUrl }: { sync: SyncState; whatIsSentUrl: string }) {
@@ -15,9 +16,12 @@ export function AppFooter({ sync, whatIsSentUrl }: { sync: SyncState; whatIsSent
     <SiteFooter
       start={start}
       end={
-        <a href={whatIsSentUrl} target="_blank" rel="noreferrer" className="font-semibold text-link hover:text-link-hover">
-          {t('footer.whatIsSent')}
-        </a>
+        <>
+          <a href={whatIsSentUrl} target="_blank" rel="noreferrer" className="font-semibold text-link hover:text-link-hover">
+            {t('footer.whatIsSent')}
+          </a>
+          <SiteLinks />
+        </>
       }
     />
   );

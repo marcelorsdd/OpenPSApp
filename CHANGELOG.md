@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Privacy Policy and Terms of Service pages on the website, `/privacy` and `/terms`, linked from the footer.
+
 ### Changed
 
 - The console uses the official server, `https://openpsapp.com`, when `server` in `config.json` is empty, so **Link account** works without editing the settings. Nothing is sent until a profile is linked.

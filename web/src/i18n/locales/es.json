@@ -43,6 +43,7 @@
     "whatIsSent": "Qué se envía",
     "openSource": "OpenPSApp es de código abierto. La app de la consola es GPL.",
     "privacy": "Privacidad",
+    "terms": "Términos",
     "github": "GitHub"
   },
   "landing": {
@@ -339,5 +340,158 @@
     "title": "Página no encontrada",
     "description": "Esta página no existe o cambió de lugar.",
     "home": "Ir al inicio"
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "updated": "Última actualización: 15 de noviembre de 2026",
+    "intro": "OpenPSApp es un homebrew gratuito y de código abierto para PS5, con un sitio web, openpsapp.com, donde sigues tu tiempo de juego y tus trofeos. Esta política explica qué reciben el sitio y su servidor, para qué y cómo borrarlo. OpenPSApp lo mantiene Marcelo Camargo, un desarrollador independiente, y no está afiliado a Sony Interactive Entertainment.",
+    "sections": [
+      {
+        "title": "Qué recopilamos",
+        "body": ["Solo lo que el servicio necesita para funcionar:"],
+        "items": [
+          "Cuenta: al registrarte, nuestro proveedor de inicio de sesión, Clerk, recibe tu correo electrónico y, si inicias sesión con Google o Discord, el nombre y la foto de perfil que esos servicios comparten. Clerk también registra datos de inicio de sesión, como la hora, el navegador y la dirección IP, para proteger tu cuenta.",
+          "Datos de la consola, solo después de vincular una consola: el nombre de tu perfil de PS5, el idioma de la consola, tus juegos, tiempo de juego, trofeos y las imágenes de juegos y trofeos. Los juegos que ocultaste también se envían, marcados como ocultos.",
+          "Registros técnicos: el servidor registra las solicitudes, como la hora, la dirección solicitada y la dirección IP, para mantener el servicio funcionando y evitar abusos. Se descartan automáticamente."
+        ]
+      },
+      {
+        "title": "Qué nunca recopilamos",
+        "body": [],
+        "items": [
+          "Identificadores de la consola, como el número de serie, la dirección MAC o el id de la consola.",
+          "Ids o contraseñas de la cuenta de PlayStation Network.",
+          "Tu contraseña de Google o de Discord. Inicias sesión en sus propias páginas."
+        ]
+      },
+      {
+        "title": "Cómo lo usamos",
+        "body": [
+          "Solo para mostrarte en el sitio tu perfil, tus juegos y trofeos, y para mantener el servicio seguro. No hay anuncios ni herramientas de análisis o seguimiento, y no vendemos tus datos ni los compartimos con fines de marketing."
+        ]
+      },
+      {
+        "title": "Quién trata los datos",
+        "body": ["Algunas empresas operan partes del servicio:"],
+        "items": [
+          "Hetzner Online, en Helsinki, Finlandia: el servidor y la base de datos.",
+          "Clerk, en Estados Unidos: el inicio de sesión y las cuentas.",
+          "Cloudflare: el DNS del dominio y las copias de seguridad cifradas.",
+          "Google y Discord, solo si eliges iniciar sesión con ellos."
+        ]
+      },
+      {
+        "title": "Seguridad",
+        "body": [
+          "Los datos viajan por HTTPS. El servidor guarda el token de acceso de la consola solo como hash, y las copias de seguridad se cifran antes de salir del servidor. Los datos no tienen cifrado de extremo a extremo: quien administra el servidor puede, técnicamente, leerlos.",
+          "Para informar de un problema de seguridad, sigue la política de seguridad en github.com/marcelorsdd/OpenPSApp/security."
+        ]
+      },
+      {
+        "title": "Cookies y almacenamiento del navegador",
+        "body": [
+          "El sitio usa solo las cookies que Clerk necesita para mantener tu sesión, y el almacenamiento del navegador para recordar elecciones como el idioma. No hay cookies de publicidad ni de análisis."
+        ]
+      },
+      {
+        "title": "Cuánto tiempo los guardamos",
+        "body": [
+          "Guardamos tus datos mientras exista tu cuenta. Cuando desconectas una consola y borras sus datos, o borras tu cuenta, los datos salen de la base de datos al instante y desaparecen de las copias de seguridad cifradas en un plazo de 6 meses, a medida que se borran las copias antiguas. Las imágenes de juegos y trofeos se comparten entre cuentas, así que se quedan en el servidor. Clerk guarda los registros de inicio de sesión según su propia política."
+        ]
+      },
+      {
+        "title": "Tus opciones y derechos",
+        "body": [
+          "Puedes ver todos tus datos sincronizados en el sitio. En la página Cuenta puedes desconectar la consola, borrar los datos que envió o borrar tu cuenta y todo lo que contiene. También puedes desvincular desde la consola en cualquier momento.",
+          "Según dónde vivas, leyes como el RGPD o la LGPD de Brasil te dan derecho a acceder, corregir, borrar y recibir una copia de tus datos. Para ejercer cualquiera de ellos, o para cualquier duda, escríbenos."
+        ]
+      },
+      {
+        "title": "Menores",
+        "body": [
+          "OpenPSApp no está dirigido a menores de 13 años. Si tienes menos de la edad mínima para aceptar esta política en tu país, úsalo solo con el permiso de tus padres o tutores."
+        ]
+      },
+      {
+        "title": "Cambios",
+        "body": [
+          "Si esta política cambia, actualizaremos esta página y su fecha. Los cambios importantes también se anuncian en las notas de versión en GitHub."
+        ]
+      },
+      {
+        "title": "Contacto",
+        "body": ["marcelorsdd@gmail.com"]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Términos del Servicio",
+    "updated": "Última actualización: 15 de noviembre de 2026",
+    "intro": "Estos términos se aplican al sitio de OpenPSApp, openpsapp.com, y a su servidor. Al crear una cuenta o vincular una consola, los aceptas. La app de la consola es software libre con su propia licencia, descrita abajo.",
+    "sections": [
+      {
+        "title": "El servicio",
+        "body": [
+          "OpenPSApp muestra en el sitio el tiempo de juego y los trofeos de tu PS5 después de vincular una consola. Es gratuito, no tiene funciones de pago y lo mantiene una persona en su tiempo libre."
+        ]
+      },
+      {
+        "title": "Tu cuenta",
+        "body": [
+          "Necesitas una cuenta para usar el sitio. Mantén tu inicio de sesión seguro: eres responsable de lo que pase en tu cuenta. Cada cuenta tiene una consola vinculada."
+        ]
+      },
+      {
+        "title": "Homebrew y tu consola",
+        "body": [
+          "La app de la consola funciona en consolas con jailbreak. Hacer jailbreak a una consola y ejecutar homebrew puede infringir los términos de Sony o anular la garantía, y lo haces bajo tu propio riesgo. OpenPSApp no está afiliado ni respaldado por Sony Interactive Entertainment. PlayStation y PS5 son marcas registradas de Sony Interactive Entertainment Inc."
+        ]
+      },
+      {
+        "title": "Uso aceptable",
+        "body": [
+          "Usa el servicio de forma justa. La investigación de seguridad es bienvenida cuando sigue nuestra política de seguridad en GitHub. No:"
+        ],
+        "items": [
+          "ataques, sobrecargues ni intentes entrar en el servicio o en las cuentas de otras personas;",
+          "uses herramientas automáticas para recopilar datos del servicio;",
+          "envíes datos que no vengan de tu propia consola ni uses el servicio para infringir la ley."
+        ]
+      },
+      {
+        "title": "Código abierto",
+        "body": [
+          "La app de la consola y el sitio son software libre bajo la licencia GPL-3.0-or-later, y los formatos de la API están bajo la licencia MIT. Esas licencias, y no estos términos, rigen el código. El código del servidor no es público."
+        ]
+      },
+      {
+        "title": "Sin garantía",
+        "body": [
+          "El servicio se ofrece \"tal cual\", sin garantías de ningún tipo. Puede tener errores, no estar disponible o perder datos. Tu consola guarda sus propios datos; el sitio muestra una copia."
+        ]
+      },
+      {
+        "title": "Limitación de responsabilidad",
+        "body": [
+          "En la medida en que la ley lo permita, OpenPSApp y su mantenedor no responden por daños indirectos o consecuentes, ni por pérdida de datos, derivados del uso del servicio."
+        ]
+      },
+      {
+        "title": "Cambios y fin del servicio",
+        "body": [
+          "El servicio puede cambiar, suspenderse o terminar. Cuando sea posible, lo avisaremos con antelación en GitHub. Puedes dejar de usarlo y borrar tu cuenta en cualquier momento. Las cuentas que infrinjan estos términos pueden suspenderse."
+        ]
+      },
+      {
+        "title": "Cambios en estos términos",
+        "body": [
+          "Si estos términos cambian, actualizaremos esta página y su fecha. Seguir usando el servicio después de un cambio significa aceptar los nuevos términos."
+        ]
+      },
+      {
+        "title": "Contacto",
+        "body": ["marcelorsdd@gmail.com"]
+      }
+    ]
   }
 }

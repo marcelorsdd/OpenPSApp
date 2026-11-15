@@ -27,6 +27,8 @@ export const router = createBrowserRouter([
           { path: 'link', handle: focused, lazy: page(() => import('@/app/(app)/link/page')) },
         ],
       },
+      { path: 'privacy', lazy: page(() => import('@/app/(site)/privacy/page')) },
+      { path: 'terms', lazy: page(() => import('@/app/(site)/terms/page')) },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
