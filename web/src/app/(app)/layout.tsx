@@ -26,10 +26,11 @@ export default function AppLayout() {
         section={shell.section}
         homeTo={paths.profile}
         onSearch={() => search.setOpen(true)}
-        status={<SyncBadge sync={shell.sync} now={shell.now} />}
+        status={<SyncBadge sync={shell.sync} images={shell.images} now={shell.now} />}
         menu={
           <AccountMenu
             initial={shell.initial}
+            avatarUrl={shell.avatarUrl}
             name={shell.name}
             email={shell.email}
             whatIsSentUrl={SYNC_DOC_URL}
@@ -45,7 +46,8 @@ export default function AppLayout() {
           homeTo={paths.profile}
           accountTo={paths.account}
           initial={shell.initial}
-          status={<SyncPill sync={shell.sync} now={shell.now} />}
+          avatarUrl={shell.avatarUrl}
+          status={<SyncPill sync={shell.sync} images={shell.images} now={shell.now} />}
           onSearch={() => search.setOpen(true)}
         />
       )}

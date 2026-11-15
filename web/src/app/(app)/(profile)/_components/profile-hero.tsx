@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function ProfileHero({
   name,
   initial,
+  avatarUrl,
   summary,
   summaryShort,
   heroUrl,
@@ -11,6 +12,7 @@ export function ProfileHero({
 }: {
   name: string;
   initial: string;
+  avatarUrl: string | null;
   summary: string;
   summaryShort: string;
   heroUrl: string | null;
@@ -26,6 +28,7 @@ export function ProfileHero({
       <div className="relative mx-auto flex max-w-page flex-wrap items-end justify-between gap-8 px-4 pt-28 pb-4 sm:px-6 md:pt-14 md:pb-10 lg:px-12">
         <div className="flex min-w-0 items-center gap-3.5 md:gap-6">
           <Avatar className="size-avatar-lg md:size-avatar-xl md:shadow-avatar">
+            {avatarUrl && <AvatarImage src={avatarUrl} alt="" referrerPolicy="no-referrer" />}
             <AvatarFallback className="text-(length:--text-heading) font-extrabold md:text-(length:--text-display)">
               {initial}
             </AvatarFallback>

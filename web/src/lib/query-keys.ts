@@ -9,4 +9,5 @@ export const queryKeys = {
   trophies: (setId: string) => ['library', 'trophy-sets', setId, 'trophies'] as const,
   earned: ['library', 'earned'] as const,
   devices: ['devices'] as const,
+  images: ['images'] as const,
 };

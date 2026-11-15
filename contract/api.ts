@@ -57,6 +57,11 @@ export interface Trophy {
   iconUrl: string | null;
 }
 
+export interface ImageSync {
+  total: number;
+  stored: number;
+}
+
 export interface EarnedTrophy {
   setId: string;
   setName: string;
