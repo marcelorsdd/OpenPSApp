@@ -8,6 +8,7 @@
   <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <a href="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml"><img src="https://github.com/marcelorsdd/OpenPSApp/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/marcelorsdd/OpenPSApp"><img src="https://api.scorecard.dev/projects/github.com/marcelorsdd/OpenPSApp/badge" alt="OpenSSF Scorecard"></a>
+  <a href="https://www.bestpractices.dev/projects/16706"><img src="https://www.bestpractices.dev/projects/16706/badge" alt="OpenSSF Best Practices"></a>
   <a href="https://github.com/marcelorsdd/OpenPSApp/releases/latest"><img src="https://img.shields.io/github/v/release/marcelorsdd/OpenPSApp" alt="Latest release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue" alt="License: GPL-3.0-or-later"></a>
   <a href="contract/LICENSE"><img src="https://img.shields.io/badge/contract-MIT-green" alt="contract: MIT"></a>
