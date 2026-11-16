@@ -13,6 +13,10 @@ std::string Failure(const net::HttpsResponse &r) {
     return "HTTP " + std::to_string(r.status);
 }
 
+bool Refused(const net::HttpsResponse &r) {
+    return r.ok() && (r.status == 400 || r.status == 409 || r.status == 413 || r.status == 415);
+}
+
 std::vector<std::string> StringArray(const cJSON *obj, const char *name) {
     std::vector<std::string> out;
     const cJSON *item = nullptr;
@@ -113,6 +117,10 @@ SyncResult CloudClient::Sync(const std::string &token, const Snapshot &snapshot,
         auto set = snapshot.sets.find(id);
         if (set == snapshot.sets.end()) continue;
         net::HttpsResponse r = Call("PUT", "/api/v1/sync/sets/" + id, set->second, token, kJson);
+        if (Refused(r)) {
+            out.refused_sets++;
+            continue;
+        }
         if (!r.ok() || r.status / 100 != 2) return fail(r);
         out.sets++;
     }
@@ -126,6 +134,10 @@ SyncResult CloudClient::Sync(const std::string &token, const Snapshot &snapshot,
         }
         net::HttpsResponse r = Call("PUT", "/api/v1/sync/assets/" + id, std::move(bytes), token,
                                     "application/octet-stream", kAssetTimeoutMs);
+        if (Refused(r)) {
+            out.refused_assets++;
+            continue;
+        }
         if (!r.ok() || r.status / 100 != 2) return fail(r);
         out.assets++;
     }

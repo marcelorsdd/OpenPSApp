@@ -35,7 +35,7 @@ The console's token can only send data. It cannot read your account or change an
 - Within about a minute after a trophy or playtime changes, for example after you earn a trophy. Once a minute the console rebuilds the summary below and compares it with the last one it sent.
 - When you choose **Sync now** on the console.
 
-If a sync fails, the console tries again a minute later. Each time, the console first sends a summary. The server answers with what it does not have yet, and the console uploads only that.
+If a sync fails, the console tries again a minute later. Each time, the console first sends a summary. The server answers with what it does not have yet, and the console uploads only that. If the server refuses one trophy list or image (too large, a format it does not convert, or not one the account uses), the console skips it, goes on with the rest and offers it again on a later sync.
 
 ## What is sent
 
