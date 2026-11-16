@@ -280,6 +280,61 @@ TEST(cloud_client_uploads_only_what_the_server_asks_for) {
     }
 }
 
+TEST(cloud_client_skips_sets_and_images_the_server_refuses) {
+    std::string image = TempPath("refused.png");
+    CHECK(fs::WriteFileAtomic(image, "image-bytes"));
+    std::string big(64, 'a'), odd(64, 'b'), stray(64, 'c'), fine(64, 'd');
+    Snapshot snap;
+    snap.manifest = "{}";
+    snap.sets = {{"NPWR00001_00", "{}"}, {"NPWR00002_00", "{}"}};
+    for (const std::string &id : {big, odd, stray, fine}) snap.assets[id] = {image, 0, -1, "1-1"};
+
+    FakeServer server;
+    server.handler = [&](const net::HttpsRequest &r) {
+        if (r.url.find("/sync/manifest") != std::string::npos)
+            return Reply(200, R"({"needSets":["NPWR00001_00","NPWR00002_00"],"needAssets":[")" + big + R"(",")" + odd +
+                                  R"(",")" + stray + R"(",")" + fine + R"("]})");
+        if (r.url.find("NPWR00001_00") != std::string::npos) return Reply(400, R"({"error":"invalid_set"})");
+        if (r.url.find("/sync/sets/") != std::string::npos) return Reply(204);
+        if (r.url.find(big) != std::string::npos) return Reply(413, R"({"error":"too_large"})");
+        if (r.url.find(odd) != std::string::npos) return Reply(415, R"({"error":"unsupported_image"})");
+        if (r.url.find(stray) != std::string::npos) return Reply(409, R"({"error":"not_referenced"})");
+        return Reply(201);
+    };
+    CloudClient client("https://api.openpsapp.test", server.transport());
+    auto read = [](const icons::Location &where, std::string *out) { return fs::ReadFile(where.path, out); };
+    SyncResult result = client.Sync("opsa_tok", snap, read);
+    CHECK(result.ok);
+    CHECK_EQ(result.sets, 1);
+    CHECK_EQ(result.refused_sets, 1);
+    CHECK_EQ(result.assets, 1);
+    CHECK_EQ(result.refused_assets, 3);
+    CHECK_EQ(server.seen.size(), size_t(7));
+}
+
+TEST(cloud_client_stops_when_the_server_cannot_take_more) {
+    std::string image = TempPath("stop.png");
+    CHECK(fs::WriteFileAtomic(image, "image-bytes"));
+    std::string first(64, 'a'), second(64, 'b');
+    Snapshot snap;
+    snap.manifest = "{}";
+    snap.assets = {{first, {image, 0, -1, "1-1"}}, {second, {image, 0, -1, "1-1"}}};
+    auto read = [](const icons::Location &where, std::string *out) { return fs::ReadFile(where.path, out); };
+    for (int status : {429, 500, 507}) {
+        FakeServer server;
+        server.handler = [&](const net::HttpsRequest &r) {
+            if (r.url.find("/sync/manifest") != std::string::npos)
+                return Reply(200, R"({"needSets":[],"needAssets":[")" + first + R"(",")" + second + R"("]})");
+            return Reply(status, R"({"error":"x"})");
+        };
+        CloudClient client("https://api.openpsapp.test", server.transport());
+        SyncResult result = client.Sync("opsa_tok", snap, read);
+        CHECK(!result.ok);
+        CHECK_EQ(result.refused_assets, 0);
+        CHECK_EQ(server.seen.size(), size_t(2));
+    }
+}
+
 TEST(cloud_client_reports_revoked_tokens_and_failures) {
     Snapshot snap;
     snap.manifest = "{}";

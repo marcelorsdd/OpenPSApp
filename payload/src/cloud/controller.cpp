@@ -175,6 +175,9 @@ void CloudController::TickSync(int64_t now_ms, const std::string &user_key) {
         retry_at_ms_ = 0;
         if (result.unread_assets > 0)
             log::Error("cloud: %d image(s) could not be read; retrying", result.unread_assets);
+        if (result.refused_sets > 0 || result.refused_assets > 0)
+            log::Error("cloud: the server refused %d trophy list(s) and %d image(s); skipped them", result.refused_sets,
+                       result.refused_assets);
     } else if (result.unauthorized) {
         store_->Remove(user_key);
         ResetSchedule();

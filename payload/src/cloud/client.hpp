@@ -33,6 +33,8 @@ struct SyncResult {
     bool unauthorized = false;
     int sets = 0;
     int assets = 0;
+    int refused_sets = 0;
+    int refused_assets = 0;
     int unread_assets = 0;
     std::string error;
 };

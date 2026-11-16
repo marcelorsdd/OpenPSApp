@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- One trophy list or image the server refuses no longer stops the whole sync. The console skips it and sends the rest, so large libraries finish syncing. The server now also accepts images up to 40 MiB, enough for 4K key art.
+
 ## [0.3.1] - 2026-11-15
 
 ### Added
