@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-16
+
 ### Fixed
 
 - One trophy list or image the server refuses no longer stops the whole sync. The console skips it and sends the rest, so large libraries finish syncing. The server now also accepts images up to 40 MiB, enough for 4K key art.
@@ -98,7 +100,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Diagnostic endpoints, off by default (`"debug": true`).
 - Builds take their version from the git tag.
 
-[Unreleased]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/marcelorsdd/OpenPSApp/compare/v0.1.0...v0.2.0
