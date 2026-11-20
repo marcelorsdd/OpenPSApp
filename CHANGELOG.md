@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- The Profile no longer fails with HTTP 500 on firmware whose playtime database has no `playedTimeOnConsole` column, such as 6.02 ([#18](https://github.com/marcelorsdd/OpenPSApp/issues/18)). There OpenPSApp shows the total that PSN keeps for each game, `gltTotalPlayedTime`. A missing column in the playtime database no longer causes an error: OpenPSApp uses the next column it knows, or shows no playtime.
+
 ## [0.3.2] - 2026-11-16
 
 ### Fixed

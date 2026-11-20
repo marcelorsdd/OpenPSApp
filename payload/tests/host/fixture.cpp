@@ -13,6 +13,9 @@ CREATE TABLE tbl_contentinfo (titleId TEXT, titleName TEXT, is3rdPartyVideoApp I
 CREATE TABLE tbl_appbrowse (titleId TEXT, titleName TEXT);
 CREATE TABLE tbl_iconinfo_0515316669 (titleId TEXT, playedTimeOnConsole INTEGER, lastAccessTime TEXT, lastPlayedDateOnConsole TEXT);
 CREATE TABLE tbl_iconinfo_0000043690 (titleId TEXT, playedTimeOnConsole INTEGER, lastAccessTime TEXT, lastPlayedDateOnConsole TEXT);
+CREATE TABLE tbl_iconinfo_0000048059 (titleId TEXT, lastAccessTime TEXT, lastPlayedDateOnConsole TEXT, gltlastPlayedDate TEXT, gltTotalPlayedTime INTEGER);
+CREATE TABLE tbl_iconinfo_0000052428 (titleId TEXT, lastAccessTime TEXT);
+CREATE TABLE tbl_iconinfo_0000056797 (name TEXT);
 
 INSERT INTO tbl_contentinfo VALUES
   ('PPSA01234', 'Astro Test', 0, 0, '/mnt/ext0/user/app/PPSA01234/sce_sys'),
@@ -34,6 +37,11 @@ INSERT INTO tbl_iconinfo_0515316669 VALUES
 INSERT INTO tbl_iconinfo_0000043690 VALUES
   ('PPSA01234', 99999, '2026-11-08 07:00:00', '2026-11-08 07:00:00'),
   ('PPSA07777', 500, '2026-09-09 09:09:09', '2026-09-09 09:09:09');
+INSERT INTO tbl_iconinfo_0000048059 VALUES
+  ('PPSA02222', '2026-11-10 12:00:00', '2026-11-10 09:00:00.000', '2026-11-10 09:30:00', 5400),
+  ('PPSA03333', '2026-11-01 08:00:00', '2026-11-01 07:00:00.000', NULL, NULL);
+INSERT INTO tbl_iconinfo_0000052428 VALUES ('PPSA04444', '2026-10-05 05:00:00');
+INSERT INTO tbl_iconinfo_0000056797 VALUES ('PPSA05555');
 )SQL";
 
 bool WriteFile(const std::string &path, const std::string &data) {

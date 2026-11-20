@@ -232,6 +232,8 @@ No. It reads files on the console. The only server it ever contacts is the one y
 
 OpenPSApp shows what this console recorded. Time played on another console is not included.
 
+Some firmware versions, such as 6.02, do not record the console's own playtime. On those, OpenPSApp shows the total that PSN keeps for the game, which includes other consoles. The console fills in that total only when it goes online, so a console that stays offline shows no playtime.
+
 ### Which profile does it show?
 
 The profile signed in on the PS5. Each profile links to the website on its own.

@@ -21,8 +21,12 @@ struct TitleMeta {
     bool is_app = false;
 };
 
-std::string ColumnOr(const std::set<std::string> &cols, const char *col, const char *fallback) {
-    return cols.count(col) ? std::string("COALESCE(") + col + "," + fallback + ")" : fallback;
+std::string FirstColumn(const std::set<std::string> &cols, std::initializer_list<const char *> names,
+                        const char *fallback) {
+    for (const char *name : names) {
+        if (cols.count(name)) return std::string("COALESCE(") + name + "," + fallback + ")";
+    }
+    return fallback;
 }
 
 std::set<std::string> ColumnSet(const AppDb &db, const std::string &table) {
@@ -34,10 +38,11 @@ std::unordered_map<std::string, TitleMeta> LoadTitleMeta(const AppDb &db) {
     std::unordered_map<std::string, TitleMeta> meta;
 
     std::set<std::string> cols = ColumnSet(db, "tbl_contentinfo");
-    if (!cols.empty()) {
-        std::string sql = "SELECT titleId, " + ColumnOr(cols, "titleName", "''") + ", " +
-                          ColumnOr(cols, "is3rdPartyVideoApp", "0") + ", " + ColumnOr(cols, "categoryType", "0") +
-                          ", " + ColumnOr(cols, "metaDataPath", "''") + " FROM tbl_contentinfo";
+    if (cols.count("titleId")) {
+        std::string sql = "SELECT titleId, " + FirstColumn(cols, {"titleName"}, "''") + ", " +
+                          FirstColumn(cols, {"is3rdPartyVideoApp"}, "0") + ", " +
+                          FirstColumn(cols, {"categoryType"}, "0") + ", " + FirstColumn(cols, {"metaDataPath"}, "''") +
+                          " FROM tbl_contentinfo";
         db.ForEachRow(sql, {}, [&meta](const AppDb::Row &r) {
             TitleMeta &m = meta[r.Text(0)];
             if (m.name.empty()) m.name = r.Text(1);
@@ -47,7 +52,8 @@ std::unordered_map<std::string, TitleMeta> LoadTitleMeta(const AppDb &db) {
         });
     }
 
-    if (ColumnSet(db, "tbl_appbrowse").count("titleName")) {
+    std::set<std::string> browse = ColumnSet(db, "tbl_appbrowse");
+    if (browse.count("titleId") && browse.count("titleName")) {
         db.ForEachRow("SELECT titleId, titleName FROM tbl_appbrowse WHERE titleName IS NOT NULL AND titleName != ''",
                       {}, [&meta](const AppDb::Row &r) {
                           TitleMeta &m = meta[r.Text(0)];
@@ -60,7 +66,7 @@ std::unordered_map<std::string, TitleMeta> LoadTitleMeta(const AppDb &db) {
 std::vector<std::string> PickTables(const AppDb &db, const std::optional<platform::User> &user) {
     std::vector<std::string> tables;
     for (const std::string &t : db.Tables(std::string(layout::kIconInfoPrefix) + "%")) {
-        if (ColumnSet(db, t).count("playedTimeOnConsole")) tables.push_back(t);
+        if (ColumnSet(db, t).count("titleId")) tables.push_back(t);
     }
     if (user) {
         char decimal[16];
@@ -117,7 +123,7 @@ PlaytimeReport CollectPlaytime(const std::optional<platform::User> &user) {
 
     report.tables = PickTables(db, user);
     if (report.tables.empty()) {
-        report.error = "no tbl_iconinfo_* table with playedTimeOnConsole";
+        report.error = "no tbl_iconinfo_* table with titleId";
         return report;
     }
 
@@ -126,9 +132,9 @@ PlaytimeReport CollectPlaytime(const std::optional<platform::User> &user) {
 
     for (const std::string &table : report.tables) {
         std::set<std::string> cols = ColumnSet(db, table);
-        std::string last = cols.count("lastPlayedDateOnConsole") ? ColumnOr(cols, "lastPlayedDateOnConsole", "''")
-                                                                 : ColumnOr(cols, "lastAccessTime", "''");
-        std::string sql = "SELECT titleId, COALESCE(playedTimeOnConsole,0), " + last + " FROM " + table;
+        std::string played = FirstColumn(cols, {"playedTimeOnConsole", "gltTotalPlayedTime"}, "0");
+        std::string last = FirstColumn(cols, {"lastPlayedDateOnConsole", "gltlastPlayedDate", "lastAccessTime"}, "''");
+        std::string sql = "SELECT titleId, " + played + ", " + last + " FROM " + table;
         db.ForEachRow(sql, {}, [&](const AppDb::Row &r) {
             std::string title_id = r.Text(0);
             if (!IsGameTitleId(title_id)) return;
