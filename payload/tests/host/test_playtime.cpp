@@ -53,9 +53,56 @@ TEST(playtime_falls_back_to_appbrowse_name_and_external_icon) {
     if (old) CHECK(old->icon.path.find("/user/appmeta/external/CUSA00001/icon0.png") != std::string::npos);
 }
 
+TEST(playtime_reads_the_psn_total_on_firmware_without_console_time) {
+    platform::User older = fixture::User();
+    older.id = 48059;
+    older.id_hex = "0000bbbb";
+    PlaytimeReport r = CollectPlaytime(older);
+    CHECK_EQ(r.error, std::string(""));
+    CHECK_EQ(r.tables.size(), size_t(1));
+    CHECK_EQ(r.tables.empty() ? std::string() : r.tables[0], std::string("tbl_iconinfo_0000048059"));
+
+    const GamePlaytime *played = r.Find("PPSA02222");
+    CHECK(played != nullptr);
+    if (played) {
+        CHECK_EQ(played->playtime_seconds, int64_t(5400));
+        CHECK_EQ(played->last_played_at, std::string("2026-11-10T09:00:00Z"));
+    }
+    const GamePlaytime *offline = r.Find("PPSA03333");
+    CHECK(offline != nullptr);
+    if (offline) {
+        CHECK_EQ(offline->playtime_seconds, int64_t(0));
+        CHECK_EQ(offline->last_played_at, std::string("2026-11-01T07:00:00Z"));
+    }
+}
+
+TEST(playtime_reads_a_profile_table_with_only_the_basic_columns) {
+    platform::User bare = fixture::User();
+    bare.id = 52428;
+    bare.id_hex = "0000cccc";
+    PlaytimeReport r = CollectPlaytime(bare);
+    CHECK_EQ(r.error, std::string(""));
+    CHECK_EQ(r.games.size(), size_t(1));
+    const GamePlaytime *g = r.Find("PPSA04444");
+    CHECK(g != nullptr);
+    if (g) {
+        CHECK_EQ(g->playtime_seconds, int64_t(0));
+        CHECK_EQ(g->last_played_at, std::string("2026-10-05T05:00:00Z"));
+    }
+}
+
+TEST(playtime_skips_a_profile_table_without_title_ids) {
+    platform::User broken = fixture::User();
+    broken.id = 56797;
+    broken.id_hex = "0000dddd";
+    PlaytimeReport r = CollectPlaytime(broken);
+    CHECK_EQ(r.error, std::string(""));
+    CHECK_EQ(r.tables.size(), size_t(4));
+}
+
 TEST(playtime_without_user_merges_profiles_by_max) {
     PlaytimeReport r = CollectPlaytime(std::nullopt);
-    CHECK_EQ(r.tables.size(), size_t(2));
+    CHECK_EQ(r.tables.size(), size_t(4));
     const GamePlaytime *astro = r.Find("PPSA01234");
     CHECK(astro != nullptr);
     if (astro) {
@@ -69,7 +116,7 @@ TEST(playtime_unknown_profile_falls_back_to_merge) {
     platform::User nobody = fixture::User();
     nobody.id = 0x0badbeef;
     nobody.id_hex = "0badbeef";
-    CHECK_EQ(CollectPlaytime(nobody).tables.size(), size_t(2));
+    CHECK_EQ(CollectPlaytime(nobody).tables.size(), size_t(4));
 }
 
 TEST(game_title_ids) {
